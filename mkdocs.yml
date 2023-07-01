@@ -62,7 +62,7 @@ plugins:
 
 nav:
   - Getting Started: index.md
-
+  - Custom Context: custom-context.md
 
 markdown_extensions:
   - tables
