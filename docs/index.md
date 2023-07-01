@@ -103,7 +103,7 @@ After configuring intents, we need to add the bot to a server. To do this, we ne
 
 ## In-App Authorization
 
-![In-App Authorization](assets/tutorial_bot.png)
+![In-App Authorization](assets/tutorial_bot.png){: style="display: block; margin: 0 auto;"}
 
 In order to add in-app authorization, you need to complete a few extra steps. Travel to `General` section under `OAuth2` tab and select `In-App Authorization` option. After that all steps are the same as above.
 

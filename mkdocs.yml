@@ -62,6 +62,7 @@ plugins:
 
 nav:
   - Getting Started: index.md
+  - Creating a Bot: creating-a-bot.md
 
 
 markdown_extensions:
