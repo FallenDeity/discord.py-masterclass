@@ -1,6 +1,6 @@
 # Embeds
 
-## What is Embed
+## What is Embed?
 
 Discord Embed object is a message component that is used as a way of adding rich content with different structures and formatting styles
 

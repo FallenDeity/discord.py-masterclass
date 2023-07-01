@@ -67,6 +67,7 @@ nav:
     - Custom Context: custom-context.md
     - Error Handling: error-handling.md
     - Embeds: embeds.md
+    - Checks: checks.md
 
 markdown_extensions:
   - tables
