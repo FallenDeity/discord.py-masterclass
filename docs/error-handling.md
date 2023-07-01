@@ -235,6 +235,9 @@ class AuthorHasLowerRole(commands.CommandError):
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, commands.CommandNotFound):
         return
+    
+    if not isinstance(error, commands.CommandOnCooldown):
+        ctx.command.reset_cooldown(ctx)
 
     embed = discord.Embed(
         title=f"Error in command {ctx.command}!",
@@ -282,6 +285,15 @@ async def move(ctx: commands.Context, member: discord.Member, channel: discord.V
 
 bot.run("TOKEN")
 ```
+
+!!! info "Note"
+    When a command encounters any exception, it still updates the cooldown, so this code resets it:
+    ```py
+    if not isinstance(error, commands.CommandOnCooldown):
+        ctx.command.reset_cooldown(ctx)
+    ```
+    Using it or not is entirely up to you.
+
 
 ![Showcase](assets/error-handling/5.png)
 
