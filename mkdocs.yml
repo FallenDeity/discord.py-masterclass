@@ -3,7 +3,7 @@ repo_url: https://github.com/FallenDeity/discord.py-masterclass
 site_description: A hands-on guide to Discord.py
 site_author: FallenDeity
 copyright: Copyright FallenDeity ( 2023 - present )
-site_url: https://github.com/FallenDeity/discord.py-masterclass
+site_url: https://fallendeity.github.io/discord.py-masterclass
 
 theme:
   name: "material"
@@ -55,7 +55,7 @@ plugins:
   - social:
       cards_layout_options:
         background_color: "#3761A3"
-        color: "#000000"
+        color: "#ffffff"
 
 
 
