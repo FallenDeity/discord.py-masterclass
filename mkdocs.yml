@@ -62,7 +62,8 @@ plugins:
 
 nav:
   - Getting Started: index.md
-
+  - Custom Context: custom-context.md
+  - Error Handling: error-handling.md
 
 markdown_extensions:
   - tables
