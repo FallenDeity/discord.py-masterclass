@@ -134,7 +134,7 @@ Now that we have everything ready, we can start writing the code. Open the `main
 
 Now looking at the code, you might be wondering what the difference between `Client` and `Bot` is and when to use which. The `commands.Bot` class is a subclass of the `discord.Client` class. This means that the `commands.Bot` class has all the functionality of the `discord.Client` class and more.  
 
-The `commands.Bot` class is used to create a bot that can respond to commands. The `discord.Client` class is used to create a bot that can respond to events. For example, if you want to create a bot that responds to commands, you would use the `commands.Bot` class.
+The `commands.Bot` class is used to create a bot that can respond to commands. The `discord.Client` class is used to create a bot that can respond to events. For example, if you want to create a bot that responds to prefix commands with a bunch of complex commands and functionalities, it is recommended to use the `commands.Bot` class.
 If you want to just create a minimal bot that responds to events or with just a few slash commands, you can use the `discord.Client` class.
 
 In most cases, you will be using the `commands.Bot` class.
@@ -145,6 +145,34 @@ In most cases, you will be using the `commands.Bot` class.
 | Can be used to create a minimal bot.                                   | Can be used to create a bot with more functionality.                                       |
 | Not possible to add cogs.                                              | Possible to add cogs.                                                                      |
 | Not possible to make prefix commands.                                  | Possible to make prefix commands.                                                          |
+| Only possible to have 1 callback per event.                            | Possible to have multiple callbacks per even using `listen` decorators.                    |
+
+!!! note "Note"
+    A `discord.Client` instance allows for only 1 callback per event. This means that if you have 2 `on_message` callbacks, only 1 of them will be called.
+
+    ```python
+    @client.event
+    async def on_message(message: discord.Message) -> None:
+        print("First callback")
+
+    @client.event
+    async def on_message(message: discord.Message) -> None:
+        print("Second callback")
+    ```
+    In the above example, only the first callback will be called.
+
+    But if you are using an instance of `commands.Bot`, you can use the `listen` decorator to add multiple callbacks to the same event.
+
+    ```python
+    @bot.event
+    async def on_message(message: discord.Message) -> None:
+        print("First callback")
+
+    @bot.listen("on_message")
+    async def on_message(message: discord.Message) -> None:
+        print("Second callback")
+    ```
+    In the above example, both callbacks will be called.
 
 !!! warning "Warning"
     Don't use both the `discord.Client` and `commands.Bot` class at the same time it will cause confusion and unexpected behavior and errors.
@@ -279,7 +307,7 @@ from dotenv import load_dotenv
 
 class CustomBot(commands.Bot):
     client: aiohttp.ClientSession
-    _uptime: datetime.datetime
+    _uptime: datetime.datetime = datetime.datetime.utcnow()
 
     def __init__(self, prefix: str, ext_dir: str, *args: typing.Any, **kwargs: typing.Any) -> None:
         intents = discord.Intents.default()
