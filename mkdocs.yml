@@ -66,6 +66,7 @@ nav:
     - Creating a Discord Bot: creating-a-bot.md
     - Custom Context: custom-context.md
     - Error Handling: error-handling.md
+    - Embeds: embeds.md
 
 markdown_extensions:
   - tables
