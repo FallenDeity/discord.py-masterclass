@@ -20,7 +20,7 @@ pyright = "^1.1.316"
 mkdocs-material = "^9.1.17"
 pygments = "^2.13.0"
 mkdocs = "^1.4.1"
-mkdocstrings = {extras = ["python"], version = ">=0.19,<0.22"}
+mkdocstrings = {extras = ["python"], version = ">=0.19,<0.23"}
 Pillow = "^9.3.0"
 CairoSVG = "^2.5.2"
 pipwin = "^0.5.2"
