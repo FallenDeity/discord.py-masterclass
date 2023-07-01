@@ -32,7 +32,7 @@ jobs:
       - name: Linting with ruff
         run: |
           poetry run ruff .
-      - name: Type checking with mypy
+      - name: Type checking with pyright
         run: |
           poetry run pyright .
       - name: Build docs
