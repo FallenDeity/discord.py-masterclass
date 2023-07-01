@@ -1,0 +1,57 @@
+repos:
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args:
+          - --markdown-linebreak-ext=md
+      - id: check-toml
+
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.9.0
+    hooks:
+      - id: python-use-type-annotations
+      - id: python-check-blanket-noqa
+
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        pass_filenames: false
+        entry: poetry run isort .
+        language: python
+        stages:
+          - commit
+
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        pass_filenames: false
+        entry: poetry run black .
+        language: python
+        stages:
+          - commit
+
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        pass_filenames: false
+        entry: poetry run ruff .
+        language: python
+        stages:
+          - commit
+
+  - repo: local
+    hooks:
+      - id: pyright
+        name: pyright
+        pass_filenames: false
+        entry: poetry run pyright .
+        language: python
+        stages:
+          - commit

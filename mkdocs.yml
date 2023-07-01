@@ -1,0 +1,99 @@
+site_name: Discord.py Masterclass
+repo_url: https://github.com/FallenDeity/discord.py-masterclass
+site_description: A hands-on guide to Discord.py
+site_author: FallenDeity
+copyright: Copyright FallenDeity ( 2023 - present )
+site_url: https://github.com/FallenDeity/discord.py-masterclass
+
+theme:
+  name: "material"
+  language: en
+  logo: assets/logo.png
+  favicon: assets/logo.png
+
+  font:
+    text: Ubuntu
+
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.top
+    - content.code.annotate
+    - content.code.copy
+    - toc.follow
+    - toc.integrate
+    - navigation.footer
+  palette:
+    - scheme: light
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Light Mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Dark Mode
+
+plugins:
+  - glightbox
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_root_heading: true
+            show_root_toc_entry: false
+            docstring_style: numpy
+            merge_init_into_class: true
+            inherited_members: true
+          import:
+            - https://docs.python.org/3.9/objects.inv
+  - search
+  - social:
+      cards_layout_options:
+        background_color: "#3761A3"
+        color: "#000000"
+
+
+
+nav:
+  - Getting Started: index.md
+
+
+markdown_extensions:
+  - pymdownx.betterem
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - abbr
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: ⚓︎
+  - pymdownx.highlight:
+      auto_title: true
+      line_spans: __span
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.superfences
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra:
+  version: 0.1.0
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/FallenDeity/discord.py-masterclass
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/yeyEvT5V2J
