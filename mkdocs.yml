@@ -21,6 +21,7 @@ theme:
     - navigation.top
     - content.code.annotate
     - content.code.copy
+    - content.tabs.link
     - toc.follow
     - toc.integrate
     - navigation.footer
@@ -88,6 +89,8 @@ markdown_extensions:
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true 
 
 extra:
   version: 0.1.0
