@@ -62,7 +62,8 @@ plugins:
 
 nav:
   - Getting Started: index.md
-  - Creating a Bot: creating-a-bot.md
+  - Guide:
+    - Creating a Discord Bot: creating-a-bot.md
     - Custom Context: custom-context.md
     - Error Handling: error-handling.md
 

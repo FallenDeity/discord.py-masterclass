@@ -106,7 +106,7 @@ async def foo_error(ctx: commands.Context, error: commands.CommandError):
 ![Showcase](assets/error-handling/3.png)
 
 !!! info "Note"
-    If there is an actual error in your code, then it will be a [CommandInvokeError](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.CommandInvokeError). We can use its `original` attribute to retrieve the original error. 
+    If there is an actual error in your code, then it will be a [CommandInvokeError](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.CommandInvokeError). We can use its `original` attribute to retrieve the original error.
 
 ## Cog Handler
 
@@ -114,7 +114,7 @@ You can set up a cog handler if there are several commands with the same excepti
 
 For that you need create a cog and override [Cog.cog_command_error](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Cog.cog_command_error) method.
 
-```py 
+```py
 class Example(commands.Cog):
     @commands.command()
     async def foo(self, ctx: commands.Context):
@@ -155,7 +155,7 @@ In order to accomplish this, you can either subclass the bot and modify its meth
 @bot.command()
 async def foo(ctx: commands.Context):
     1 / 0
-    
+
 @bot.event
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     embed = discord.Embed(title="Error")
@@ -212,7 +212,7 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
 
 ![Showcase](assets/error-handling/4.png)
 
-### Full bot with more errors 
+### Full bot with more errors
 
 An expanded example with some additional errors:
 
@@ -235,7 +235,7 @@ class AuthorHasLowerRole(commands.CommandError):
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, commands.CommandNotFound):
         return
-    
+
     if not isinstance(error, commands.CommandOnCooldown):
         ctx.command.reset_cooldown(ctx)
 
@@ -299,11 +299,10 @@ bot.run("TOKEN")
 
 ![Showcase](assets/error-handling/6.png)
 
-* If we use that command and the member is not connected to any voice, we receive an unknown error because we didn't handle it (none of our conditions were met). 
+* If we use that command and the member is not connected to any voice, we receive an unknown error because we didn't handle it (none of our conditions were met).
 
 ![Showcase](assets/error-handling/7.png)
 
 * However, this command will function properly if the user is connected to a voice channel.
 
 ![Showcase](assets/error-handling/8.png)
-
