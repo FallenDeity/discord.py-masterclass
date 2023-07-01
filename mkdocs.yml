@@ -63,6 +63,7 @@ plugins:
 nav:
   - Getting Started: index.md
 
+  - Error Handling: error-handling.md
 
 markdown_extensions:
   - tables
