@@ -88,7 +88,7 @@ After configuring the bot, we need to configure intents. To do this, just scroll
 :   This is used to determine if the bot can see the content of messages. For example, if this is enabled, the bot can see the content of messages and related message events.
 
 !!! info "Tip"
-    If you want to use the `on_message` event, and prefix commands, you will need to enable the `Message Content Intent`. As long as your bot is in less than 100 servers, you can enable all intents without any verification. If your bot is in more than 100 servers, you will need to verify your bot to enable all intents.
+    If you want to get contents of messages, embeds, attachments and use prefix commands, you will need to enable the `Message Content Intent`. As long as your bot is in less than 100 servers, you can enable all intents without any verification. If your bot is in more than 100 servers, you will need to verify your bot and get intents you need approved.
 
 ![Intents](assets/intents.png)
 
