@@ -12,7 +12,7 @@ async def foo(ctx: commands.Context):
     1 / 0
 ```
 
-So, we will meet such error error when running it:
+When we run the command, we will encounter the following error:
 
 ```python
 Traceback (most recent call last):
@@ -51,10 +51,10 @@ async def foo(ctx: commands.Context):
         await ctx.send("Error: division by zero attempt")
 ```
 
-!!! info "Note"
-    With such code, you cannot handle exceptions from things like checks or cooldowns.
+![Showcase](assets/error-handling/1.png){ align=left }
 
-![Showcase](assets/error-handling/1.png)
+!!! info "Note"
+    With such code, you cannot handle exceptions from things like checks or cooldowns and errors which occur in the command itself, but not in the try-except block.
 
 ## What library does with the errors
 
@@ -64,6 +64,17 @@ When a command in Discord.py encounters an error, the library handles it in the 
 * Run the error handler if command is contained within a cog and the cog has one.
 * Run the global command error handler if exists.
 * Print the error in the stderr without quitting the program if there are no error handlers.
+
+```mermaid
+graph LR
+    A[Command] --> B[Command error handler]
+    A --> C[Cog]
+    C --> D[Cog error handler]
+    C --> E[Command]
+    E --> F[Command error handler]
+    F --> G[Global command error handler]
+    G --> H[Print error in stderr]
+```
 
 !!! warning "Warning"
     Making an error handler will suppress any errors, making it difficult to debug your code. Normally, if your handler doesn't pass any conditions, you print out the error. We won't do that here.
@@ -86,7 +97,7 @@ async def foo_error(ctx: commands.Context, error: commands.CommandError):
     await ctx.send(error)
 ```
 
-![Showcase](assets/error-handling/2.png)
+![Showcase](assets/error-handling/2.png){ style="width: 100%" }
 
 Much better! But to a user who is not a programmer, it does not appear to be very understandable So we can simply format it whatever we like. [Built-in isinstance function](https://docs.python.org/3/library/functions.html#isinstance) is suggested as a method for determining the type of error.
 
@@ -103,10 +114,13 @@ async def foo_error(ctx: commands.Context, error: commands.CommandError):
     await ctx.send(embed=embed)
 ```
 
-![Showcase](assets/error-handling/3.png)
+![Showcase](assets/error-handling/3.png){ align=left }
 
 !!! info "Note"
-    If there is an actual error in your code, then it will be a [CommandInvokeError](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.CommandInvokeError). We can use its `original` attribute to retrieve the original error.
+    If there is an actual error in your code, then it will be a [CommandInvokeError](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.CommandInvokeError). We can use its `original` or `__cause__` attribute to retrieve the original error.
+    ```py
+    error = error.__cause__
+    ```
 
 ## Cog Handler
 
@@ -115,6 +129,11 @@ You can set up a cog handler if there are several commands with the same excepti
 For that you need create a cog and override [Cog.cog_command_error](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Cog.cog_command_error) method.
 
 ```py
+import traceback
+
+import discord
+from discord.ext import commands
+
 class Example(commands.Cog):
     @commands.command()
     async def foo(self, ctx: commands.Context):
@@ -127,19 +146,23 @@ class Example(commands.Cog):
         if isinstance(error, ZeroDivisionError):
             embed.description = "Division by zero attempt"
         else:
-            embed.description = "Unknown error"
+            error_data = "".join(traceback.format_exception(type(error), error, error.__traceback__))
+            embed.description = f"Unknown error\n```py\n{error_data[:1000]}\n```"
         await ctx.send(embed=embed)
-```
 
-Don't forget to add the cog inside the bot
 
-```py
-@bot.event
-async def setup_hook():
+async def setup(bot: commands.Bot):
     await bot.add_cog(Example())
 ```
 
-![Showcase](assets/error-handling/3.png)
+![Showcase](assets/error-handling/3.png){ align=left }
+
+!!! warning "Warning"
+    Make sure to load your cogs otherwise commands will not be registered to bot and there will be no response. To load cogs, use the [Bot.load_extension](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.load_extension) method.
+
+    ```py
+    await bot.load_extension("cogs.example")
+    ```
 
 ## Global Handler
 
@@ -149,9 +172,14 @@ Let's make a global error handler, that will be used by all commands.
 
 For that you need to override bot's [on_command_error method](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.on_command_error).
 
-In order to accomplish this, you can either subclass the bot and modify its method, or use [Bot.event](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.event) decorator.
+In order to accomplish this, you can either subclass the bot and modify its method, or use [Bot.event](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.event) or [Bot.listen](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.listen) decorator.
 
 ```py
+import traceback
+
+import discord
+from discord.ext import commands
+
 @bot.command()
 async def foo(ctx: commands.Context):
     1 / 0
@@ -164,11 +192,28 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, ZeroDivisionError):
         embed.description = "Division by zero attempt"
     else:
-        embed.description = "Unknown error"
+        error_data = "".join(traceback.format_exception(type(error), error, error.__traceback__))
+        embed.description = f"Unknown error\n```py\n{error_data[:1000]}\n```"
     await ctx.send(embed=embed)
 ```
 
 ![Showcase](assets/error-handling/3.png)
+!!! warning "Warning"
+    Always make sure to have an `else` clause in your error handler. Otherwise, you will not be able to see the actual error if it is not one of the expected ones.
+
+    ```py
+    @bot.event
+    async def on_command_error(ctx: commands.Context, error: commands.CommandError):
+        embed = discord.Embed(title="Error")
+        if isinstance(error, commands.CommandInvokeError):
+            error = error.original
+        if isinstance(error, ZeroDivisionError):
+            embed.description = "Division by zero attempt"
+        # else:
+        #     embed.description = "Unknown error"
+        await ctx.send(embed=embed)
+    ```
+    In such a situation, you will not be able to see the actual error as the error handler will be eating away the error.
 
 ## Expanded Example
 
@@ -218,6 +263,7 @@ An expanded example with some additional errors:
 
 ```py
 import datetime
+import traceback
 
 import discord
 from discord.ext import commands
@@ -235,17 +281,14 @@ class AuthorHasLowerRole(commands.CommandError):
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):
     if isinstance(error, commands.CommandNotFound):
         return
-
     if not isinstance(error, commands.CommandOnCooldown):
         ctx.command.reset_cooldown(ctx)
-
     embed = discord.Embed(
         title=f"Error in command {ctx.command}!",
         description="Unknown error occurred while using the command",
         color=discord.Color.red(),
         timestamp=datetime.datetime.utcnow()
     )
-
     if isinstance(error, commands.CommandInvokeError):
         if isinstance(error.original, ZeroDivisionError):
             embed.description = "Can't divide by zero"
@@ -266,6 +309,9 @@ async def on_command_error(ctx: commands.Context, error: commands.CommandError):
             embed.description = f"Channel `{error.argument}` not found"
     elif isinstance(error, commands.MissingRequiredArgument):
         embed.description = f"Missing required argument: `{error.param.name}`"
+    else:
+        error_data = "".join(traceback.format_exception(type(error), error, error.__traceback__))
+        embed.description = f"Unknown error\n```py\n{error_data[:1000]}\n```"
     await ctx.send(embed=embed)
 
 
