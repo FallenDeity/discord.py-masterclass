@@ -69,6 +69,7 @@ nav:
     - Creating a Discord Bot: creating-a-bot.md
     - Custom Context: custom-context.md
     - Error Handling: error-handling.md
+    - Converters: converters.md
     - Embeds: embeds.md
     - Checks: checks.md
 
