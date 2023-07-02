@@ -9,13 +9,17 @@ Here is how you do it in discord.py:
 * Subclass context and add your features
 
 ```py
+import typing
+
+from discord.ext import commands
+
 class MyContext(commands.Context):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: typing.Any, **kwargs: typing.Any):
         super().__init__(*args, **kwargs)
         self.test = 123
 
     async def send_test(self):
-        await self.send(self.test)
+        await self.send(f"{self.test}")
 ```
 
 !!! info "Note"
@@ -26,8 +30,11 @@ class MyContext(commands.Context):
 * Make discord.py use your context class by overriding the [get_context](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.get_context) method in the bot subclass.
 
 ```py
+import discord
+from discord.ext import commands
+
 class MyBot(commands.Bot):
-    async def get_context(self, message, *, cls=CustomContext):
+    async def get_context(self, message: discord.Message, *, cls=CustomContext):
         return await super().get_context(message, cls=cls)
 ```
 
@@ -41,16 +48,21 @@ bot = MyBot(".", intents=intents)
 
 ```py
 @bot.command()
-async def foo(ctx: MyContext):
+async def foo(ctx: MyContext) -> None:
     await ctx.send_test()
 ```
 
 ### Result
 
-And that's all! Let's test it now
+![Showcase](assets/custom-context/1.png){ align=left }
 
-![Showcase](assets/custom-context/1.png)
+And that's it! You can now use your custom context class.
+
+!!! info "Note"
+    Custom class context is limited to commands which you `commands.Context` as a required argument. Meaning that you can't use it with slash commands.
 
 ### More examples
 
-[Custom context example from discord.py](https://github.com/Rapptz/discord.py/blob/master/examples/custom_context.py)
+Here are a few more examples from discord.py
+
+[:fontawesome-solid-paper-plane: Examples](https://github.com/Rapptz/discord.py/blob/master/examples/custom_context.py){ .md-button .md-button--primary }

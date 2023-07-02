@@ -130,6 +130,16 @@ Now that we have everything ready, we can start writing the code. Open the `main
     bot.run(TOKEN)
     ```
 
+!!! info "Note"
+    To run the bot, you can use the following command:
+
+    ```bash
+    python main.py # Make sure you are in the same directory as the main.py file in your terminal.
+    ```
+    If you are using a virtual environment or Poetry, you will need to activate it first. And to stop the bot, you can use ++ctrl+c++.
+
+
+
 ### Differences between Client and Bot
 
 Now looking at the code, you might be wondering what the difference between `Client` and `Bot` is and when to use which. The `commands.Bot` class is a subclass of the `discord.Client` class. This means that the `commands.Bot` class has all the functionality of the `discord.Client` class and more.  
@@ -211,6 +221,16 @@ Now that we have our bot ready, we can start adding commands and events.
     async def on_ready() -> None:  # This event is called when the bot is ready
         print(f"Logged in as {bot.user}")
 
+    @bot.event
+    async def on_message(message: discord.Message) -> None:  # This event is called when a message is sent
+        if message.author.bot:  # If the message is sent by a bot, return
+            return
+
+        if message.content == "Hello":  # If the message content is Hello, respond with Hi
+            await message.channel.send("Hi")
+
+        await bot.process_commands(message)  # This is required to process commands
+
     @bot.command()
     async def ping(ctx: commands.Context) -> None:  
         await ctx.send(f"> Pong! {round(bot.latency * 1000)}ms")
@@ -218,6 +238,8 @@ Now that we have our bot ready, we can start adding commands and events.
     bot.run(TOKEN)
     ```
     ![Prefix Commands](assets/creating-a-bot/prefix-commands.png){: style="width: 100%"}
+    !!! warning "Warning"
+        If you don't call `bot.process_commands(message)` in the `on_message` event, the bot will not process commands the way it is supposed to. This means that the bot will not respond to commands.
 === "Slash Commands"
     ```python
     import os
@@ -248,6 +270,8 @@ Now that we have our bot ready, we can start adding commands and events.
     bot.run(TOKEN)
     ```
     ![Slash Commands](assets/creating-a-bot/slash-commands.png){: style="width: 100%;"}
+    !!! info "Note"
+        The first required argument of a slash command is always `inter: discord.Interaction` and all further arguments must be type hinted.
 === "Hybrid Commands"
     ```python
     import os
@@ -278,6 +302,8 @@ Now that we have our bot ready, we can start adding commands and events.
     bot.run(TOKEN)
     ```
     ![Hybrid Commands](assets/creating-a-bot/hybrid-commands.png){: style="width: 100%;"}
+    !!! info "Note"
+        In hybrid commands, the first required argument must be `ctx: commands.Context` and all further arguments must be type hinted so as to support slash commands.
 
 !!! note "Note"
     If you want to use `discord.Client` for slash commands, the process is the same as the one for `discord.ext.commands.Bot`. The only difference is that you need to create a tree attribute for your client instance manually.
