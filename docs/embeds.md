@@ -34,7 +34,28 @@ async def foo(ctx: commands.Context):
 !!! warning "Warning"
     Almost all embed methods require keyword-only arguments
 
+!!! info "Note"
+    Since most embed methods return the embed itself, you can nest them as follows:
+    ```py
+    discord.Embed(...).set_image(...).add_field(...)
+    ```
+
 ![Showcase](assets/embeds/1.png)
+
+## Embed with multiple images
+
+```py
+@bot.command()
+async def foo(ctx: commands.Context):
+    embed = discord.Embed(url="https://fallendeity.github.io/discord.py-masterclass/")
+    embed.set_image(url="https://cdn.discordapp.com/attachments/1028706344158634084/1125040932635549818/0e0eb12ccd76d766.png")
+    await ctx.send(embeds=[embed, embed])
+```
+
+!!! info "Note"
+    Embeds must have urls, and these urls have to be the same.
+
+![Showcase](assets/embeds/3.png)
 
 ## (De)serialization
 
@@ -88,6 +109,23 @@ embed = discord.Embed()
 embed.set_image(url="attachment://image.png")
 await channel.send(file=file, embed=embed)
 ```
+
+## Embed limits
+
+!!! abstract ""
+    Embed **title** is limited to **256 characters**
+    
+    Embed **description** is limited to **4096 characters**
+    
+    An embed can contain a maximum of **25 fields**
+    
+    A **field name/title** is limited to **256 character** and the **value** of the field is limited to **1024 characters**
+    
+    Embed **footer** is limited to **2048 characters**
+    
+    Embed **author name** is limited to **256 characters**
+    
+    The **total of characters** allowed in an embed is **6000**
 
 ## Embed generating website
 
