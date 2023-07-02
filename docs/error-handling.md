@@ -12,7 +12,7 @@ async def foo(ctx: commands.Context):
     1 / 0
 ```
 
-So, we will meet such error error when running it:
+When we run the command, we will encounter the following error:
 
 ```python
 Traceback (most recent call last):

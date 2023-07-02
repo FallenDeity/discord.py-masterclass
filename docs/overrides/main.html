@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+{{ super() }}
+{% if config.extra.comments.enabled %}
+<h2 id="__comments">{{ lang.t("meta.comments") }}</h2>
+{% if config.extra.comments.mode == "giscus" %}
+<script async
+        crossorigin="anonymous"
+        data-category="General"
+        data-category-id="DIC_kwDOJ2QXiM4CXnCk"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-lang="en"
+        data-loading="lazy"
+        data-mapping="title"
+        data-reactions-enabled="1"
+        data-repo="FallenDeity/discord.py-masterclass"
+        data-repo-id="R_kgDOJ2QXiA"
+        data-strict="0"
+        data-theme="preferred_color_scheme"
+        src="https://giscus.app/client.js">
+</script>
+{% else %}
+<script src="https://utteranc.es/client.js"
+        repo="FallenDeity/discord.py-masterclass"
+        issue-term="title"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+</script>
+{% endif %}
+<!-- Synchronize Giscus theme with palette -->
+<script>
+	/* Set palette on initial load */
+	var palette = __md_get("__palette")
+	if (palette && typeof palette.color === "object") {
+		{% if config.extra.comments.mode == "giscus" %}
+			var giscus = document.querySelector("script[src*=giscus]")
+			var theme = palette.color.scheme === "slate" ? "dark_dimmed" : "light"
+			giscus.setAttribute("data-theme", theme)
+		{% else %}
+			var utterances = document.querySelector("script[src*=utteranc]")
+			var theme = palette.color.scheme === "slate" ? "dark-blue" : "github-light"
+			utterances.setAttribute("data-theme", theme)
+		{% endif %}
+	}
+
+	/* Register event handlers after documented loaded */
+	document.addEventListener("DOMContentLoaded", function () {
+		var ref = document.querySelector("[data-md-component=palette]")
+		ref.addEventListener("change", function () {
+			var palette = __md_get("__palette")
+			if (palette && typeof palette.color === "object") {
+				{% if config.extra.comments.mode == "giscus" %}
+					var theme = palette.color.scheme === "slate" ? "dark_dimmed" : "light"
+					var frame = document.querySelector(".giscus-frame")
+					frame.contentWindow.postMessage(
+							{giscus: {setConfig: {theme}}},
+							"https://giscus.app"
+					)
+				{% else %}
+					var theme = palette.color.scheme === "slate" ? "dark-blue" : "github-light"
+					var frame = document.querySelector(".utterances-frame")
+					const iframe = document.querySelector(".utterances-frame")
+					iframe.contentWindow.postMessage({type: 'set-theme', theme: theme}, 'https://utteranc.es');
+				{% endif %}
+			}
+		})
+	})
+</script>
+{% endif %}
+{% endblock %}

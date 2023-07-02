@@ -8,6 +8,7 @@ site_url: https://fallendeity.github.io/discord.py-masterclass
 theme:
   name: "material"
   language: en
+  custom_dir: docs/overrides
   logo: assets/logo.png
   favicon: assets/logo.png
 
@@ -18,7 +19,9 @@ theme:
     - navigation.instant
     - navigation.tracking
     - navigation.tabs
+    - navigation.indexes
     - navigation.top
+    - navigation.sections
     - content.code.annotate
     - content.code.copy
     - content.tabs.link
@@ -112,3 +115,6 @@ extra:
       link: https://github.com/FallenDeity/discord.py-masterclass
     - icon: fontawesome/brands/discord
       link: https://discord.gg/dpy
+  comments:
+    enabled: true
+    mode: giscus
