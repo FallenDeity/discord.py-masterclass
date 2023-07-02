@@ -161,7 +161,7 @@ async def setup(bot: commands.Bot):
     Make sure to load your cogs otherwise commands will not be registered to bot and there will be no response. To load cogs, use the [Bot.load_extension](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.load_extension) method.
 
     ```py
-    bot.load_extension("cogs.example")
+    await bot.load_extension("cogs.example")
     ```
 
 ## Global Handler
