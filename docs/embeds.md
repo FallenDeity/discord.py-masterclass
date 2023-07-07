@@ -42,6 +42,108 @@ async def foo(ctx: commands.Context):
 
 ![Showcase](assets/embeds/1.png)
 
+## Working with specific fields
+
+### Getting a list of fields
+
+*property* [Embed.fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.fields)
+
+```pycon
+>>> import discord
+>>> embed = discord.Embed()
+>>> embed.fields
+[]
+>>> embed.add_field(name="name", value="value")
+>>> embed.fields
+[EmbedProxy(inline=True, name='name', value='value')]
+>>> embed.fields[0].value
+'value'
+```
+
+!!!warning "Warning"
+    Working with attribute `_fields` directly is a bad practice. Use special embed methods instead
+
+    > _single_leading_underscore: weak “internal use” indicator. E.g. from M import * does not import objects whose names start with an underscore.
+    ([pep8](https://peps.python.org/pep-0008/#descriptive-naming-styles))
+
+
+
+### Appending a field
+
+*method* [Embed.add_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.add_field)
+
+```pycon
+>>> import discord
+>>> embed = discord.Embed()
+>>> embed.add_field(name="name1", value="value1")
+>>> embed.add_field(name="name2", value="value2")
+>>> embed.add_field(name="name3", value="value3")
+>>> embed.fields
+[EmbedProxy(inline=True, name='name1', value='value1'), EmbedProxy(inline=True, name='name2', value='value2'), EmbedProxy(inline=True, name='name3', value='value3')]
+```
+
+### Inserting field at index
+
+*method* [Embed.insert_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.insert_field_at)
+
+```pycon
+>>> import discord
+>>> embed = discord.Embed()
+>>> embed.add_field(name="name1", value="value1")
+>>> embed.add_field(name="name2", value="value2")
+>>> embed.add_field(name="name3", value="value3")
+>>> embed.insert_field_at(1, name="new", value="new")
+>>> embed.fields
+[EmbedProxy(inline=True, name='name1', value='value1'), EmbedProxy(inline=True, name='new', value='new'), EmbedProxy(inline=True, name='name2', value='value2'), EmbedProxy(inline=True, name='name3', value='value3')]
+```
+
+### Changing field at index
+
+*method* [Embed.set_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.set_field_at)
+
+```pycon
+>>> import discord
+>>> embed = discord.Embed()
+>>> embed.add_field(name="name1", value="value1")
+>>> embed.add_field(name="name2", value="value2")
+>>> embed.add_field(name="name3", value="value3")
+>>> embed.set_field_at(1, name="new", value="new")
+>>> embed.fields
+[EmbedProxy(inline=True, name='name1', value='value1'), EmbedProxy(inline=True, name='new', value='new'), EmbedProxy(inline=True, name='name3', value='value3')]
+```
+
+### Removing one field
+
+*method* [Embed.remove_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.remove_field)
+
+```pycon
+>>> import discord
+>>> embed = discord.Embed()
+>>> embed.add_field(name="name1", value="value1")
+>>> embed.add_field(name="name2", value="value2")
+>>> embed.add_field(name="name3", value="value3")
+>>> embed.remove_field(1)
+>>> embed.fields
+[EmbedProxy(inline=True, name='name1', value='value1'), EmbedProxy(inline=True, name='name3', value='value3')]
+```
+
+### Removing all fields
+
+*method* [Embed.clear_fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.clear_fields)
+
+```pycon
+>>> import discord
+>>> embed = discord.Embed()
+>>> embed.add_field(name="name1", value="value1")
+>>> embed.add_field(name="name2", value="value2")
+>>> embed.add_field(name="name3", value="value3")
+>>> embed.fields
+[EmbedProxy(inline=True, name='name1', value='value1'), EmbedProxy(inline=True, name='name2', value='value2'), EmbedProxy(inline=True, name='name3', value='value3')]
+>>> embed.clear_fields()
+>>> embed.fields
+[]
+```
+
 ## Embed with multiple images
 
 ```py
