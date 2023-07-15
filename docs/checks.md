@@ -20,7 +20,7 @@ or [commands.check_any](https://discordpy.readthedocs.io/en/stable/ext/commands/
 
 You may view all of discord.py's relevant checks in the [documentation](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#checks).
 
-!!! info "Note"
+!!! note "Note"
     This error handler is used here for demonstration
     ```py
     @foo.error
@@ -163,6 +163,16 @@ Checks if command is invoked inside a DM
     async def foo(ctx: commands.Context):
         await ctx.send(f"Success!")
     ```
+=== "Slash Commands"
+    !!! question "Not check used"
+        No equivalent check exists for application commands
+=== "Hybrid Commands"
+    ```py
+    @bot.hybrid_command()
+    @commands.dm_only()
+    async def foo(ctx: commands.Context):
+        await ctx.send(f"Success!")
+    ```
 
 #### guild_only
 
@@ -175,6 +185,24 @@ Checks if command is invoked inside a guild
     async def foo(ctx: commands.Context):
         await ctx.send(f"Success!")
     ```
+=== "Slash Commands"
+    ```py
+    @bot.tree.command()
+    @discord.app_commands.guild_only()
+    async def foo(interaction: discord.Interaction):
+        await interaction.response.send_message(f"Success!")
+    ```
+
+    !!! question "Not check used"
+        No equivalent check exists for application commands
+
+=== "Hybrid Commands"
+    ```py
+    @bot.hybrid_command()
+    @commands.guild_only()
+    async def foo(ctx: commands.Context):
+        await ctx.send(f"Success!")
+    ```
 
 #### is_nsfw
 
@@ -183,6 +211,21 @@ Checks if the channel is a NSFW channel.
 === "Prefix Commands"
     ```py
     @bot.command()
+    @commands.is_nsfw()
+    async def foo(ctx: commands.Context):
+        await ctx.send(f"Success!")
+    ```
+=== "Slash Commands"
+    ```py
+    @bot.tree.command(nsfw=True)
+    async def foo(interaction: discord.Interaction):
+        await interaction.response.send_message(f"Success!")
+    ```
+    !!! question "Not check used"
+        No equivalent check exists for application commands
+=== "Hybrid Commands"
+    ```py
+    @bot.hybrid_command()
     @commands.is_nsfw()
     async def foo(ctx: commands.Context):
         await ctx.send(f"Success!")
@@ -200,6 +243,16 @@ This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/e
     ```py
     @bot.command()
     @commands.is_owner()
+    async def foo(ctx: commands.Context):
+        await ctx.send(f"Success!")
+    ```
+=== "Slash Commands"
+    !!! question "Not check used"
+        No equivalent check exists for application commands
+=== "Hybrid Commands"
+    ```py
+    @bot.hybrid_command()
+    @commands.is_owner()        
     async def foo(ctx: commands.Context):
         await ctx.send(f"Success!")
     ```
