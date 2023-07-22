@@ -61,23 +61,22 @@ async def foo(ctx: commands.Context):
 When a command in Discord.py encounters an error, the library handles it in the following order rather than terminating the code with an error:
 
 * Run the command's error handler if it has one.
-* Run the error handler if command is contained within a cog and the cog has one.
+* Run the cog error handler if command is contained within a cog and the cog has one.
 * Run the global command error handler if exists.
 * Print the error in the stderr without quitting the program if there are no error handlers.
 
 ```mermaid
 graph LR
-    A[Command] --> B[Command error handler]
+    A[Command] -->|exists?| B[Command Error Handler]
     A --> C[Cog]
-    C --> D[Cog error handler]
-    C --> E[Command]
-    E --> F[Command error handler]
-    F --> G[Global command error handler]
-    G --> H[Print error in stderr]
+    C -->|exists?| D[Cog Error Handler]
+    C --> E[Global]
+    E -->|exists?| F[Global Command Error Handler]
+    E -. no handlers? .-> G[Print error in stderr]
 ```
 
 !!! warning "Warning"
-    Making an error handler will suppress any errors, making it difficult to debug your code. Normally, if your handler doesn't pass any conditions, you print out the error. We won't do that here.
+    Making an error handler will suppress any errors, making it difficult to debug your code. Normally, if your handler doesn't pass any conditions, you print out the error (or do something similar).
 
 ## Exception Hierarchy
 
@@ -97,7 +96,7 @@ async def foo_error(ctx: commands.Context, error: commands.CommandError):
     await ctx.send(error)
 ```
 
-![Showcase](assets/error-handling/2.png){ style="width: 100%" }
+![Showcase](assets/error-handling/2.png)
 
 Much better! But to a user who is not a programmer, it does not appear to be very understandable So we can simply format it whatever we like. [Built-in isinstance function](https://docs.python.org/3/library/functions.html#isinstance) is suggested as a method for determining the type of error.
 
