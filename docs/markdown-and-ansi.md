@@ -397,3 +397,8 @@ To have syntax highlighting in code blocks, you can specify the language after t
 
 !!! tip "Tip"
     Above were just a few examples, You can find a list of supported languages [here](https://highlightjs.org/static/demo/).
+
+## Conclusion
+
+In this tutorial, we learned how to use markdown and ansi highlighting in discord.py. We also learned how to use the `AnsiBuilder` class to create custom ansi blocks.
+Discord allows you to use markdown and ansi highlighting in embeds and messages. You can leverage this to make your bot's messages more readable and attractive.
