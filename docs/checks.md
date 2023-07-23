@@ -1,7 +1,5 @@
 # Checks
 
-## What are checks?
-
 [Checks](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#checks) are utility decorators that are called before to the execution of commands.
 
 These checks should be predicates that take in a single parameter taking a Context. If the check returns a False-like value then during invocation a

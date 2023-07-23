@@ -72,6 +72,7 @@ nav:
     - Converters: converters.md
     - Embeds: embeds.md
     - Checks: checks.md
+    - Tasks: tasks.md
 
 markdown_extensions:
   - tables
