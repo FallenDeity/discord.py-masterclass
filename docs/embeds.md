@@ -216,17 +216,17 @@ await channel.send(file=file, embed=embed)
 
 !!! abstract ""
     Embed **title** is limited to **256 characters**
-    
+
     Embed **description** is limited to **4096 characters**
-    
+
     An embed can contain a maximum of **25 fields**
-    
+
     A **field name/title** is limited to **256 character** and the **value** of the field is limited to **1024 characters**
-    
+
     Embed **footer** is limited to **2048 characters**
-    
+
     Embed **author name** is limited to **256 characters**
-    
+
     The **total of characters** allowed in an embed is **6000**
 
 ## Embed generating website
@@ -235,4 +235,3 @@ await channel.send(file=file, embed=embed)
     We don't advise using the website to create embeds: it's best to do it on your own. But it's actually very comfortable.
 
 On this [site](https://cog-creators.github.io/discord-embed-sandbox/) you can generate discord.py code for creating an embed
-

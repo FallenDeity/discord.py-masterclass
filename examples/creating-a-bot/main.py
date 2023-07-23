@@ -74,6 +74,11 @@ class CustomBot(commands.Bot):
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s: %(message)s")
     bot = CustomBot(prefix="!", ext_dir="cogs")
+
+    @bot.listen("on_message")
+    async def on_message(_: discord.Message) -> None:  # type: ignore
+        print("Message received")
+
     bot.run()
 
 

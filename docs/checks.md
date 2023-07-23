@@ -102,7 +102,7 @@ Similar to [has_any_role](#has_any_role) except checks if the bot itself has the
 
 !!! abstract "List of existing permissions"
     They are attributes of [discord.Permissions](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Permissions)
-    
+
     `add_reactions`, `administrator`, `attach_files`, `ban_members`, `change_nickname`, `connect`, `create_instant_invite`, `create_private_threads`, `create_public_threads`, `deafen_members`, `embed_links`, `external_emojis`, `external_stickers`, `kick_members`, `manage_channels`, `manage_emojis`, `manage_emojis_and_stickers`, `manage_events`, `manage_guild`, `manage_messages`, `manage_nicknames`, `manage_permissions`, `manage_roles`, `manage_threads`, `manage_webhooks`, `mention_everyone`, `moderate_members`, `move_members`, `mute_members`, `priority_speaker`, `read_message_history`, `read_messages`, `request_to_speak`, `send_messages`, `send_messages_in_threads`, `send_tts_messages`, `speak`, `stream`, `use_application_commands`, `use_embedded_activities`, `use_external_emojis`, `use_external_stickers`, `use_voice_activation`, `view_audit_log`, `view_channel`, `view_guild_insights`
 
 #### has_permissions
@@ -252,7 +252,7 @@ This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/e
 === "Hybrid Commands"
     ```py
     @bot.hybrid_command()
-    @commands.is_owner()        
+    @commands.is_owner()  
     async def foo(ctx: commands.Context):
         await ctx.send(f"Success!")
     ```
@@ -267,34 +267,34 @@ Registers a coroutine as a pre-invoke hook.
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
-    
-    
+
+
     @bot.command()
     @commands.before_invoke(func)
     async def foo(ctx: commands.Context):
-        await ctx.send("command")    
+        await ctx.send("command")  
     ```
 === "Slash Commands"
     ```py
     async def func(interaction: discord.Interaction):
         await interaction.channel.send("hook")
-    
-    
+
+
     @bot.tree.command()
     @commands.before_invoke(func)
     async def foo(interaction: discord.Interaction):
-        await interaction.response.send_message("command")    
+        await interaction.response.send_message("command")  
     ```
 === "Hybrid Commands"
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
-    
-    
+
+
     @bot.hybrid_command()
     @commands.before_invoke(func)
     async def foo(ctx: commands.Context):
-        await ctx.send("command")    
+        await ctx.send("command")  
     ```
 
 ![Showcase](assets/checks/6.png)
@@ -307,34 +307,34 @@ Registers a coroutine as a post-invoke hook.
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
-    
-    
+
+
     @bot.command()
     @commands.after_invoke(func)
     async def foo(ctx: commands.Context):
-        await ctx.send("command")    
+        await ctx.send("command")  
     ```
 === "Slash Commands"
     ```py
     async def func(interaction: discord.Interaction):
         await interaction.channel.send("hook")
-    
-    
+
+
     @bot.tree.command()
     @commands.after_invoke(func)
     async def foo(interaction: discord.Interaction):
-        await interaction.response.send_message("command")    
+        await interaction.response.send_message("command")  
     ```
 === "Hybrid Commands"
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
-    
-    
+
+
     @bot.hybrid_command()
     @commands.after_invoke(func)
     async def foo(ctx: commands.Context):
-        await ctx.send("command")    
+        await ctx.send("command")  
     ```
 
 ![Showcase](assets/checks/7.png)
@@ -389,8 +389,8 @@ is effectively bypassed.
         if ctx.author.id in (656919778572632094, 703327554936766554):
             return
         return commands.Cooldown(1, 10)
-    
-    
+
+
     @bot.command()
     @commands.dynamic_cooldown(cooldown, commands.BucketType.user)
     async def foo(ctx: commands.Context):
@@ -403,8 +403,8 @@ is effectively bypassed.
         if interaction.author.id in (656919778572632094, 703327554936766554):
             return
         return app_commands.Cooldown(1, 10)
-    
-    
+
+
     @bot.tree.command()
     @app_commands.checks.dynamic_cooldown(cooldown, commands.BucketType.user)
     async def foo(interaction: discord.Interaction):
@@ -417,8 +417,8 @@ is effectively bypassed.
         if ctx.author.id in (656919778572632094, 703327554936766554):
             return
         return commands.Cooldown(1, 10)
-    
-    
+
+
     @bot.hybrid_command()
     @commands.dynamic_cooldown(cooldown, commands.BucketType.user)
     async def foo(ctx: commands.Context):

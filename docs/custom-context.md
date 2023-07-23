@@ -65,7 +65,7 @@ And that's it! You can now use your custom context class.
 
 #### Tick method
 
-Here, we're adding a method called `tick` to the context, which, based on the value provided, adds a cross or a checkmark emoji. 
+Here, we're adding a method called `tick` to the context, which, based on the value provided, adds a cross or a checkmark emoji.
 
 [:fontawesome-solid-paper-plane: Example from discord.py](https://github.com/Rapptz/discord.py/blob/master/examples/custom_context.py){ .md-button .md-button--primary }
 
@@ -137,4 +137,4 @@ async def change(ctx: MyContext, new_value: str):
 bot.run("token")
 ```
 
-![Showcase](assets/custom-context/3.png)
+![Showcase](assets/custom-context/3.png){ align=center }
