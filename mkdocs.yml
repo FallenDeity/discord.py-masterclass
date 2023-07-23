@@ -73,6 +73,7 @@ nav:
     - Embeds: embeds.md
     - Checks: checks.md
     - Tasks: tasks.md
+    - ANSI and Markdown: markdown-and-ansi.md
 
 markdown_extensions:
   - tables

@@ -173,7 +173,7 @@ The Literal converter specifies that the passed parameter must be exactly one of
 @bot.command()
 async def rps(ctx: commands.Context, move: typing.Literal["rock", "paper", "scissors"]):
     await ctx.send(f"You played {move}")
-    
+
 @rps.error
 async def rps_error(ctx: commands.Context, error: commands.CommandInvokeError):
     if isinstance(error, commands.BadLiteralArgument):
