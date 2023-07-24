@@ -40,7 +40,7 @@ class Styles(Style):
 
 
 class AnsiBuilder:
-    def __init__(self, text: str, *styles: Style) -> None:
+    def __init__(self, text: str = "", *styles: Style) -> None:
         self.styles = styles
         self.cursor = len(text)
         self.text = f"\033[{';'.join(map(str, styles))}m{text}\033[0m" if styles and text else text
@@ -60,8 +60,7 @@ class AnsiBuilder:
         return self
 
     def __str__(self) -> str:
-        text = f"\033[{';'.join(map(str, self.styles))}m{self.text}\033[0m" if self.styles else self.text
-        return text
+        return self.text
 
     @classmethod
     def to_ansi(cls, text: str, *styles: Style) -> str:
@@ -103,12 +102,11 @@ async def style(ctx: commands.Context[commands.Bot]) -> None:
 @bot.command()
 async def combo(ctx: commands.Context[commands.Bot]) -> None:
     # combination of all foreground colors on all background colors
-    combined = AnsiBuilder("", Styles.BOLD)
     for bg in BackgroundColors:
+        combined = AnsiBuilder()
         for fg in Colors:
             combined += f"{AnsiBuilder.to_ansi('Sample', fg, bg)} "
         await ctx.send(combined.block)
-        combined = AnsiBuilder("", Styles.BOLD)
 
 
 @bot.command()
@@ -117,7 +115,7 @@ async def style_combo(ctx: commands.Context[commands.Bot], style_: str) -> None:
         await ctx.send("Invalid style")
         return
     _style = Styles[style_]
-    combined = AnsiBuilder("")
+    combined = AnsiBuilder()
     for fg in Colors:
         combined += f"{AnsiBuilder.to_ansi('Sample', fg, _style)} "
     await ctx.send(combined.block)
