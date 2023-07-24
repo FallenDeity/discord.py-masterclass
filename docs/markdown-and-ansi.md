@@ -142,7 +142,7 @@ class Styles(Style):
 
 
 class AnsiBuilder:
-    def __init__(self, text: str, *styles: Style) -> None:
+    def __init__(self, text: str = "", *styles: Style) -> None:
         self.styles = styles
         self.cursor = len(text)
         self.text = f"\033[{';'.join(map(str, styles))}m{text}\033[0m" if styles and text else text
