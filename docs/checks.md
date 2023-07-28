@@ -7,12 +7,147 @@ CheckFailure exception is raised.
 
 If an exception should be thrown in the predicate then it should be a subclass of CommandError. Any exception not subclassed from it will be propagated.
 
-## How to use?
+## Usage
 
 Check is only a function that, based on the input, either throws an error or returns True/False.
 
-You can apply them on your command by using [commands.check](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.check)
-or [commands.check_any](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.check_any) decorator
+### Per-command apply
+
+Adding check to *any* single command
+
+=== "Prefix Commands"
+
+    #### commands.check
+    
+    A decorator that adds a single check to the ***prefix*** command
+
+    ```py
+    def some_single_check(ctx):
+        ...
+    
+    @bot.command()
+    @commands.check(some_single_check)
+    async def foo(ctx):
+        await ctx.send('You passed the check!')
+    ```
+    
+    #### commands.check_any
+    
+    A [check()](#commandscheck) that is added that checks if any of the checks passed will pass, i.e. using logical OR.
+    
+    ```py
+    def first_check(ctx):
+        ...
+    
+    def second_check(ctx):
+        ...
+    
+    @bot.command()
+    @commands.check_any(first_check, second_check)
+    async def foo(ctx):
+        await ctx.send('You passed at least one check!')
+    ```
+=== "Slash Commands"
+
+    #### app_commands.check
+    
+    A decorator that adds a single check to the ***slash*** command
+
+    ```py
+    def some_single_check(ctx):
+        ...
+    
+    @bot.command()
+    @commands.check(some_single_check)
+    async def foo(ctx):
+        await ctx.send('You passed the check!')
+    ```
+
+### Global apply
+
+Adding check to all existing ***prefix*** commands
+
+To add a kind of global check for slash commands you can override [CommandTree.interaction_check](https://discordpy.readthedocs.io/en/stable/interactions/api.html?#discord.app_commands.CommandTree.interaction_check)
+
+#### bot.check
+
+A decorator that adds a global check to the bot.
+
+A global check is similar to a [check()](#commandscheck) that is applied on a per command basis except it is run before any command checks have been verified and applies to every command the bot has.
+
+```py
+@bot.check
+def check(ctx):
+    ...
+```
+
+#### bot.check_once
+
+Same as [bot.check](#botcheck) except it is called only once per [invoke()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=check#discord.ext.commands.Bot.invoke) call
+
+Regular global checks are called whenever a command is called or [Command.can_run()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=check#discord.ext.commands.Command.can_run) is called. This type of check bypasses that and ensures that it’s called only once, even inside the default help command.
+
+```py
+@bot.check_once
+def check(ctx):
+    ...
+```
+
+#### bot.before_invoke
+
+A decorator that registers a coroutine as a pre-invoke hook.
+
+```py
+@bot.before_invoke
+async def handler(ctx):
+    print(f"Command '{ctx.command.name}' is started")
+```
+
+!!! note "Note"
+    The [bot.before_invoke](#botbefore_invoke) and [bot.after_invoke](#botafter_invoke) hooks are only called if all checks and argument parsing procedures pass without error. If any check or argument parsing procedures fail then the hooks are not called.
+
+#### bot.after_invoke
+
+A decorator that registers a coroutine as a post-invoke hook.
+
+```py
+@bot.after_invoke
+async def handler(ctx):
+    print(f"Command '{ctx.command.name}' is finished")
+```
+
+### Per-cog apply
+
+Adding a check on each command inside the cog
+
+=== "Prefix Commands"
+    #### cog_check
+    
+    A special method that is registered as a [commands.check()](#commandscheck) for every ***prefix*** command and subcommand in this cog.
+    
+    ```py
+    class MyCog(commands.Cog):
+        async def cog_check(self, ctx: commands.Context):
+            ...
+    
+        @commands.command()
+        async def foo(self, ctx: commands.Context):
+            ...
+    ```
+=== "Slash Commands"
+    #### interaction_check
+    
+    A special method that is registered as a [app_commands.check()](#app_commandscheck) for every ***slash*** command and subcommand in this cog.
+    
+    ```py
+    class MyCog(commands.Cog):
+        async def interaction_check(self, interaction: discord.Interaction):
+            ...
+    
+        @app_commands.command()
+        async def foo(self, interaction: discord.Interaction):
+            ...
+    ```
 
 ## Built-in checks
 
