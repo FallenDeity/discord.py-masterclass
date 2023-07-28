@@ -22,12 +22,12 @@ Adding check to *any* single command
     A decorator that adds a single check to the ***prefix*** command
 
     ```py
-    def some_single_check(ctx):
+    def some_single_check(ctx: commands.Context):
         ...
     
     @bot.command()
     @commands.check(some_single_check)
-    async def foo(ctx):
+    async def foo(ctx: commands.Context):
         await ctx.send('You passed the check!')
     ```
     
@@ -36,15 +36,15 @@ Adding check to *any* single command
     A [check()](#commandscheck) that is added that checks if any of the checks passed will pass, i.e. using logical OR.
     
     ```py
-    def first_check(ctx):
+    def first_check(ctx: commands.Context):
         ...
     
-    def second_check(ctx):
+    def second_check(ctx: commands.Context):
         ...
     
     @bot.command()
     @commands.check_any(first_check, second_check)
-    async def foo(ctx):
+    async def foo(ctx: commands.Context):
         await ctx.send('You passed at least one check!')
     ```
 === "Slash Commands"
@@ -54,12 +54,12 @@ Adding check to *any* single command
     A decorator that adds a single check to the ***slash*** command
 
     ```py
-    def some_single_check(ctx):
+    def some_single_check(interaction: discord.Interaction):
         ...
     
     @bot.command()
-    @commands.check(some_single_check)
-    async def foo(ctx):
+    @app_commands.check(some_single_check)
+    async def foo(interaction: discord.Interaction):
         await ctx.send('You passed the check!')
     ```
 
@@ -77,7 +77,7 @@ A global check is similar to a [check()](#commandscheck) that is applied on a pe
 
 ```py
 @bot.check
-def check(ctx):
+def check(ctx: commands.Context):
     ...
 ```
 
@@ -89,7 +89,7 @@ Regular global checks are called whenever a command is called or [Command.can_ru
 
 ```py
 @bot.check_once
-def check(ctx):
+def check(ctx: commands.Context):
     ...
 ```
 
@@ -99,7 +99,7 @@ A decorator that registers a coroutine as a pre-invoke hook.
 
 ```py
 @bot.before_invoke
-async def handler(ctx):
+async def handler(ctx: commands.Context):
     print(f"Command '{ctx.command.name}' is started")
 ```
 
@@ -112,7 +112,7 @@ A decorator that registers a coroutine as a post-invoke hook.
 
 ```py
 @bot.after_invoke
-async def handler(ctx):
+async def handler(ctx: commands.Context):
     print(f"Command '{ctx.command.name}' is finished")
 ```
 
@@ -149,17 +149,55 @@ Adding a check on each command inside the cog
             ...
     ```
 
-## Built-in checks
+## Handling check failures
 
-You may view all of discord.py's relevant checks in the [documentation](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#checks).
+When an error inside check happens, the error is propagated to the error handlers.
+
+If you don't raise an exception but return false-like value, then it will get wrapped up into a [CheckFailure](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#discord.ext.commands.CheckFailure) exception.
+
+!!! tip "Tip"
+    Check out [Error Handling page](error-handling.md) for more examples and explanations about error handling
+
+This is an example of how you can handle check failure for a single command
+
+```py
+class CustomException(commands.CommandError): ...
+
+async def check(ctx: commands.Context):
+    if "1" in ctx.message.content:
+        raise CustomException()
+    if "2" in ctx.message.content:
+        return False
+    return True
+
+@commands.check(check)
+@bot.command()
+async def foo(ctx: commands.Context):
+    await ctx.send("Success!")
+
+@foo.error
+async def handler(ctx: commands.Context, error: commands.CommandError):
+    if isinstance(error, CustomException):
+        await ctx.send("CustomException was raised inside check!")
+    elif isinstance(error, commands.CheckFailure):
+        await ctx.send("Check has failed!")
+    else:
+        await ctx.send(f"Got unexpected error: {error}")
+```
+
+![Showcase](assets/checks/11.png)
 
 !!! note "Note"
-    This error handler is used here for demonstration
+    This error handler is used here for further demonstration
     ```py
     @foo.error
     async def handler(ctx: commands.Context, error: commands.CommandError):
         await ctx.send(f"{error.__class__.__name__} | {error}")
     ```
+
+## Built-in checks
+
+You may view all of discord.py's relevant checks in the [documentation](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#checks).
 
 ### Roles
 
