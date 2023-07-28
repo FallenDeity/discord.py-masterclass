@@ -297,8 +297,17 @@ Checks if command is invoked inside a DM
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+    * There is no such check for application commands built-in.
+
+    ```py
+    def dm_only(interaction):
+        return interaction.guild is None
+
+    @bot.tree.command()
+    @app_commands.check(dm_only)
+    async def foo(interaction: discord.Interaction):
+        await interaction.response.send_message(f"Success!")
+    ```
 === "Hybrid Commands"
     ```py
     @bot.hybrid_command()
@@ -319,15 +328,30 @@ Checks if command is invoked inside a guild
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
+    * There is no such check for application commands built-in.
+
     ```py
+    def guild_only(interaction):
+        return interaction.guild is not None
+
     @bot.tree.command()
-    @discord.app_commands.guild_only()
+    @app_commands.check(guild_only)
     async def foo(interaction: discord.Interaction):
         await interaction.response.send_message(f"Success!")
     ```
 
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+    !!! tip "Tip"
+        You can use [app_commands.guild_only()](https://discordpy.readthedocs.io/en/stable/interactions/api.html?#discord.app_commands.guild_only) instead of check
+        
+        ```py
+        @bot.tree.command()
+        @discord.app_commands.guild_only()
+        async def foo(interaction: discord.Interaction):
+            await interaction.response.send_message(f"Success!")
+        ```
+        
+        With it everything will be handled by discord itself
+
 
 === "Hybrid Commands"
     ```py
@@ -349,13 +373,29 @@ Checks if the channel is a NSFW channel.
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
+    * There is no such check for application commands built-in.
+
     ```py
-    @bot.tree.command(nsfw=True)
+    def is_nsfw(interaction):
+        return interaction.channel.is_nsfw()
+    
+    @bot.tree.command()
+    @app_commands.check(is_nsfw)
     async def foo(interaction: discord.Interaction):
         await interaction.response.send_message(f"Success!")
     ```
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+
+    !!! tip "Tip"
+        You can use `nsfw=True` argument instead of check
+        
+        ```py
+        @bot.tree.command(nsfw=True)
+        async def foo(interaction: discord.Interaction):
+            await interaction.response.send_message(f"Success!")
+        ```
+        
+        With it everything will be handled by discord itself
+
 === "Hybrid Commands"
     ```py
     @bot.hybrid_command()
@@ -380,8 +420,17 @@ This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/e
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+    * There is no such check for application commands built-in.
+
+    ```py
+    async def is_owner(interaction):
+        return await bot.is_owner(interaction.user)
+    
+    @bot.tree.command()
+    @app_commands.check(is_owner)
+    async def foo(interaction: discord.Interaction):
+        await interaction.response.send_message(f"Success!")
+    ```
 === "Hybrid Commands"
     ```py
     @bot.hybrid_command()
