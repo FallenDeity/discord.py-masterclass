@@ -22,9 +22,9 @@ sudo apt install python3.9
     Depending on your Linux distribution, you may need to use a different command to install Python. Also, based on your linux distro version you may already have python installed. To check if you have python installed, you can run `python3 --version` in your terminal.  
 
 Most linux distros however don't come with `pip` installed. To install `pip` you can run `sudo apt install python3-pip` in your terminal.
-    ```bash
-    sudo apt install python3-pip
-    ```
+```bash
+sudo apt install python3-pip
+```
 
 #### Verify Installation
 
