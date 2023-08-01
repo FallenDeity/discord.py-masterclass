@@ -7,24 +7,197 @@ CheckFailure exception is raised.
 
 If an exception should be thrown in the predicate then it should be a subclass of CommandError. Any exception not subclassed from it will be propagated.
 
-## How to use?
+## Usage
 
 Check is only a function that, based on the input, either throws an error or returns True/False.
 
-You can apply them on your command by using [commands.check](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.check)
-or [commands.check_any](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.check_any) decorator
+### Per-command apply
 
-## Built-in checks
+Adding check to *any* single command
 
-You may view all of discord.py's relevant checks in the [documentation](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#checks).
+=== "Prefix Commands"
+
+    #### commands.check
+    
+    A decorator that adds a single check to the ***prefix*** command
+
+    ```py
+    def some_single_check(ctx: commands.Context):
+        ...
+    
+    @bot.command()
+    @commands.check(some_single_check)
+    async def foo(ctx: commands.Context):
+        await ctx.send('You passed the check!')
+    ```
+    
+    #### commands.check_any
+    
+    A [check()](#commandscheck) that is added that checks if any of the checks passed will pass, i.e. using logical OR.
+    
+    ```py
+    def first_check(ctx: commands.Context):
+        ...
+    
+    def second_check(ctx: commands.Context):
+        ...
+    
+    @bot.command()
+    @commands.check_any(first_check, second_check)
+    async def foo(ctx: commands.Context):
+        await ctx.send('You passed at least one check!')
+    ```
+=== "Slash Commands"
+
+    #### app_commands.check
+    
+    A decorator that adds a single check to the ***slash*** command
+
+    ```py
+    def some_single_check(interaction: discord.Interaction):
+        ...
+    
+    @bot.command()
+    @app_commands.check(some_single_check)
+    async def foo(interaction: discord.Interaction):
+        await ctx.send('You passed the check!')
+    ```
+
+### Global apply
+
+Adding check to all existing ***prefix*** commands
+
+To add a kind of global check for slash commands you can override [CommandTree.interaction_check](https://discordpy.readthedocs.io/en/stable/interactions/api.html?#discord.app_commands.CommandTree.interaction_check)
+
+#### bot.check
+
+A decorator that adds a global check to the bot.
+
+A global check is similar to a [check()](#commandscheck) that is applied on a per command basis except it is run before any command checks have been verified and applies to every command the bot has.
+
+```py
+@bot.check
+def check(ctx: commands.Context):
+    ...
+```
+
+#### bot.check_once
+
+Same as [bot.check](#botcheck) except it is called only once per [invoke()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=check#discord.ext.commands.Bot.invoke) call
+
+Regular global checks are called whenever a command is called or [Command.can_run()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=check#discord.ext.commands.Command.can_run) is called. This type of check bypasses that and ensures that it’s called only once, even inside the default help command.
+
+```py
+@bot.check_once
+def check(ctx: commands.Context):
+    ...
+```
+
+#### bot.before_invoke
+
+A decorator that registers a coroutine as a pre-invoke hook.
+
+```py
+@bot.before_invoke
+async def handler(ctx: commands.Context):
+    print(f"Command '{ctx.command.name}' is started")
+```
 
 !!! note "Note"
-    This error handler is used here for demonstration
+    The [bot.before_invoke](#botbefore_invoke) and [bot.after_invoke](#botafter_invoke) hooks are only called if all checks and argument parsing procedures pass without error. If any check or argument parsing procedures fail then the hooks are not called.
+
+#### bot.after_invoke
+
+A decorator that registers a coroutine as a post-invoke hook.
+
+```py
+@bot.after_invoke
+async def handler(ctx: commands.Context):
+    print(f"Command '{ctx.command.name}' is finished")
+```
+
+### Per-cog apply
+
+Adding a check on each command inside the cog
+
+=== "Prefix Commands"
+    #### cog_check
+    
+    A special method that is registered as a [commands.check()](#commandscheck) for every ***prefix*** command and subcommand in this cog.
+    
+    ```py
+    class MyCog(commands.Cog):
+        async def cog_check(self, ctx: commands.Context):
+            ...
+    
+        @commands.command()
+        async def foo(self, ctx: commands.Context):
+            ...
+    ```
+=== "Slash Commands"
+    #### interaction_check
+    
+    A special method that is registered as a [app_commands.check()](#app_commandscheck) for every ***slash*** command and subcommand in this cog.
+    
+    ```py
+    class MyCog(commands.Cog):
+        async def interaction_check(self, interaction: discord.Interaction):
+            ...
+    
+        @app_commands.command()
+        async def foo(self, interaction: discord.Interaction):
+            ...
+    ```
+
+## Handling check failures
+
+When an error inside check happens, the error is propagated to the error handlers.
+
+If you don't raise an exception but return false-like value, then it will get wrapped up into a [CheckFailure](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#discord.ext.commands.CheckFailure) exception.
+
+!!! tip "Tip"
+    Check out [Error Handling page](error-handling.md) for more examples and explanations about error handling
+
+This is an example of how you can handle check failure for a single command
+
+```py
+class CustomException(commands.CommandError): ...
+
+async def check(ctx: commands.Context):
+    if "1" in ctx.message.content:
+        raise CustomException()
+    if "2" in ctx.message.content:
+        return False
+    return True
+
+@commands.check(check)
+@bot.command()
+async def foo(ctx: commands.Context):
+    await ctx.send("Success!")
+
+@foo.error
+async def handler(ctx: commands.Context, error: commands.CommandError):
+    if isinstance(error, CustomException):
+        await ctx.send("CustomException was raised inside check!")
+    elif isinstance(error, commands.CheckFailure):
+        await ctx.send("Check has failed!")
+    else:
+        await ctx.send(f"Got unexpected error: {error}")
+```
+
+![Showcase](assets/checks/11.png)
+
+!!! note "Note"
+    This error handler is used here for further demonstration
     ```py
     @foo.error
     async def handler(ctx: commands.Context, error: commands.CommandError):
         await ctx.send(f"{error.__class__.__name__} | {error}")
     ```
+
+## Built-in checks
+
+You may view all of discord.py's relevant checks in the [documentation](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#checks).
 
 ### Roles
 
@@ -162,8 +335,17 @@ Checks if command is invoked inside a DM
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+    * There is no such check for application commands built-in.
+
+    ```py
+    def dm_only(interaction):
+        return interaction.guild is None
+
+    @bot.tree.command()
+    @app_commands.check(dm_only)
+    async def foo(interaction: discord.Interaction):
+        await interaction.response.send_message(f"Success!")
+    ```
 === "Hybrid Commands"
     ```py
     @bot.hybrid_command()
@@ -184,15 +366,30 @@ Checks if command is invoked inside a guild
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
+    * There is no such check for application commands built-in.
+
     ```py
+    def guild_only(interaction):
+        return interaction.guild is not None
+
     @bot.tree.command()
-    @discord.app_commands.guild_only()
+    @app_commands.check(guild_only)
     async def foo(interaction: discord.Interaction):
         await interaction.response.send_message(f"Success!")
     ```
 
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+    !!! tip "Tip"
+        You can use [app_commands.guild_only()](https://discordpy.readthedocs.io/en/stable/interactions/api.html?#discord.app_commands.guild_only) instead of check
+        
+        ```py
+        @bot.tree.command()
+        @discord.app_commands.guild_only()
+        async def foo(interaction: discord.Interaction):
+            await interaction.response.send_message(f"Success!")
+        ```
+        
+        With it everything will be handled by discord itself
+
 
 === "Hybrid Commands"
     ```py
@@ -214,13 +411,29 @@ Checks if the channel is a NSFW channel.
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
+    * There is no such check for application commands built-in.
+
     ```py
-    @bot.tree.command(nsfw=True)
+    def is_nsfw(interaction):
+        return interaction.channel.is_nsfw()
+    
+    @bot.tree.command()
+    @app_commands.check(is_nsfw)
     async def foo(interaction: discord.Interaction):
         await interaction.response.send_message(f"Success!")
     ```
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+
+    !!! tip "Tip"
+        You can use `nsfw=True` argument instead of check
+        
+        ```py
+        @bot.tree.command(nsfw=True)
+        async def foo(interaction: discord.Interaction):
+            await interaction.response.send_message(f"Success!")
+        ```
+        
+        With it everything will be handled by discord itself
+
 === "Hybrid Commands"
     ```py
     @bot.hybrid_command()
@@ -245,8 +458,17 @@ This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/e
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
-    !!! question "Not check used"
-        No equivalent check exists for application commands
+    * There is no such check for application commands built-in.
+
+    ```py
+    async def is_owner(interaction):
+        return await bot.is_owner(interaction.user)
+    
+    @bot.tree.command()
+    @app_commands.check(is_owner)
+    async def foo(interaction: discord.Interaction):
+        await interaction.response.send_message(f"Success!")
+    ```
 === "Hybrid Commands"
     ```py
     @bot.hybrid_command()
