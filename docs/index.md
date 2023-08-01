@@ -18,10 +18,10 @@ If you are using Linux, you can install Python using your package manager. For e
 sudo apt install python3.9
 ```
 
-!!! info "Note"
+> **_NOTE:_**
     Depending on your Linux distribution, you may need to use a different command to install Python. Also, based on your linux distro version you may already have python installed. To check if you have python installed, you can run `python3 --version` in your terminal.  
 
-    Most linux distros however don't come with `pip` installed. To install `pip` you can run `sudo apt install python3-pip` in your terminal.
+Most linux distros however don't come with `pip` installed. To install `pip` you can run `sudo apt install python3-pip` in your terminal.
     ```bash
     sudo apt install python3-pip
     ```
@@ -30,18 +30,18 @@ sudo apt install python3.9
 
 To verify that you have Python installed, you can run the following command in your terminal:
 
-=== "Windows"
+##### Windows
 
-    ```bash
-    py --version
-    ```
-=== "Mac & Linux"
+```bash
+py --version
+```
+##### Mac & Linux
 
-    ```bash
-    python3 --version
-    ```
+```bash
+python3 --version
+```
 
-!!! note "Note"
+> **_NOTE:_**
     Depending on your Python installation, the version displayed may be different.
 
 ![Installation](assets/installation.png)
@@ -98,12 +98,14 @@ After configuring intents, we need to add the bot to a server. To do this, we ne
 
 ![Permissions](assets/permissions.png)
 
-!!! warning "Warning"
+> **_NOTE:_**
     For this tutorial, we will be using the `Administrator` permission. This is not recommended for production bots. You should only give your bot the permissions that it needs. If its a personal bot, you can give it the `Administrator` permission.
 
 ## In-App Authorization
 
-![In-App Authorization](assets/tutorial_bot.png){: style="display: block; margin: 0 auto;"}
+<div style="text-align:center">
+  <img src="assets/tutorial_bot.png" alt="In-App Authorization" style="display:block; margin:0 auto;">
+</div>
 
 In order to add in-app authorization, you need to complete a few extra steps. Travel to `General` section under `OAuth2` tab and select `In-App Authorization` option. After that all steps are the same as above.
 
