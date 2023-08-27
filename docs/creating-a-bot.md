@@ -193,7 +193,7 @@ Intents are a way to tell Discord what events your bot is interested in. For exa
 
 If you want to receive all events, you would need to enable all intents. This can be done by using the `discord.Intents.all()` intent. If you want to receive only the default events, you would need to enable the `discord.Intents.default()` intent. This can be done by using the `discord.Intents.default()` intent.  
 
-The default intents contain all intents except for the `discord.Intents.members`, `discord.Intents.messages` and `discord.Intents.presences` intents. This is because these intents are privileged intents. This means that you need to enable them on the [Discord Developer Portal](https://discord.com/developers/applications) before you can use them.
+The default intents contain all intents except for the `discord.Intents.members`, `discord.Intents.message_content` and `discord.Intents.presences` intents. This is because these intents are privileged intents. This means that you need to enable them on the [Discord Developer Portal](https://discord.com/developers/applications) before you can use them.
 
 !!! note "Note"
     Make sure to only enable the intents you need. If you enable all intents, your bot might be slower and consume more resources unnecessarily.
