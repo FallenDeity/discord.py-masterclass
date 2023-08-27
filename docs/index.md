@@ -174,7 +174,7 @@ In order to add in-app authorization, you need to complete a few extra steps. Tr
 With that, we have created a Discord bot. In the next section, we will be creating a bot using the discord.py library. After completing this tutorial, you should have a basic understanding of how to create a Discord bot.
 Before we move on to the next section, make sure to have the following ready:
 
-- [x] Python 3.10 or higher installed on your computer.
+- [x] Python 3.8 or higher installed on your computer.
 - [x] A Discord bot created on the [Discord Developer Portal](https://discord.com/developers/applications).
 - [x] The bot token copied to your clipboard or saved somewhere safe.
 - [x] The bot added to a server.
