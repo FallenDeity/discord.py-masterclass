@@ -1,7 +1,7 @@
 repos:
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -11,7 +11,7 @@ repos:
       - id: check-toml
 
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       - id: python-use-type-annotations
       - id: python-check-blanket-noqa
@@ -21,7 +21,8 @@ repos:
       - id: isort
         name: isort
         pass_filenames: false
-        entry: poetry run isort .
+        entry: poetry
+        command: run isort .
         language: python
         stages:
           - commit
@@ -31,7 +32,8 @@ repos:
       - id: black
         name: black
         pass_filenames: false
-        entry: poetry run black .
+        entry: poetry
+        command: run black .
         language: python
         stages:
           - commit
@@ -41,17 +43,8 @@ repos:
       - id: ruff
         name: ruff
         pass_filenames: false
-        entry: poetry run ruff .
-        language: python
-        stages:
-          - commit
-
-  - repo: local
-    hooks:
-      - id: pyright
-        name: pyright
-        pass_filenames: false
-        entry: poetry run pyright .
+        entry: poetry
+        command: run ruff .
         language: python
         stages:
           - commit
