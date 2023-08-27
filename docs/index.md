@@ -2,53 +2,113 @@
 
 ## Introduction
 
-This is a tutorial on how to create a Discord bot using the [discord.py](https://discordpy.readthedocs.io/en/latest/) library. This tutorial will cover the basics of creating a bot and how to use the library's commands and events. To follow this tutorial, you will need to have Python 3.8 or higher installed on your computer. You can download Python [here](https://www.python.org/downloads/).
+This is a tutorial on how to create a Discord bot using the [discord.py](https://discordpy.readthedocs.io/en/latest/) library. This tutorial will cover the basics of creating a bot and how to use the library's commands and events. To follow this tutorial, you will need to have Python 3.11 installed on your computer.
 
-### Installing Python
+### Installing Pyenv
 
-To install Python, you will need to go to the [Python website](https://www.python.org/downloads/) and download the latest version of Python. It's recommended to atleast have Python `3.9>` installed on your computer. For more ease of use of python and easily leveraging features like more convenient typehints, it's recommended to install `3.10` or higher.
+=== "Windows"
+    Open powershell in administrator mode. To do this right-click the windows icon and open the terminal (admin) mode.
 
-![Installer](assets/python.png)
+    Installing [Chocolatey](https://chocolatey.org), this is a package manager for Windows. We will use this to install Pyenv.
 
-#### For Linux
-
-If you are using Linux, you can install Python using your package manager. For example, if you are using Ubuntu, you can install Python using the following command:
-
-```bash
-sudo apt install python3.9
-```
-
-!!! info "Note"
-    Depending on your Linux distribution, you may need to use a different command to install Python. Also, based on your linux distro version you may already have python installed. To check if you have python installed, you can run `python3 --version` in your terminal.  
-
-    Most linux distros however don't come with `pip` installed. To install `pip` you can run `sudo apt install python3-pip` in your terminal.
-    ```bash
-    sudo apt install python3-pip
+    ```powershell
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     ```
 
-#### Verify Installation
+    Installing Pyenv.
 
-To verify that you have Python installed, you can run the following command in your terminal:
+    ```powershell
+    choco install pyenv-win
+    ```
+
+    Adding Pyenv to PATH.
+
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable('PYENV',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
+
+    [System.Environment]::SetEnvironmentVariable('PYENV_ROOT',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
+
+    [System.Environment]::SetEnvironmentVariable('PYENV_HOME',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
+
+    [System.Environment]::SetEnvironmentVariable('path', $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" + $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" + [System.Environment]::GetEnvironmentVariable('path', "User"),"User")
+    ```
+
+    Set execution policy to always be able to run Pyenv.
+
+    ```powershell
+    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+    ```
+
+=== "Linux"
+    Open the terminal.
+
+    Install all required prerequisite dependencies.
+
+    ```bash
+    sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
+    libbz2-dev libreadline-dev libsqlite3-dev wget curl git llvm \
+    libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+    ```
+
+    Download and execute installation script.
+
+    ```bash
+    curl https://pyenv.run | bash
+    ```
+
+    <hr>
+    Optional steps but recommended.
+
+    Add the following entries into your `~/.bashrc` file.
+
+    ```sh
+    # pyenv
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv virtualenv-init -)"
+    ```
+
+    Restart shell and test.
+
+    ```bash
+    exec $SHELL
+    ```
+
+=== "Mac"
+
+    Install Brew (Install apple devtools first if you have never used the terminal, it will prompt you automatically)
+
+    ```zsh
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+
+    Installing Pyenv.
+
+    ```zsh
+    brew install pyenv
+    ```
+
+
+#### Installing Python
+
+To verify that you have Penv installed, you can run the following command in your terminal:
+
+```bash
+pyenv --version
+```
+
+Install Python and setting it globally.
 
 === "Windows"
 
     ```bash
-    py --version
+    pyenv install 3.10.5 && pyenv global 3.10.5 && python -V
     ```
 === "Mac & Linux"
 
     ```bash
-    python3 --version
+    pyenv install 3.11 && pyenv global 3.11 && python -V
     ```
-
-!!! note "Note"
-    Depending on your Python installation, the version displayed may be different.
-
-![Installation](assets/installation.png)
-
-#### For Windows & Mac
-
-When installing Python on Windows or Mac, you will need to make sure that you have the `Add Python to PATH` option checked. This will allow you to use Python in your command prompt or terminal.
 
 ## Creating a Bot
 
@@ -114,7 +174,7 @@ In order to add in-app authorization, you need to complete a few extra steps. Tr
 With that, we have created a Discord bot. In the next section, we will be creating a bot using the discord.py library. After completing this tutorial, you should have a basic understanding of how to create a Discord bot.
 Before we move on to the next section, make sure to have the following ready:
 
-- [x] Python 3.9 or higher installed on your computer.
+- [x] Python 3.10 or higher installed on your computer.
 - [x] A Discord bot created on the [Discord Developer Portal](https://discord.com/developers/applications).
 - [x] The bot token copied to your clipboard or saved somewhere safe.
 - [x] The bot added to a server.

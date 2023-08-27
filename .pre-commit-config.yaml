@@ -27,8 +27,6 @@ repos:
         stages:
           - commit
 
-  - repo: local
-    hooks:
       - id: black
         name: black
         pass_filenames: false
@@ -38,8 +36,6 @@ repos:
         stages:
           - commit
 
-  - repo: local
-    hooks:
       - id: ruff
         name: ruff
         pass_filenames: false
