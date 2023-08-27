@@ -1,7 +1,7 @@
 repos:
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -11,7 +11,7 @@ repos:
       - id: check-toml
 
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       - id: python-use-type-annotations
       - id: python-check-blanket-noqa
@@ -51,7 +51,8 @@ repos:
       - id: pyright
         name: pyright
         pass_filenames: false
-        entry: poetry run pyright .
+        entry: poetry
+        command: run pyright .
         language: python
         stages:
           - commit
