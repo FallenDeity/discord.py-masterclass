@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a tutorial on how to create a Discord bot using the [discord.py](https://discordpy.readthedocs.io/en/latest/) library. This tutorial will cover the basics of creating a bot and how to use the library's commands and events. To follow this tutorial, you will need to have Python 3.11 installed on your computer.
+This is a tutorial on how to create a Discord bot using the [discord.py](https://discordpy.readthedocs.io/en/latest/) library. This tutorial will cover the basics of creating a bot and how to use the library's commands and events. To follow this tutorial, you will need to have Python 3.10 or 3.11 installed on your computer.
 
 ### Installing Pyenv
 
