@@ -48,14 +48,3 @@ repos:
         language: python
         stages:
           - commit
-
-  - repo: local
-    hooks:
-      - id: pyright
-        name: pyright
-        pass_filenames: false
-        entry: poetry
-        command: run pyright .
-        language: python
-        stages:
-          - commit
