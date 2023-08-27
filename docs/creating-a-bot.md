@@ -30,12 +30,12 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
 
 === "Without Voice Support"
     ```bash
-    pip install discord.py
+    python -m pip install discord.py
     ```
 
 === "With Voice Support"
     ```bash
-    pip install discord.py[voice]
+    python -m pip install discord.py[voice]
     ```
 
 !!! note "Note"
@@ -48,20 +48,20 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
         === "Windows"
             ```bash
             # Initialize the virtual environment
-            py -m venv venv
+            python -m venv venv
             # Activate the virtual environment
             venv/Scripts/activate
             # Install discord.py
-            pip install discord.py
+            python -m pip install discord.py
             ```
         === "Mac & Linux"
             ```bash
             # Initialize the virtual environment
-            python3 -m venv venv
+            python -m venv venv
             # Activate the virtual environment
             source venv/bin/activate
             # Install discord.py
-            pip install discord.py
+            python -m pip install discord.py
             ```
         ![Virtual Environment Files](assets/creating-a-bot/venv-files.png){ align=left }
         ![Virtual Environment](assets/creating-a-bot/virtual-environment.png){ align=right }
