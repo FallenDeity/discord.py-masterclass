@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- [x] Python 3.9 or higher installed on your computer.
+- [x] Python 3.8 or higher installed on your computer.
 - [x] A Discord bot created on the [Discord Developer Portal](https://discord.com/developers/applications).
 - [x] The bot token copied to your clipboard or saved somewhere safe.
 - [x] The bot added to a server.

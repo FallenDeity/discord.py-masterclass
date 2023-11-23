@@ -18,30 +18,30 @@ Adding check to *any* single command
 === "Prefix Commands"
 
     #### commands.check
-    
+
     A decorator that adds a single check to the ***prefix*** command
 
     ```py
     def some_single_check(ctx: commands.Context):
         ...
-    
+
     @bot.command()
     @commands.check(some_single_check)
     async def foo(ctx: commands.Context):
         await ctx.send('You passed the check!')
     ```
-    
+
     #### commands.check_any
-    
+
     A [check()](#commandscheck) that is added that checks if any of the checks passed will pass, i.e. using logical OR.
-    
+
     ```py
     def first_check(ctx: commands.Context):
         ...
-    
+
     def second_check(ctx: commands.Context):
         ...
-    
+
     @bot.command()
     @commands.check_any(first_check, second_check)
     async def foo(ctx: commands.Context):
@@ -50,13 +50,13 @@ Adding check to *any* single command
 === "Slash Commands"
 
     #### app_commands.check
-    
+
     A decorator that adds a single check to the ***slash*** command
 
     ```py
     def some_single_check(interaction: discord.Interaction):
         ...
-    
+
     @bot.command()
     @app_commands.check(some_single_check)
     async def foo(interaction: discord.Interaction):
@@ -122,28 +122,28 @@ Adding a check on each command inside the cog
 
 === "Prefix Commands"
     #### cog_check
-    
+
     A special method that is registered as a [commands.check()](#commandscheck) for every ***prefix*** command and subcommand in this cog.
-    
+
     ```py
     class MyCog(commands.Cog):
         async def cog_check(self, ctx: commands.Context):
             ...
-    
+
         @commands.command()
         async def foo(self, ctx: commands.Context):
             ...
     ```
 === "Slash Commands"
     #### interaction_check
-    
+
     A special method that is registered as a [app_commands.check()](#app_commandscheck) for every ***slash*** command and subcommand in this cog.
-    
+
     ```py
     class MyCog(commands.Cog):
         async def interaction_check(self, interaction: discord.Interaction):
             ...
-    
+
         @app_commands.command()
         async def foo(self, interaction: discord.Interaction):
             ...
@@ -380,14 +380,14 @@ Checks if command is invoked inside a guild
 
     !!! tip "Tip"
         You can use [app_commands.guild_only()](https://discordpy.readthedocs.io/en/stable/interactions/api.html?#discord.app_commands.guild_only) instead of check
-        
+
         ```py
         @bot.tree.command()
         @discord.app_commands.guild_only()
         async def foo(interaction: discord.Interaction):
             await interaction.response.send_message(f"Success!")
         ```
-        
+
         With it everything will be handled by discord itself
 
 
@@ -416,7 +416,7 @@ Checks if the channel is a NSFW channel.
     ```py
     def is_nsfw(interaction):
         return interaction.channel.is_nsfw()
-    
+
     @bot.tree.command()
     @app_commands.check(is_nsfw)
     async def foo(interaction: discord.Interaction):
@@ -425,13 +425,13 @@ Checks if the channel is a NSFW channel.
 
     !!! tip "Tip"
         You can use `nsfw=True` argument instead of check
-        
+
         ```py
         @bot.tree.command(nsfw=True)
         async def foo(interaction: discord.Interaction):
             await interaction.response.send_message(f"Success!")
         ```
-        
+
         With it everything will be handled by discord itself
 
 === "Hybrid Commands"
@@ -463,7 +463,7 @@ This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/e
     ```py
     async def is_owner(interaction):
         return await bot.is_owner(interaction.user)
-    
+
     @bot.tree.command()
     @app_commands.check(is_owner)
     async def foo(interaction: discord.Interaction):
