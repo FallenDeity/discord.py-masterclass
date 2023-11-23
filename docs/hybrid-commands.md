@@ -74,6 +74,7 @@ All other parameters will be treated as a string parameter and can be converted 
         - Union[User, Member, Role] (results in AppCommandOptionType.mentionable)
 
 === "String"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, message: str):
@@ -93,6 +94,7 @@ All other parameters will be treated as a string parameter and can be converted 
     ![String](assets/hybrid-commands/string.png){: style="width: 100%;"}
 
 === "Integer"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, number: int):
@@ -112,6 +114,7 @@ All other parameters will be treated as a string parameter and can be converted 
     ![Integer](assets/hybrid-commands/integer.png){: style="width: 100%;"}
 
 === "Float"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, number: float):
@@ -131,6 +134,7 @@ All other parameters will be treated as a string parameter and can be converted 
     ![Float](assets/hybrid-commands/float.png){: style="width: 100%;"}
 
 === "Boolean"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, boolean: bool):
@@ -150,6 +154,7 @@ All other parameters will be treated as a string parameter and can be converted 
     ![Boolean](assets/hybrid-commands/boolean.png){: style="width: 100%;"}
 
 === "User"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, user: discord.User):
@@ -171,6 +176,7 @@ All other parameters will be treated as a string parameter and can be converted 
     ![User](assets/hybrid-commands/user.png){: style="width: 100%;"}
 
 === "Channel"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, channel: discord.abc.GuildChannel):
@@ -191,6 +197,7 @@ All other parameters will be treated as a string parameter and can be converted 
     ![Channel](assets/hybrid-commands/channel.png){: style="width: 100%;"}
 
 === "Role"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, role: discord.Role):
@@ -211,6 +218,7 @@ All other parameters will be treated as a string parameter and can be converted 
     ![Role](assets/hybrid-commands/role.png){: style="width: 100%;"}
 
 === "Attachment"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, attachment: discord.Attachment):
@@ -236,6 +244,7 @@ All other parameters will be treated as a string parameter and can be converted 
 You can also specify a range for integer and float parameters. This can be done by annotating using `app_commands.Range`, and for string you can specify the minimum and maximum length.
 
 === "Integer"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, number: app_commands.Range[int, 0, 10]):
@@ -255,6 +264,7 @@ You can also specify a range for integer and float parameters. This can be done 
     ![Integer Range](assets/hybrid-commands/integer-range.png){: style="width: 100%;"}
 
 === "Float"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, number: app_commands.Range[float, 0.0, 10.0]):
@@ -274,6 +284,7 @@ You can also specify a range for integer and float parameters. This can be done 
     ![Float Range](assets/hybrid-commands/float-range.png){: style="width: 100%;"}
 
 === "String"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, message: app_commands.Range[str, 1, 10]):
@@ -300,6 +311,7 @@ You can also specify a range for integer and float parameters. This can be done 
 You can also specify choices for parameters. This gives a dropdown menu with the specified choices for the parameter in discord.
 
 === "Using Enums"
+
     ```python
     import enum
 
@@ -324,6 +336,7 @@ You can also specify choices for parameters. This gives a dropdown menu with the
     ```
 
 === "Using Literal"
+
     ```python
     from typing import Literal
 
@@ -343,6 +356,7 @@ You can also specify choices for parameters. This gives a dropdown menu with the
     ```
 
 === "Using Decorator"
+
     ```python
     @bot.hybrid_command()
     @app_commands.choices(color=[
@@ -369,6 +383,8 @@ You can also specify choices for parameters. This gives a dropdown menu with the
 !!! failure "Warning"
     Since `choices` is a slash command specific annotation, while using the command as a regular prefix command, the choices will not be available and no checks will be performed on the parameter internally i.e you can pass any value to the parameter.
 
+    You can have maximum of 25 choices for a parameter.
+
 ### Autocomplete
 
 You can also specify autocomplete options for parameters. This gives a dropdown menu with the specified autocomplete options for the parameter in discord based on the user's input.
@@ -376,10 +392,11 @@ You can also specify autocomplete options for parameters. This gives a dropdown 
 Currently, autocomplete is only supported for string, integer and float parameters.
 
 === "Using Callback"
+
     ```python
     async def color_autocomplete(interaction: discord.Interaction, current: str) -> list[app_commands.Choice[str]]:
         options = ["Red", "Green", "Blue"]
-        return [app_commands.Choice(name=option, value=option) for option in options if option.lower().startswith(current.lower())]
+        return [app_commands.Choice(name=option, value=option) for option in options if option.lower().startswith(current.lower())][:25]
 
     @bot.hybrid_command()
     @app_commands.autocomplete(color=color_autocomplete)
@@ -398,6 +415,7 @@ Currently, autocomplete is only supported for string, integer and float paramete
     ```
 
 === "Using Decorator"
+
     ```python
     @bot.hybrid_command()
     async def echo(ctx: commands.Context, color: str):
@@ -416,10 +434,15 @@ Currently, autocomplete is only supported for string, integer and float paramete
     @echo.autocomplete("color")
     async def color_autocomplete(interaction: discord.Interaction, current: str) -> list[app_commands.Choice[str]]:
         options = ["Red", "Green", "Blue"]
-        return [app_commands.Choice(name=option, value=option) for option in options if option.lower().startswith(current.lower())]
+        return [app_commands.Choice(name=option, value=option) for option in options if option.lower().startswith(current.lower())][:25]
     ```
 
 ![Autocomplete](assets/hybrid-commands/autocomplete.png){: style="width: 100%;"}
+
+!!! failure "Warning"
+    Since `autocomplete` is a slash command specific annotation, while using the command as a regular prefix command, the autocomplete options will not be available and no checks will be performed on the parameter internally i.e you can pass any value to the parameter.
+
+    You can have maximum of 25 autocomplete options for a parameter.
 
 ## Groups and Subcommands
 
@@ -606,11 +629,15 @@ async def ping(ctx: commands.Context):
 !!! warning "Warning"
     You can only use `defer` once per command invocation. Regular prefix commands do not have timeout limitations.
 
+!!! note "Note"
+    For regular prefix commands `defer` activates the typing status for the bot, for slash commands it shows the user that the bot is thinking as a loading state.
+
 ## Ephermal Messages
 
 You can also send ephermal messages, messages which are only visible to the person invoking the command using the `ephemeral` parameter of the `send` method.
 
 === "Before Deferring"
+
     ```python
     @bot.hybrid_command()
     async def ping(ctx: commands.Context):
@@ -621,6 +648,7 @@ You can also send ephermal messages, messages which are only visible to the pers
     ```
 
 === "After Deferring"
+
     ```python
     @bot.hybrid_command()
     async def ping(ctx: commands.Context):

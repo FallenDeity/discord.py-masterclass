@@ -360,12 +360,14 @@ This is `inline code`
 To have syntax highlighting in code blocks, you can specify the language after the first set of backticks. For example, to have syntax highlighting for Python, you can use `` ```py ``.
 
 === "SQL"
+
     ```sql
     SELECT * FROM table
     ```
     ![SQL Syntax Highlighting](assets/markdown-and-ansi/sql.png)
 
 === "HTML"
+
     ```html
     <html>
         <head>
@@ -379,6 +381,7 @@ To have syntax highlighting in code blocks, you can specify the language after t
     ![HTML Syntax Highlighting](assets/markdown-and-ansi/html.png)
 
 === "Rust"
+
     ```rust
     fn main() {
         println!("Hello, world!");
@@ -387,6 +390,7 @@ To have syntax highlighting in code blocks, you can specify the language after t
     ![Rust Syntax Highlighting](assets/markdown-and-ansi/rust.png)
 
 === "Diff"
+
     ```diff
     - this is a removed line
     + this is an added line

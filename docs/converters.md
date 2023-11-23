@@ -128,6 +128,7 @@ async def discount(ctx: commands.Context, original_price: float, percentage: Per
 The Union converter allows a command to accept multiple specific types instead of just one type. It provides a way to introduce more relaxed and dynamic grammar to commands.
 
 === "Python 3.9"
+
     ```python
     @bot.command()
     async def union(ctx, channel: typing.Union[discord.TextChannel, discord.DMChannel], *, message: str):
@@ -135,6 +136,7 @@ The Union converter allows a command to accept multiple specific types instead o
     ```
 
 === "Python 3.10 and above"
+
     ```python
     @bot.command()
     async def union(ctx, channel: discord.TextChannel | discord.DMChannel, *, message: str):
@@ -146,6 +148,7 @@ The Union converter allows a command to accept multiple specific types instead o
 The Optional converter allows for "back-referencing" behavior. If the converter fails to parse the input into the specified type, the parser will skip the parameter. Then, either None or the specified default value will be passed to the parameter. The parser will continue to the next parameters and converters, if any.
 
 === "Python 3.9"
+
     ```python
     @bot.command()
     async def greet(ctx: commands.Context, member: typing.Optional[discord.Member] = None):
@@ -154,6 +157,7 @@ The Optional converter allows for "back-referencing" behavior. If the converter 
     ```
 
 === "Python 3.10 and above"
+
     ```python
     @bot.command()
     async def greet(ctx: commands.Context, member: discord.Member | None = None):

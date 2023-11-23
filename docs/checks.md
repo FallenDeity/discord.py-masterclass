@@ -281,6 +281,7 @@ Similar to [has_any_role](#has_any_role) except checks if the bot itself has the
 Checks if the member has all of the permissions necessary.
 
 === "Prefix Commands"
+
     ```py
     @bot.command()
     @commands.has_permissions(manage_messages=True)
@@ -288,6 +289,7 @@ Checks if the member has all of the permissions necessary.
         await ctx.send(f"Success!")
     ```
 === "Slash Commands"
+
     ```py
     @bot.tree.command()
     @app_commands.checks.has_permissions(manage_messages=True)
@@ -295,6 +297,7 @@ Checks if the member has all of the permissions necessary.
         await interaction.response.send_message(f"Success!")
     ```
 === "Hybrid Commands"
+
     ```py
     @bot.hybrid_command()
     @commands.has_permissions(manage_messages=True)
@@ -328,6 +331,7 @@ Similar to [has_guild_permissions](#has_guild_permissions) except checks if the 
 Checks if command is invoked inside a DM
 
 === "Prefix Commands"
+
     ```py
     @bot.command()
     @commands.dm_only()
@@ -347,6 +351,7 @@ Checks if command is invoked inside a DM
         await interaction.response.send_message(f"Success!")
     ```
 === "Hybrid Commands"
+
     ```py
     @bot.hybrid_command()
     @commands.dm_only()
@@ -359,6 +364,7 @@ Checks if command is invoked inside a DM
 Checks if command is invoked inside a guild
 
 === "Prefix Commands"
+
     ```py
     @bot.command()
     @commands.guild_only()
@@ -392,6 +398,7 @@ Checks if command is invoked inside a guild
 
 
 === "Hybrid Commands"
+
     ```py
     @bot.hybrid_command()
     @commands.guild_only()
@@ -404,6 +411,7 @@ Checks if command is invoked inside a guild
 Checks if the channel is a NSFW channel.
 
 === "Prefix Commands"
+
     ```py
     @bot.command()
     @commands.is_nsfw()
@@ -435,6 +443,7 @@ Checks if the channel is a NSFW channel.
         With it everything will be handled by discord itself
 
 === "Hybrid Commands"
+
     ```py
     @bot.hybrid_command()
     @commands.is_nsfw()
@@ -451,6 +460,7 @@ Checks if the person invoking this command is the owner of the bot.
 This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.is_owner).
 
 === "Prefix Commands"
+
     ```py
     @bot.command()
     @commands.is_owner()
@@ -470,6 +480,7 @@ This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/e
         await interaction.response.send_message(f"Success!")
     ```
 === "Hybrid Commands"
+
     ```py
     @bot.hybrid_command()
     @commands.is_owner()  
@@ -484,6 +495,7 @@ This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/e
 Registers a coroutine as a pre-invoke hook.
 
 === "Prefix Commands"
+
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
@@ -495,6 +507,7 @@ Registers a coroutine as a pre-invoke hook.
         await ctx.send("command")  
     ```
 === "Slash Commands"
+
     ```py
     async def func(interaction: discord.Interaction):
         await interaction.channel.send("hook")
@@ -506,6 +519,7 @@ Registers a coroutine as a pre-invoke hook.
         await interaction.response.send_message("command")  
     ```
 === "Hybrid Commands"
+
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
@@ -524,6 +538,7 @@ Registers a coroutine as a pre-invoke hook.
 Registers a coroutine as a post-invoke hook.
 
 === "Prefix Commands"
+
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
@@ -535,6 +550,7 @@ Registers a coroutine as a post-invoke hook.
         await ctx.send("command")  
     ```
 === "Slash Commands"
+
     ```py
     async def func(interaction: discord.Interaction):
         await interaction.channel.send("hook")
@@ -546,6 +562,7 @@ Registers a coroutine as a post-invoke hook.
         await interaction.response.send_message("command")  
     ```
 === "Hybrid Commands"
+
     ```py
     async def func(ctx: commands.Context):
         await ctx.send("hook")
@@ -570,6 +587,7 @@ type [BucketType](https://discordpy.readthedocs.io/en/stable/ext/commands/api.ht
 Adds a cooldown to a Command
 
 === "Prefix Commands"
+
     ```py
     @bot.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -577,6 +595,7 @@ Adds a cooldown to a Command
         await ctx.send("Success!")
     ```
 === "Slash Commands"
+
     ```py
     @bot.tree.command()
     @app_commands.checks.cooldown(1, 10, key=lambda i: (i.user.id,))
@@ -584,6 +603,7 @@ Adds a cooldown to a Command
         await ctx.send("Success!")
     ```
 === "Hybrid Commands"
+
     ```py
     @bot.hybrid_command()
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -603,6 +623,7 @@ a [Cooldown](https://discordpy.readthedocs.io/en/stable/interactions/api.html#di
 is effectively bypassed.
 
 === "Prefix Commands"
+
     ```py
     def cooldown(ctx: commands.Context):
         """A cooldown for 10 seconds for everyone except listed users"""
@@ -617,6 +638,7 @@ is effectively bypassed.
         await ctx.send("Success!")
     ```
 === "Slash Commands"
+
     ```py
     def cooldown(interaction: discord.Interaction):
         """A cooldown for 10 seconds for everyone except listed users"""
@@ -631,6 +653,7 @@ is effectively bypassed.
         await interaction.response.send_message("Success!")
     ```
 === "Hybrid Commands"
+
     ```py
     def cooldown(ctx: commands.Context):
         """A cooldown for 10 seconds for everyone except listed users"""
@@ -654,6 +677,7 @@ Adds a maximum concurrency to a `Command`
 This enables you to only allow a certain number of command invocations at the same time, for example if a command takes too long or if only one user can use it at a time. This differs from a cooldown in that there is no set waiting period or token bucket – only a set number of people can run the command.
 
 === "Prefix Commands"
+
     ```py
     @bot.command()
     @commands.max_concurrency(1, commands.BucketType.member, wait=False)
@@ -662,6 +686,7 @@ This enables you to only allow a certain number of command invocations at the sa
         await ctx.send("Success!")
     ```
 === "Slash Commands"
+
     ```py
     @bot.tree.command()
     @commands.max_concurrency(1, commands.BucketType.member, wait=False)
@@ -670,6 +695,7 @@ This enables you to only allow a certain number of command invocations at the sa
         await interaction.response.send_message("Success!")
     ```
 === "Hybrid Commands"
+
     ```py
     @bot.hybrid_command()
     @commands.max_concurrency(1, commands.BucketType.member, wait=False)
