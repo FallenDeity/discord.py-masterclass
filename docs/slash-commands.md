@@ -77,7 +77,7 @@ You can utilize the app_commands.describe decorator to set information about the
     async def echo(interaction: discord.Interaction, message: str) -> None:
         """
         Echoes a message.
-        
+
         Parameters
         ----------
         interaction : discord.Interaction
@@ -151,7 +151,7 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
 
 ### Editing Responses
 
-To edit a response, you can use the `discord.Interaction.edit_original_response` method. 
+To edit a response, you can use the `discord.Interaction.edit_original_response` method.
 
 ```py
 @bot.tree.command()
@@ -164,7 +164,7 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
 
 ### Deleting Responses
 
-To delete a response, you can use the `discord.Interaction.delete_original_response` method. 
+To delete a response, you can use the `discord.Interaction.delete_original_response` method.
 
 ```py
 @bot.tree.command()
@@ -632,7 +632,7 @@ class DurationConverter(app_commands.Transformer):
             return delta
         except (ValueError, KeyError):
             raise commands.BadArgument("Invalid duration provided.")
-            
+
 @bot.tree.command()
 async def echo(inter: discord.Interaction, duration: app_commands.Transform[datetime.timedelta, DurationConverter]) -> None:
     """
@@ -700,13 +700,13 @@ You can also create slash command groups. These are similar to regular command g
         @app_commands.command(name="pow", description="Raise a number to a power")
         async def pow(self, inter: discord.Interaction, a: int, b: int) -> None:
             await inter.response.send_message(f"{a} ^ {b} = {a ** b}")
-    
+
     parent = MathGroup()
     parent.add_command(FunctionsGroup())
     bot.tree.add_command(parent)
     ```
 === "Using GroupCog"
-  
+
     ```py
     import discord
     from discord import app_commands
@@ -749,7 +749,7 @@ You can also create slash command groups. These are similar to regular command g
     ```
 
     !!! info "Info"
-        Group cogs are special cogs that are used to create slash command groups. 
+        Group cogs are special cogs that are used to create slash command groups.
 
         - They group all slash commands defined in the cog under a single slash command group.
         - They group all hybrid commands defined in the cog are also grouped but they are only available as slash commands and not as regular commands.
@@ -1066,7 +1066,7 @@ You can access these commands by right clicking on a user profile > `Apps` > `Co
     from discord import app_commands
     from discord.ext import commands
 
-    
+
     class Cog(commands.Cog):
         def __init__(self, bot: commands.Bot) -> None:
             self.bot = bot
