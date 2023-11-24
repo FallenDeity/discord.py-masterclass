@@ -141,8 +141,8 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
     async def ping(inter: discord.Interaction) -> None:
         """Get the bot's latency"""
         await inter.response.send_message(f"Pong! ({round(bot.latency * 1000)}ms)")
-        await inter.followup.send(f"Trying to send a second message...")
-        await inter.followup.send(f"Respoding again failed, as expected.")
+        await inter.followup.send("followup message 1")
+        await inter.followup.send("followup message 2")
     ```
 
     ![Followup Messages](assets/slash-commands/followups.png){: style="width: 100%;"}
