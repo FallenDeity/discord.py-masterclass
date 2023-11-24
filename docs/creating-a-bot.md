@@ -15,13 +15,13 @@ Now that we have the prerequisites ready, we can start creating the bot. To do t
 
 After opening the folder in your code editor, we need to create a new file called `main.py`. This is the main file of our bot. This is where we will be writing all our code. After creating the file, we need to create a new file called `.env`. This is where we will be storing our bot token.
 
-![Files](assets/creating-a-bot/files.png){ align=right width="25%"}
-
-![Token](assets/creating-a-bot/token.png){: style="width: 65%;" }
+![Files](assets/creating-a-bot/files.png){ align=left }
 
 ```dotenv
 TOKEN=your_token_here
 ```
+
+![Token](assets/creating-a-bot/token.png){: style="width: 100%;" }
 
 !!! warning "Warning"
     Please make sure to keep your bot token safe. If someone gets access to your bot token, they can do anything with your bot. If you think someone has access to your bot token, you can regenerate it on the [Discord Developer Portal](https://discord.com/developers/applications).
@@ -29,13 +29,11 @@ TOKEN=your_token_here
 Replace `your_token_here` with your bot token. After adding the token, we need to install the discord.py library. To do this, open a new terminal in your code editor and run the following command:
 
 === "Without Voice Support"
-
     ```bash
     pip install discord.py
     ```
 
 === "With Voice Support"
-
     ```bash
     pip install discord.py[voice]
     ```
@@ -44,6 +42,7 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
     You can use ++ctrl+"`"++ to open a new terminal in Visual Studio Code.  
 
     For more advanced users, it's recommended to use a virtual environment or a package manager like [Poetry](https://python-poetry.org/).
+    A virtual environment is a tool that helps manage dependencies for different projects. This means that you can have different versions of the same package installed for different projects. This is useful when you are working on multiple projects that use different versions of the same package. It does this by creating isolated environments for each project.
 
     === "Virtual Environment"
 
@@ -67,8 +66,16 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
             ```
         ![Virtual Environment Files](assets/creating-a-bot/venv-files.png){ align=left }
         ![Virtual Environment](assets/creating-a-bot/virtual-environment.png){ align=right }
+
         !!! note "Note"
             You will need to activate the virtual environment every time you open a new terminal. As an indicator, you will see `(venv)` in your terminal.
+
+        !!! warning "Warning"
+            If you get an error in windows saying `Activate.ps1 cannot be loaded because running scripts is disabled on this system`, you will need to run the following command in an elevated PowerShell session:
+
+            ```powershell
+            Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+            ```
     === "Poetry"
         ```bash
         poetry init
@@ -93,7 +100,6 @@ pip install python-dotenv
 Now that we have everything ready, we can start writing the code. Open the `main.py` file and add the following code:
 
 === "Using Client"
-
     ```python
     import os
 
@@ -113,7 +119,6 @@ Now that we have everything ready, we can start writing the code. Open the `main
     client.run(TOKEN)
     ```
 === "Using Bot"
-
     ```python
     import os
 
@@ -208,7 +213,6 @@ The default intents contain all intents except for the `discord.Intents.members`
 Now that we have our bot ready, we can start adding commands and events.
 
 === "Prefix Commands"
-
     ```python
     import os
 
@@ -246,7 +250,6 @@ Now that we have our bot ready, we can start adding commands and events.
     !!! warning "Warning"
         If you don't call `bot.process_commands(message)` in the `on_message` event, the bot will not process commands the way it is supposed to. This means that the bot will not respond to commands.
 === "Slash Commands"
-
     ```python
     import os
 
@@ -279,7 +282,6 @@ Now that we have our bot ready, we can start adding commands and events.
     !!! info "Note"
         The first required argument of a slash command is always `inter: discord.Interaction` and all further arguments must be type hinted.
 === "Hybrid Commands"
-
     ```python
     import os
 
