@@ -632,9 +632,9 @@ async def ping(ctx: commands.Context):
 !!! note "Note"
     For regular prefix commands `defer` activates the typing status for the bot, for slash commands it shows the user that the bot is thinking as a loading state.
 
-## Ephermal Messages
+## Ephemeral Messages
 
-You can also send ephermal messages, messages which are only visible to the person invoking the command using the `ephemeral` parameter of the `send` method.
+You can also send ephemeral messages, messages which are only visible to the person invoking the command using the `ephemeral` parameter of the `send` method.
 
 === "Before Deferring"
 
@@ -655,11 +655,11 @@ You can also send ephermal messages, messages which are only visible to the pers
         """
         Pong!
         """
-        await ctx.defer(ephermal=True)
+        await ctx.defer(ephemeral=True)
         await ctx.send(f"Pong! {bot.latency * 1000} ms")
     ```
 
-![Ephermal](assets/hybrid-commands/ephemeral.png){: style="width: 100%;"}
+![Ephemeral](assets/hybrid-commands/ephemeral.png){: style="width: 100%;"}
 
 ## Syncing Commands
 

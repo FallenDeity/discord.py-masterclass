@@ -216,7 +216,7 @@ You can send ephemeral responses to an interaction. These responses are only vis
         await interaction.edit_original_response(content=message)
     ```
 
-![Ephermal](assets/hybrid-commands/ephemeral.png){: style="width: 100%;"}
+![Ephemeral](assets/hybrid-commands/ephemeral.png){: style="width: 100%;"}
 
 ## Slash Command Parameters
 
