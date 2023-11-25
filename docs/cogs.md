@@ -15,7 +15,7 @@ await bot.load_extension("cogs.super_cog")
 ```
 
 !!! note "Note"
-`cogs.super_cog` is the file path (`/cogs/super_cog.py`).
+    `cogs.super_cog` is the file path (`/cogs/super_cog.py`).
 
 ### Unloading extensions
 
@@ -90,7 +90,7 @@ Lets break this down.
 This function is used to load the extension into your bot. It is called by the bot when you load the extension.
 
 !!! note "Note"
-This function is required for the extension to work.
+    This function is required for the extension to work.
 
 ### `bot.add_cog` method
 
@@ -114,7 +114,7 @@ async def setup_hook():
 ```
 
 !!! note "Note"
-`file[:-3]` is used to remove `.py` from the file name.
+    `file[:-3]` is used to remove `.py` from the file name.
 
 ## Advanced settings
 
