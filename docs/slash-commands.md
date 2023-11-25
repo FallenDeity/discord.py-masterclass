@@ -1,6 +1,6 @@
 # Slash Commands
 
-A slash command is one of the types of client-integrated interactions a bot can create. Unlike prefix and hybrid commands, these do not require the message content intent.
+A slash command is one of the types of application commands a bot can create. Unlike prefix and hybrid commands, these do not require the message content intent.
 
 Application commands are native ways to interact with apps in the Discord client. There are 3 types of commands accessible in different interfaces: the chat input, a message's context menu (top-right menu or right-clicking in a message), and a user's context menu (right-clicking on a user).
 
@@ -13,7 +13,9 @@ Application commands are native ways to interact with apps in the Discord client
 
 The `CommandTree` is the main container class defined by `discord.py` for slash commands. It is used to register and manage all slash commands and provides an interface for interacting with them.
 
-To use the slash commands registered in the `CommandTree`, you also need to sync them with Discord. This is done by calling `CommandTree.sync()`.
+To use the slash commands registered in the `CommandTree`, you also need to sync them with Discord. This is done by calling `CommandTree.sync()`. When you sync your commands, the metadata for the commands is sent to Discord and Discord will create the commands for you which you can access from the Discord client.
+
+When invoking a slash command, Discord will send an interaction to your bot and the callback you defined for the command will be called.
 
 When you call `CommandTree.sync`, you sync one scope of the CommandTree, either the list of global commands `(sync())` or the list for one guild `(sync(guild=discord.Object(...)))`.
 
@@ -52,7 +54,7 @@ The `discord.Interaction` object also has a `response` attribute which is a `dis
 
 Similarly to regular and hybrid commands, you can pass in a `name` argument to the decorator to set the name of the command. If you do not pass in a name, the name of the function will be used as the name of the command.
 
-You can utilize the app_commands.describe decorator to set information about the parameters for the slash command.
+There are two ways to document slash commands. You can either use the `app_commands.describe` decorator or docstrings. `discord.py` accepts multiple docstring formats, including Google-style, Sphinx-style, reStructuredText, and NumPy-style.
 
 === "Using Parameters"
 
@@ -101,8 +103,38 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
     await interaction.response.send_message(message)
 ```
 
+You can only send one response per interaction. Any further responses will lead to `InteractionResponded` error.
+
+```py
+@bot.tree.command()
+async def ping(inter: discord.Interaction) -> None:
+    """Get the bot's latency"""
+    await inter.response.send_message(f"Pong! ({round(bot.latency * 1000)}ms)")
+    try:
+        await inter.response.send_message(f"Trying to send a second message...")
+    except discord.InteractionResponded:
+        await inter.followup.send(f"Respoding again failed, as expected.")
+```
+
+![Followup Message](assets/slash-commands/followup.png){: style="width: 100%;"}
+
+If you do not send a response, the interaction will be marked as failed and the user will be notified that the interaction failed.
+
+![Failed Interaction](assets/slash-commands/failed-interaction.png){: style="width: 100%;"}
+
+### Sending Followups
+
+To send followups, you can use the `discord.Interaction.followup.send` method. This method is same as your usual `commands.Context.reply` method and basically replies to your original response. A followup message can be sent only after you have sent a response.
+
+```py
+@bot.tree.command()
+async def echo(interaction: discord.Interaction, message: str) -> None:
+    await interaction.response.send_message(message)
+    await interaction.followup.send("This is a followup message.")
+```
+
 !!! warning "Warning"
-    You can only send one response per interaction. Any further responses will lead to `InteractionResponded` error.
+    You can send as many followups as you want, but you can only have one response per interaction.
 
     ```py
     @bot.tree.command()
@@ -113,36 +145,7 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
             await inter.response.send_message(f"Trying to send a second message...")
         except discord.InteractionResponded:
             await inter.followup.send(f"Respoding again failed, as expected.")
-    ```
-
-    ![Followup Message](assets/slash-commands/followup.png){: style="width: 100%;"}
-
-    If you do not send a response, the interaction will be marked as failed and the user will be notified that the interaction failed.
-
-    ![Failed Interaction](assets/slash-commands/failed-interaction.png){: style="width: 100%;"}
-
-### Sending Followups
-
-To send followups, you can use the `discord.Interaction.followup.send` method. This method is same as your usual `commands.Context.reply` method and basically replies to your original response.
-
-```py
-@bot.tree.command()
-async def echo(interaction: discord.Interaction, message: str) -> None:
-    await interaction.response.send_message(message)
-    await interaction.followup.send("This is a followup message.")
-```
-
-!!! warning "Warning"
-    Before you can send followups, you need to send a response first.
-    You can send as many followups as you want, but you can only send one response per interaction.
-
-    ```py
-    @bot.tree.command()
-    async def ping(inter: discord.Interaction) -> None:
-        """Get the bot's latency"""
-        await inter.response.send_message(f"Pong! ({round(bot.latency * 1000)}ms)")
-        await inter.followup.send("followup message 1")
-        await inter.followup.send("followup message 2")
+        await inter.followup.send("Trying to send a second message...")
     ```
 
     ![Followup Messages](assets/slash-commands/followups.png){: style="width: 100%;"}
@@ -1043,7 +1046,7 @@ class UtilityGroup(commands.GroupCog, name="utility", description="Utility comma
 group = app_commands.Group(name="utility", description="Utility commands", guild_only=True)
 ```
 
-## User Menu
+## User Cpmmands
 
 You can access these commands by right clicking on a user profile > `Apps` > `Commands`. These allow a command to be invoked on a user, without any arguments or text input.
 
@@ -1097,7 +1100,7 @@ You can access these commands by right clicking on a user profile > `Apps` > `Co
 ![User Command](assets/slash-commands/user-command.png){ align="left" width="60%"}
 ![User Menu](assets/slash-commands/user-menu.png){ align="right" width="30%"}
 
-## Message Menu
+## Message Commands
 
 You can access these commands by right clicking on a message > `Apps` > `Commands`. These allow a command to be invoked on a message, without any arguments or text input.
 
