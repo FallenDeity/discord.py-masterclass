@@ -113,7 +113,7 @@ async def ping(inter: discord.Interaction) -> None:
     try:
         await inter.response.send_message(f"Trying to send a second message...")
     except discord.InteractionResponded:
-        await inter.followup.send(f"Respoding again failed, as expected.")
+        await inter.followup.send(f"Responding again failed, as expected.")
 ```
 
 ![Followup Message](assets/slash-commands/followup.png){: style="width: 100%;"}
@@ -144,7 +144,7 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
         try:
             await inter.response.send_message(f"Trying to send a second message...")
         except discord.InteractionResponded:
-            await inter.followup.send(f"Respoding again failed, as expected.")
+            await inter.followup.send(f"Responding again failed, as expected.")
         await inter.followup.send("Trying to send a second message...")
     ```
 
@@ -216,7 +216,7 @@ You can send ephemeral responses to an interaction. These responses are only vis
         await interaction.edit_original_response(content=message)
     ```
 
-![Ephermal](assets/hybrid-commands/ephemeral.png){: style="width: 100%;"}
+![Ephemeral](assets/hybrid-commands/ephemeral.png){: style="width: 100%;"}
 
 ## Slash Command Parameters
 
@@ -1046,7 +1046,7 @@ class UtilityGroup(commands.GroupCog, name="utility", description="Utility comma
 group = app_commands.Group(name="utility", description="Utility commands", guild_only=True)
 ```
 
-## User Cpmmands
+## User Commands
 
 You can access these commands by right clicking on a user profile > `Apps` > `Commands`. These allow a command to be invoked on a user, without any arguments or text input.
 

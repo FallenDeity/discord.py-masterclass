@@ -6,7 +6,7 @@ This is a tutorial on how to create a Discord bot using the [discord.py](https:/
 
 ### Installing Python
 
-To install Python, you will need to go to the [Python website](https://www.python.org/downloads/) and download the latest version of Python. It's recommended to atleast have Python `3.8>=` installed on your computer. For more ease of use of python and easily leveraging features like more convenient typehints, it's recommended to install `3.10` or higher.
+To install Python, you will need to go to the [Python website](https://www.python.org/downloads/) and download the latest version of Python. It's recommended to at least have Python `3.8>=` installed on your computer. For more ease of use of python and easily leveraging features like more convenient typehints, it's recommended to install `3.10` or higher.
 
 ![Installer](assets/python.png)
 
@@ -19,7 +19,7 @@ sudo apt install python3.9
 ```
 
 !!! info "Note"
-    Depending on your Linux distribution, you may need to use a different command to install Python. Also, based on your linux distro version you may already have python installed. To check if you have python installed, you can run `python3 --version` in your terminal.  
+    Depending on your Linux distribution, you may need to use a different command to install Python. Also, based on your linux distro version you may already have python installed. To check if you have python installed, you can run `python3 --version` in your terminal.
 
     Most linux distros however don't come with `pip` installed. To install `pip` you can run `sudo apt install python3-pip` in your terminal.
     ```bash
