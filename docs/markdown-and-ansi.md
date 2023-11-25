@@ -239,7 +239,7 @@ bot.run(str(os.getenv("TOKEN")))
 ![Style Combination](assets/markdown-and-ansi/style-combo.png)
 
 !!! failure "Note"
-    So far, ansi higlighting is available on all stable desktop and web clients, but not on mobile clients.
+    So far, ansi highlighting is available on all stable desktop and web clients, but not on mobile clients.
 
 ## Markdown
 
