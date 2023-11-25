@@ -113,7 +113,7 @@ async def ping(inter: discord.Interaction) -> None:
     try:
         await inter.response.send_message(f"Trying to send a second message...")
     except discord.InteractionResponded:
-        await inter.followup.send(f"Respoding again failed, as expected.")
+        await inter.followup.send(f"Responding again failed, as expected.")
 ```
 
 ![Followup Message](assets/slash-commands/followup.png){: style="width: 100%;"}
@@ -144,7 +144,7 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
         try:
             await inter.response.send_message(f"Trying to send a second message...")
         except discord.InteractionResponded:
-            await inter.followup.send(f"Respoding again failed, as expected.")
+            await inter.followup.send(f"Responding again failed, as expected.")
         await inter.followup.send("Trying to send a second message...")
     ```
 
