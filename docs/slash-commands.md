@@ -54,7 +54,7 @@ The `discord.Interaction` object also has a `response` attribute which is a `dis
 
 Similarly to regular and hybrid commands, you can pass in a `name` argument to the decorator to set the name of the command. If you do not pass in a name, the name of the function will be used as the name of the command.
 
-There are two ways to document slash commands. You can either use the `app_commands.describe` decorator or docstrings. `discord.py` accepts multiple docstring formats, including Google-style, Sphinx-style, reStructuredText, and NumPy-style.
+There are two ways to document slash commands. You can either use the `app_commands.describe` decorator or docstrings. `discord.py` accepts multiple docstring formats, including Google-style, Sphinx-style, and NumPy-style.
 
 === "Using Parameters"
 
