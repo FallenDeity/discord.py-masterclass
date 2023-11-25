@@ -12,7 +12,7 @@ Hybrid commands are commands that can be used both as a slash command and as a r
 
 To create a hybrid command, you must use the `hybrid_command` decorator. This decorator takes an additional `name` and `description` parameter, which are used to register the slash command. In case `name` is not provided, the name of the function will be used.
 
-You can utilize the `app_commands.describe` decorator to set information about the parameters for the slash command.
+There are two ways to document slash commands. You can either use the `app_commands.describe` decorator or docstrings. `discord.py` accepts multiple docstring formats, including [Google-style](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods), [NumPy-style](https://numpydoc.readthedocs.io/en/stable/format.html#parameters), and [Sphinx-style](https://www.sphinx-doc.org/en/master/usage/domains/python.html#info-field-lists).
 
 === "Using Parameters"
 
@@ -39,9 +39,6 @@ You can utilize the `app_commands.describe` decorator to set information about t
         """
         await ctx.send(message)
     ```
-
-    !!! note "Note"
-        Docstrings can be formatted in either [Google-style](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods), [NumPy-style](https://numpydoc.readthedocs.io/en/stable/format.html#parameters), or [Sphinx-style](https://www.sphinx-doc.org/en/master/usage/domains/python.html#info-field-lists). They will be parsed and used to set the slash command's parameters.
 
 ![Command Description](assets/hybrid-commands/command-desc.png){: style="width: 100%;"}
 ![Command Parameters](assets/hybrid-commands/param-desc.png){: style="width: 100%;"}
