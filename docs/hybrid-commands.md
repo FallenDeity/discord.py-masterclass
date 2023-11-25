@@ -41,7 +41,7 @@ You can utilize the `app_commands.describe` decorator to set information about t
     ```
 
     !!! note "Note"
-        The docstrings can be of any format, `google`, `numpy`, or `sphinx`. The docs will be parsed and used to set the slash command's parameters.
+        Docstrings can be formatted in either [Google-style](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods), [NumPy-style](https://numpydoc.readthedocs.io/en/stable/format.html#parameters), or [Sphinx-style](https://www.sphinx-doc.org/en/master/usage/domains/python.html#info-field-lists). They will be parsed and used to set the slash command's parameters.
 
 ![Command Description](assets/hybrid-commands/command-desc.png){: style="width: 100%;"}
 ![Command Parameters](assets/hybrid-commands/param-desc.png){: style="width: 100%;"}
