@@ -1,6 +1,6 @@
 ## ANSI
 
-ANSI stands for American National Standards Institute. It is a set of standards for character and terminal handling. It is used by many programs, including the Linux kernel itself, to produce colored terminal output. The most basic Ansi escape codes are those involved in rendering text. These let you add decorations like Colors, Background Colors or other Decorations to your printed text, but don't do anything fancy.
+ANSI stands for American National Standards Institute. It is a set of standards for character and terminal handling. It is used by many programs, including the Linux kernel itself, to produce colored terminal output. The most basic ANSI escape codes are those involved in rendering text. These let you add decorations like Colors, Background Colors or other Decorations to your printed text, but don't do anything fancy.
 
 ![Example](assets/markdown-and-ansi/ansi256.png)
 
@@ -16,7 +16,7 @@ Most ANSI escape codes start with `\u001b[` and end with `m`. The codes in betwe
 !!! warning "Warning"
     So far discord supports only 8 colors each for foreground and background and 3 possible formats (bold, italic, underline).
 
-### Building an Ansi Generator
+### Building an ANSI Generator
 
 ```python
 import enum
@@ -239,7 +239,7 @@ bot.run(str(os.getenv("TOKEN")))
 ![Style Combination](assets/markdown-and-ansi/style-combo.png)
 
 !!! failure "Note"
-    So far, ansi highlighting is available on all stable desktop and web clients, but not on mobile clients.
+    So far, ANSI highlighting is available on all stable desktop and web clients, but not on mobile clients.
 
 ## Markdown
 
@@ -402,5 +402,5 @@ To have syntax highlighting in code blocks, you can specify the language after t
 
 ## Conclusion
 
-In this tutorial, we learned how to use markdown and ansi highlighting in discord.py. We also learned how to use the `AnsiBuilder` class to create custom ansi blocks.
-Discord allows you to use markdown and ansi highlighting in embeds and messages. You can leverage this to make your bot's messages more readable and attractive.
+In this tutorial, we learned how to use markdown and ANSI highlighting in discord.py. We also learned how to use the `AnsiBuilder` class to create custom ANSI blocks.
+Discord allows you to use markdown and ANSI highlighting in embeds and messages. You can leverage this to make your bot's messages more readable and attractive.
