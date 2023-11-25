@@ -1046,7 +1046,7 @@ class UtilityGroup(commands.GroupCog, name="utility", description="Utility comma
 group = app_commands.Group(name="utility", description="Utility commands", guild_only=True)
 ```
 
-## User Cpmmands
+## User Commands
 
 You can access these commands by right clicking on a user profile > `Apps` > `Commands`. These allow a command to be invoked on a user, without any arguments or text input.
 
