@@ -116,6 +116,48 @@ async def setup_hook():
 !!! note "Note"
     `file[:-3]` is used to remove `.py` from the file name.
 
+## Managing extensions using commands
+
+### Load extension
+
+```python
+@bot.command()
+async def load(ctx: commands.Context, extension: str):
+    await bot.load_extension(f"cogs.{extension}")
+    await ctx.send(f"Loaded {extension}!")
+```
+
+### Reload extension
+
+```python
+@bot.command()
+async def reload(ctx: commands.Context, extension: str):
+    await bot.reload_extension(f"cogs.{extension}")
+    await ctx.send(f"Reloaded {extension}!")
+```
+
+### Unload extension
+
+```python
+@bot.command()
+async def unload(ctx: commands.Context, extension: str):
+    await bot.unload_extension(f"cogs.{extension}")
+    await ctx.send(f"Unloaded {extension}!")
+```
+
+## Cog Groups
+
+`GroupCog` is a `Cog` subclass hence all `Cog` methods are supported. Every command in the Cog will be registered as a subcommand of the group. You can set name of the group using `group_name` metadata option.
+
+```python
+class SuperCog(commands.GroupCog, group_name="utility"):
+    @commands.command()
+    async def ping(self, ctx: commands.Context):
+        ...
+```
+
+This command will be registered as `utility ping`.
+
 ## Advanced settings
 
 ### Extensions
@@ -169,6 +211,26 @@ This method registers a check that will be used for all interactions in the Cog.
 class SuperCog(commands.Cog):
     async def interaction_check(self, interaction: discord.Interaction):
         return interaction.user.id == 1234567890
+```
+
+#### `cog_before_invoke` method
+
+This method registers a before invoke hook that will be used for all commands in the Cog. This method must take `ctx` as an argument.
+
+```python
+class SuperCog(commands.Cog):
+    async def cog_before_invoke(self, ctx: commands.Context):
+        print("Before invoke!")
+```
+
+#### `cog_after_invoke` method
+
+This method registers a after invoke hook that will be used for all commands in the Cog. This method must take `ctx` as an argument.
+
+```python
+class SuperCog(commands.Cog):
+    async def cog_after_invoke(self, ctx: commands.Context):
+        print("After invoke!")
 ```
 
 ### Cogs metadata
