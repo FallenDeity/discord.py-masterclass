@@ -22,7 +22,7 @@ Here are all the components you can create:
 
 To create a view, you must instantiate a subclass of `discord.ui.View` or `discord.ui.View` itself. 
 
-Before creating a [view](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#view) it's necessary to take a look at few of its methods:
+Before creating a [View](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#view) it's necessary to take a look at few of its methods:
 
 - `discord.ui.View.add_item(item)` - Adds a component to the view.
 - `discord.ui.View.interaction_check(interaction)` - A check that is called when an interaction is received. If the check returns `True`, the interaction is processed. If the check returns `False`, the interaction is ignored.
@@ -422,6 +422,13 @@ async def persistent(ctx: commands.Context):
 
 ![Persistent View](assets/views/persistent.png){: style="width: 100%;"}
 
+!!! warning "Warning"
+    At the time of writing this guide, the following part of [persistent buttons](#persistent-buttons) tutorial requires the development version of discord.py. So you will have to install the development version of discord.py to `DynamicItem`s.
+
+    ```bash
+    pip install -U git+hhttps://github.com/Rapptz/discord.py
+    ```
+
 Why did we not use our `BaseView` class? Well, the `BaseView` class has attributes such as `message`, `interaction` and `user` these don't persist after the bot restarts. So to say persistent views don't have any memory of the previous state of the view. Also a large part of our base view class is dedicated to handling timeouts and disabling components after timeout, which is not necessary for persistent views.
 
 Ok so now that we know that memory is not persistent, how do we make it persistent? Well, one way to do it is to use a database to store the state of the view and it's related attributes such as `guild_id`, `channel_id`, `message_id` and `view_state`. Then when the bot restarts, we can fetch the view state from the database and recreate the view in the `interaction_check` method. But this is a lot of work and requires a database. 
@@ -498,12 +505,6 @@ async def persistent_counter(ctx: commands.Context):
     ```
 
     There are multiple places to add the dynamic item, you can add it in the `setup_hook` or in one of the cog's `cog_load` methods. Just make sure that the dynamic item is added before the bot starts.
-
-    As of when making this guide, `discord.py==2.4.x` is in development and not released yet. So you will have to install the development version of discord.py to use dynamic items.
-
-    ```bash
-    $ pip install -U git+https://github.com/Rapptz/discord.py
-    ```
 
 ## Select Menus
 
@@ -697,6 +698,13 @@ async def persistent_select_menu(ctx: commands.Context):
 
     There are multiple places to add the persistent select menu, you can add it in the `setup_hook` or in one of the cog's `cog_load` methods. Just make sure that the view is added before the bot starts.
 
+!!! warning "Warning"
+    At the time of writing this guide, the following part of [persistent menus](#persistent-select-menus) tutorial requires the development version of discord.py. So you will have to install the development version of discord.py to `DynamicItem`s.
+
+    ```bash
+    pip install -U git+hhttps://github.com/Rapptz/discord.py
+    ```
+
 Similar to how we used `discord.ui.DynamicItem` to create persistent counters with buttons, we can use `discord.ui.DynamicItem` to work with menus as well. 
 
 ```py
@@ -754,12 +762,6 @@ async def persistent_dynamic_select_menu(ctx: commands.Context):
 
     There are multiple places to add the dynamic item, you can add it in the `setup_hook` or in one of the cog's `cog_load` methods. Just make sure that the dynamic item is added before the bot starts.
 
-    As of when making this guide, `discord.py==2.4.x` is in development and not released yet. So you will have to install the development version of discord.py to use dynamic items.
-
-    ```bash
-    $ pip install -U git+hhttps://github.com/Rapptz/discord.py
-    ```
-
 ## Modals
 
 Modals are how you can prompt users for further detailed input. They act as form popups, and work in tandem with interactive components called Text Inputs. These inputs can have various formats to accept information from the user on prompt, and use the callback to process that information. A modal can only have [`Text Input`](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#id3) components.
@@ -808,9 +810,20 @@ class BaseModal(discord.ui.Modal):
         return self._interaction
 ```
 
+Modals can only have text inputs, so let's take a look at the [`discord.ui.TextInput`](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#textinput) class:
+
+- `label` - The text that appears above the text input.
+- `placeholder` - The text that appears in the text input when no text is entered.
+- `min_length` - The minimum length of the text that can be entered.
+- `max_length` - The maximum length of the text that can be entered.
+- `style` - The style of the text input. Can be one of `discord.TextStyle.short`, `discord.TextStyle.long` or `discord.TextStyle.paragraph` which is just an alias for `discord.TextStyle.long`.
+- `value` - The value of the text input.
+
+With that out of the way, let's delve into testing and working with modals.
+
 ### Testing our modal
 
-Now that we have created our modal, let's test out wether it works as intended or not:
+Now that we have created our modal, let's test out whether it works as intended or not:
 
 - Lets start by testing out the `on_error` method by raising an error in the callback:
 
