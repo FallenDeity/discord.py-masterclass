@@ -26,7 +26,7 @@ Before creating a [View](https://discordpy.readthedocs.io/en/stable/interactions
 
 - `discord.ui.View.add_item(item)` - Adds a component to the view.
 - `discord.ui.View.interaction_check(interaction)` - A check that is called when an interaction is received. If the check returns `True`, the interaction is processed. If the check returns `False`, the interaction is ignored.
-- `discord.ui.View.on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py dosent handle errors that occur in views, so you must handle them yourself.
+- `discord.ui.View.on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py dose'nt handle errors that occur in views, so you must handle them yourself.
 - `discord.ui.View.on_timeout()` - A method that is called when the view times out.
 - `discord.ui.View.stop()` - Stops the view.
 - `discord.ui.View.wait()` - Waits for the view to stop. A view is stopped when `discord.ui.View.stop()` is called or when the view times out.
@@ -426,7 +426,7 @@ async def persistent(ctx: commands.Context):
     At the time of writing this guide, the following part of [persistent buttons](#persistent-buttons) tutorial requires the development version of discord.py. So you will have to install the development version of discord.py to `DynamicItem`s.
 
     ```bash
-    pip install -U git+hhttps://github.com/Rapptz/discord.py
+    pip install -U git+https://github.com/Rapptz/discord.py
     ```
 
 Why did we not use our `BaseView` class? Well, the `BaseView` class has attributes such as `message`, `interaction` and `user` these don't persist after the bot restarts. So to say persistent views don't have any memory of the previous state of the view. Also a large part of our base view class is dedicated to handling timeouts and disabling components after timeout, which is not necessary for persistent views.
@@ -702,7 +702,7 @@ async def persistent_select_menu(ctx: commands.Context):
     At the time of writing this guide, the following part of [persistent menus](#persistent-select-menus) tutorial requires the development version of discord.py. So you will have to install the development version of discord.py to `DynamicItem`s.
 
     ```bash
-    pip install -U git+hhttps://github.com/Rapptz/discord.py
+    pip install -U git+https://github.com/Rapptz/discord.py
     ```
 
 Similar to how we used `discord.ui.DynamicItem` to create persistent counters with buttons, we can use `discord.ui.DynamicItem` to work with menus as well. 
@@ -768,7 +768,7 @@ Modals are how you can prompt users for further detailed input. They act as form
 
 Like views, we need to take a look at a few of the methods of the `discord.ui.Modal` class to understand how to create a modal:
 
-- `on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py dosent handle errors that occur in modals, so you must handle them yourself.
+- `on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py dose'nt handle errors that occur in modals, so you must handle them yourself.
 - `on_submit(interaction)` - A method that is called when the modal is submitted.
 - `interaction_check(interaction)` - A check that is called when an interaction is received. If the check returns `True`, the interaction is processed. If the check returns `False`, the interaction is ignored.
 - `stop()` - Stops the modal.
