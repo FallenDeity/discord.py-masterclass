@@ -26,7 +26,7 @@ Before creating a [View](https://discordpy.readthedocs.io/en/stable/interactions
 
 - `discord.ui.View.add_item(item)` - Adds a component to the view.
 - `discord.ui.View.interaction_check(interaction)` - A check that is called when an interaction is received. If the check returns `True`, the interaction is processed. If the check returns `False`, the interaction is ignored.
-- `discord.ui.View.on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py dose'nt handle errors that occur in views, so you must handle them yourself.
+- `discord.ui.View.on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py doesn't handle errors that occur in views, so you must handle them yourself.
 - `discord.ui.View.on_timeout()` - A method that is called when the view times out.
 - `discord.ui.View.stop()` - Stops the view.
 - `discord.ui.View.wait()` - Waits for the view to stop. A view is stopped when `discord.ui.View.stop()` is called or when the view times out.
@@ -768,7 +768,7 @@ Modals are how you can prompt users for further detailed input. They act as form
 
 Like views, we need to take a look at a few of the methods of the `discord.ui.Modal` class to understand how to create a modal:
 
-- `on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py dose'nt handle errors that occur in modals, so you must handle them yourself.
+- `on_error(interaction, error, item)` - A method that is called when an error occurs while processing an interaction, discord.py doesn't handle errors that occur in modals, so you must handle them yourself.
 - `on_submit(interaction)` - A method that is called when the modal is submitted.
 - `interaction_check(interaction)` - A check that is called when an interaction is received. If the check returns `True`, the interaction is processed. If the check returns `False`, the interaction is ignored.
 - `stop()` - Stops the modal.
