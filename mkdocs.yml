@@ -69,6 +69,7 @@ nav:
     - Creating a Discord Bot: creating-a-bot.md
     - Hybrid Commands: hybrid-commands.md
     - Slash Commands: slash-commands.md
+    - Views: views.md
     - Custom Context: custom-context.md
     - Error Handling: error-handling.md
     - Converters: converters.md

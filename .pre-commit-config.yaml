@@ -21,7 +21,7 @@ repos:
         name: isort
         pass_filenames: false
         entry: poetry
-        command: run isort .
+        args: ["run", "isort", "."]
         language: python
         stages:
           - commit
@@ -32,7 +32,7 @@ repos:
         name: black
         pass_filenames: false
         entry: poetry
-        command: run black .
+        args: ["run", "black", "."]
         language: python
         stages:
           - commit
@@ -43,7 +43,7 @@ repos:
         name: ruff
         pass_filenames: false
         entry: poetry
-        command: run ruff .
+        args: ["run", "ruff", "."]
         language: python
         stages:
           - commit

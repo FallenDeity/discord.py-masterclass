@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-"discord.py" = "^2.3.2"
+"discord.py" = {branch = "master", git = "https://github.com/Rapptz/discord.py.git", extras = ["voice"]}
 python-dotenv = "^1.0.0"
 gpytranslate = "^1.5.1"
 

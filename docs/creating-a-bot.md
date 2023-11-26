@@ -15,13 +15,13 @@ Now that we have the prerequisites ready, we can start creating the bot. To do t
 
 After opening the folder in your code editor, we need to create a new file called `main.py`. This is the main file of our bot. This is where we will be writing all our code. After creating the file, we need to create a new file called `.env`. This is where we will be storing our bot token.
 
-![Files](assets/creating-a-bot/files.png){ align=left }
+![Token](assets/creating-a-bot/token.png){ align=left width="65%" }
+
+![Files](assets/creating-a-bot/files.png){ width="30%" }
 
 ```dotenv
 TOKEN=your_token_here
 ```
-
-![Token](assets/creating-a-bot/token.png){: style="width: 100%;" }
 
 !!! warning "Warning"
     Please make sure to keep your bot token safe. If someone gets access to your bot token, they can do anything with your bot. If you think someone has access to your bot token, you can regenerate it on the [Discord Developer Portal](https://discord.com/developers/applications).
