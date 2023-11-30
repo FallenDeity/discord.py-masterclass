@@ -1,8 +1,8 @@
 # Views and Components
 
-Components are interactive elements that can be added to messages your bot or app sends to users. Components allow you to leverage discord's built-in UI elements to create interactive messages that users can interact with. 
+Components are interactive elements that can be added to messages your bot or app sends to users. Components allow you to leverage discord's built-in UI elements to create interactive messages that users can interact with.
 
-View is a interface defined by discord.py that allows you to manage components and their interactions/callbacks. They are a necessary tool to create interactive messages. 
+View is a interface defined by discord.py that allows you to manage components and their interactions/callbacks. They are a necessary tool to create interactive messages.
 
 All tools for creating components are located in the `discord.ui` module.
 
@@ -16,11 +16,11 @@ Here are all the components you can create:
     - [User Select Menu](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#userselect)
     - [Mentionable Select Menu](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#mentionableselect)
 - [Modal](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#modal)  
-    - [Text Input](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#id3) 
+    - [Text Input](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#id3)
 
 ## Creating a View
 
-To create a view, you must instantiate a subclass of `discord.ui.View` or `discord.ui.View` itself. 
+To create a view, you must instantiate a subclass of `discord.ui.View` or `discord.ui.View` itself.
 
 Before creating a [View](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#view) it's necessary to take a look at few of its methods:
 
@@ -181,7 +181,7 @@ class BaseView(discord.ui.View):
         self._disable_all()
         # edit the message with the new view
         await self._edit(view=self)
-``` 
+```
 
 !!! tip "Note"
     While all of this seems pretty laborious, it's pretty much just a lot of boilerplate code that you would be having to write over and over again. It's recommended to create a base view class that you can inherit from and then create your own views.
@@ -448,7 +448,7 @@ async def custom_id_button(ctx: commands.Context):
 
 ![Custom ID Button](assets/views/custom-id-button.png){: style="width: 100%;"}
 
-One major use of custom ids is to create create persistent views. Persistent views are views that work even after the bot restarts and has no time limit. 
+One major use of custom ids is to create create persistent views. Persistent views are views that work even after the bot restarts and has no time limit.
 
 ### Persistent Buttons
 
@@ -461,7 +461,7 @@ In order for a view to be persistent, it must meet the following criteria:
 ```py
 class PersistentView(discord.ui.View):
     def __init__(self):
-        super().__init__(timeout=None)            
+        super().__init__(timeout=None)  
         colors = [
             discord.ButtonStyle.red,
             discord.ButtonStyle.blurple,
@@ -504,9 +504,9 @@ async def persistent(ctx: commands.Context):
 
 Why did we not use our `BaseView` class? Well, the `BaseView` class has attributes such as `message`, `interaction` and `user` these don't persist after the bot restarts. So to say persistent views don't have any memory of the previous state of the view. Also a large part of our base view class is dedicated to handling timeouts and disabling components after timeout, which is not necessary for persistent views.
 
-Ok so now that we know that memory is not persistent, how do we make it persistent? Well, one way to do it is to use a database to store the state of the view and it's related attributes such as `guild_id`, `channel_id`, `message_id` and `view_state`. Then when the bot restarts, we can fetch the view state from the database and recreate the view in the `interaction_check` method. But this is a lot of work and requires a database. 
+Ok so now that we know that memory is not persistent, how do we make it persistent? Well, one way to do it is to use a database to store the state of the view and it's related attributes such as `guild_id`, `channel_id`, `message_id` and `view_state`. Then when the bot restarts, we can fetch the view state from the database and recreate the view in the `interaction_check` method. But this is a lot of work and requires a database.
 
-So is there a simpler way to do this? Well, yes there is. Is it recommended? Well, depends the amount of data you want to store. So in order to deal with such cases `discord.py` provides a [`discord.ui.DynamicItem`](https://discordpy.readthedocs.io/en/latest/interactions/api.html?highlight=dynamic#dynamicitem) class which uses the `custom_id` of the component to store data. It takes a parameter `template` which receives a [regex](https://docs.python.org/3/library/re.html) pattern and uses it to extract data from the `custom_id` of the component. 
+So is there a simpler way to do this? Well, yes there is. Is it recommended? Well, depends the amount of data you want to store. So in order to deal with such cases `discord.py` provides a [`discord.ui.DynamicItem`](https://discordpy.readthedocs.io/en/latest/interactions/api.html?highlight=dynamic#dynamicitem) class which uses the `custom_id` of the component to store data. It takes a parameter `template` which receives a [regex](https://docs.python.org/3/library/re.html) pattern and uses it to extract data from the `custom_id` of the component.
 
 Here's an example:
 
@@ -744,7 +744,7 @@ class PersistentMenu(discord.ui.View):
         )
         self.menu.callback = self.callback
         self.add_item(self.menu)
-        
+
     async def callback(self, interaction: discord.Interaction) -> None:
         await interaction.response.defer()
         assert interaction.data is not None and "custom_id" in interaction.data, "Invalid interaction data"
@@ -778,7 +778,7 @@ async def persistent_select_menu(ctx: commands.Context):
     pip install -U git+https://github.com/Rapptz/discord.py
     ```
 
-Similar to how we used `discord.ui.DynamicItem` to create persistent counters with buttons, we can use `discord.ui.DynamicItem` to work with menus as well. 
+Similar to how we used `discord.ui.DynamicItem` to create persistent counters with buttons, we can use `discord.ui.DynamicItem` to work with menus as well.
 
 ```py
 from __future__ import annotations
@@ -910,7 +910,7 @@ Now that we have created our modal, let's test out whether it works as intended 
 
         async def callback(interaction: discord.Interaction) -> None:
             raise RuntimeError(typing.cast(discord.ui.TextInput[BaseModal], mymodal.children[0]).value)
-        
+
         mymodal.add_item(discord.ui.TextInput(label="Error", placeholder="Enter an error message", min_length=1, max_length=100))
         mymodal.on_submit = callback
         await inter.response.send_modal(mymodal)
@@ -968,4 +968,4 @@ async def tag(inter: discord.Interaction):
 
 ## Conclusion
 
-This concludes the basics of utilizing discord components in your bot. You can use these components to create interactive commands and menus, pagination system, games, etc. The possibilities are endless. 
+This concludes the basics of utilizing discord components in your bot. You can use these components to create interactive commands and menus, pagination system, games, etc. The possibilities are endless.
