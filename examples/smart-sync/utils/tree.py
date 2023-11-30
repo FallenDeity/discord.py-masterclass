@@ -256,7 +256,7 @@ class SlashCommandTree(app_commands.CommandTree["CustomBot"]):
     async def on_error(self, interaction: Interaction[discord.Client], error: AppCommandError | Exception) -> None:
         if isinstance(error, app_commands.errors.CommandInvokeError):
             error = error.original
-            message = f"""
+        message = f"""
                     \nException: {error.__class__.__name__},
                     Command: {interaction.command.qualified_name if interaction.command else None},
                     User: {interaction.user},
