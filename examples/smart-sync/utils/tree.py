@@ -9,6 +9,7 @@ from discord.abc import Snowflake
 from discord.app_commands.errors import AppCommandError
 from discord.app_commands.models import AppCommand
 from discord.interactions import Interaction
+from tabulate import tabulate
 
 if TYPE_CHECKING:
     from .. import CustomBot  # noqa: F401
@@ -22,7 +23,13 @@ class Diff:
     updated: list[AppCommandDict]
 
     def __str__(self) -> str:
-        return f"Unchanged: {len(self.same)} - {', '.join(cmd.name for cmd in self.same)}\nAdded: {len(self.added)} - {', '.join(cmd.name for cmd in self.added)}\nRemoved: {len(self.removed)} - {', '.join(cmd.name for cmd in self.removed)}\nUpdated: {len(self.updated)} - {', '.join(cmd.name for cmd in self.updated)}"
+        table = tabulate(
+            [[cmd.name, cmd.type, "Added"] for cmd in self.added]
+            + [[cmd.name, cmd.type, "Removed"] for cmd in self.removed]
+            + [[cmd.name, cmd.type, "Updated"] for cmd in self.updated],
+            headers=["Name", "Type", "Change"],
+        )
+        return table
 
 
 @attrs.define(kw_only=True, frozen=True)
@@ -249,7 +256,7 @@ class SlashCommandTree(app_commands.CommandTree["CustomBot"]):
     async def on_error(self, interaction: Interaction[discord.Client], error: AppCommandError | Exception) -> None:
         if isinstance(error, app_commands.errors.CommandInvokeError):
             error = error.original
-        message = f"""
+            message = f"""
                     \nException: {error.__class__.__name__},
                     Command: {interaction.command.qualified_name if interaction.command else None},
                     User: {interaction.user},
@@ -271,30 +278,32 @@ class SlashCommandTree(app_commands.CommandTree["CustomBot"]):
                 for cmd in self.get_commands()
             ]
 
+    async def _sync_commands(self, diff: Diff, *, guild: Snowflake | None = None) -> List[AppCommand]:
+        if any((diff.added, diff.removed, diff.updated)):
+            self.client.logger.info(f"Detected changes to commands:\n{str(diff)}")
+            cmds = await super().sync(guild=guild)
+            self.client.logger.info(f"Successfully synced {len(cmds)} commands.")
+            return cmds
+        self.client.logger.info("No changes to commands detected.")
+        return await self.fetch_commands()
+
     async def sync(self, *, guild: Snowflake | None = None) -> List[AppCommand]:
         _global_commands_list = [AppCommandDict.from_app_command(cmd) for cmd in await self.fetch_commands()]
         await self._revalidate_commands()
         diff = self._app_commands_diff(_global_commands_list, self._current_commands_list)
-        if any((diff.added, diff.removed, diff.updated)):
-            self.client.logger.info(f"Detected changes to commands:\n{str(diff)}")
-            return await super().sync(guild=guild)
-        self.client.logger.info("No changes to commands detected.")
-        return await self.fetch_commands()
+        return await self._sync_commands(diff, guild=guild)
 
     async def smart_sync(self, *, guild: Snowflake | None = None) -> List[AppCommand]:
         _old_commands_list = self._current_commands_list.copy()
         await self._revalidate_commands()
         diff = self._app_commands_diff(self._current_commands_list, _old_commands_list)
-        if any((diff.added, diff.removed, diff.updated)):
-            self.client.logger.info(f"Detected changes to commands:\n{str(diff)}")
-            return await super().sync(guild=guild)
-        self.client.logger.info("No changes to commands detected.")
-        return await self.fetch_commands()
+        return await self._sync_commands(diff, guild=guild)
 
     def _app_commands_diff(self, old: Sequence[AppCommandDict], new: Sequence[AppCommandDict]) -> Diff:
         old_cmds = {(cmd.name, cmd.type): cmd for cmd in old}
         new_cmds = {(cmd.name, cmd.type): cmd for cmd in new}
         diff = Diff(same=[], added=[], removed=[], updated=[])
+
         for (name, c_type), new_cmd in new_cmds.items():
             old_cmd = old_cmds.get((name, c_type))
             if old_cmd is None:
@@ -303,7 +312,9 @@ class SlashCommandTree(app_commands.CommandTree["CustomBot"]):
                 diff.updated.append(new_cmd)
             else:
                 diff.same.append(new_cmd)
+
         for (name, c_type), old_cmd in old_cmds.items():
             if (name, c_type) not in new_cmds:
                 diff.removed.append(old_cmd)
+
         return diff

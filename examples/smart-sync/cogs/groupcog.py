@@ -33,13 +33,13 @@ class MathGroup(commands.GroupCog, name="math", description="Math commands"):
     async def subtract(self, inter: discord.Interaction, a: int, b: int) -> None:
         await inter.response.send_message(f"{a} - {b} = {a - b}")
 
-    @commands.hybrid_command(name="multiply", description="Multiply two numbers")
-    async def multiply(self, ctx: commands.Context[CustomBot], a: int, b: int) -> None:
-        await ctx.send(f"{a} * {b} = {a * b}")
+    @app_commands.command(name="multiply", description="Multiply two numbers")
+    async def multiply(self, inter: discord.Interaction, a: int, b: int) -> None:
+        await inter.response.send_message(f"{a} * {b} = {a * b}")
 
-    @commands.command(name="divide", description="Divide two numbers")
-    async def divide(self, ctx: commands.Context[CustomBot], a: int, b: int) -> None:
-        await ctx.send(f"{a} / {b} = {a / b}")
+    @app_commands.command(name="divide", description="Divide two numbers")
+    async def divide(self, inter: discord.Interaction, a: int, b: int) -> None:
+        await inter.response.send_message(f"{a} / {b} = {a / b}")
 
 
 async def setup(bot: CustomBot) -> None:
