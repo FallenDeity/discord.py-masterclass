@@ -15,7 +15,7 @@ await bot.load_extension("cogs.super_cog")
 ```
 
 !!! note "Note"
-    `cogs.super_cog` is the file path (`/cogs/super_cog.py`).
+    The extension path is made almost the same like importing a module. If we had our extension under `cogs/super_cog.py` we would use `cogs.super_cog` as the extension path.
 
 ### Unloading extensions
 
@@ -155,8 +155,8 @@ class SuperCog(commands.GroupCog, group_name="utility"):
     async def ping(self, ctx: commands.Context):
         ...
 ```
-
-This command will be registered as `utility ping`.
+!!! warning "Warning"
+    Group Cogs only work with slash commands and hybrid commands. If you define a prefixed command inside it will be defined at root level hence command will be registered as `ping`.
 
 ## Advanced settings
 
@@ -243,3 +243,9 @@ This attribute is used to set the name of the Cog. If not set, the name will be 
 class SuperCog(commands.Cog, name="Super Cog"):
     ...
 ```
+
+## Jishaku
+
+Jishaku is a debugging and testing cog for discord.py bots. It is a very useful tool for bot developers. Installation can be found on the following sites.
+
+[Github](https://github.com/Gorialis/jishaku) [PyPi](https://pypi.org/project/jishaku/) [Documentation](https://jishaku.readthedocs.io/en/latest/)
