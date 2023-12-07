@@ -1,0 +1,125 @@
+# Hindi translations for PACKAGE package.
+# Copyright (C) 2023 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-08 01:04+0530\n"
+"PO-Revision-Date: 2023-12-08 01:04+0530\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1252\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: cogs/cog.py:42
+msgid "utility"
+msgstr ""
+
+#: cogs/cog.py:42
+msgid "Utility commands"
+msgstr ""
+
+#: cogs/cog.py:47
+msgid "duration"
+msgstr ""
+
+#: cogs/cog.py:47
+msgid "Convert a duration to a timedelta"
+msgstr ""
+
+#: cogs/cog.py:54
+msgid "ping"
+msgstr ""
+
+#: cogs/cog.py:54
+msgid "Get the bot's latency"
+msgstr ""
+
+#: cogs/cog.py:58
+msgid "echo"
+msgstr ""
+
+#: cogs/cog.py:58
+msgid "Echo a message"
+msgstr ""
+
+#: cogs/cog.py:62
+msgid "say"
+msgstr ""
+
+#: cogs/cog.py:62
+msgid "Say a message"
+msgstr ""
+
+#: cogs/groupcog.py:14
+msgid "math"
+msgstr ""
+
+#: cogs/groupcog.py:14
+msgid "Math commands"
+msgstr ""
+
+#: cogs/groupcog.py:15
+msgid "functions"
+msgstr ""
+
+#: cogs/groupcog.py:15
+msgid "Math functions"
+msgstr ""
+
+#: cogs/groupcog.py:21
+msgid "pow"
+msgstr ""
+
+#: cogs/groupcog.py:21
+msgid "Raise a number to a power"
+msgstr ""
+
+#: cogs/groupcog.py:25
+msgid "sqrt"
+msgstr ""
+
+#: cogs/groupcog.py:25
+msgid "Get the square root of a number"
+msgstr ""
+
+#: cogs/groupcog.py:29
+msgid "add"
+msgstr ""
+
+#: cogs/groupcog.py:29
+msgid "Add two numbers"
+msgstr ""
+
+#: cogs/groupcog.py:33
+msgid "subtract"
+msgstr ""
+
+#: cogs/groupcog.py:33
+msgid "Subtract two numbers"
+msgstr ""
+
+#: cogs/groupcog.py:37
+msgid "multiply"
+msgstr ""
+
+#: cogs/groupcog.py:37
+msgid "Multiply two numbers"
+msgstr ""
+
+#: cogs/groupcog.py:41
+msgid "divide"
+msgstr ""
+
+#: cogs/groupcog.py:41
+msgid "Divide two numbers"
+msgstr ""
+
+#: main.py:108
+msgid "user_ping"
+msgstr ""

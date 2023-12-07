@@ -5,11 +5,13 @@ import os
 import time
 import traceback
 import typing
+from gettext import gettext as _
 
 import aiohttp
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+from utils.translator import GettextTranslator
 from utils.tree import SlashCommandTree
 
 
@@ -45,11 +47,14 @@ class CustomBot(commands.Bot):
         self.logger.info(f"Logged in as {self.user} ({self.user.id})")
 
     async def setup_hook(self) -> None:
+        await self.tree.set_translator(GettextTranslator())
         self.client = aiohttp.ClientSession()
         await self._load_extensions()
+        await self.load_extension("jishaku")
         await self.tree.sync()
         self.logger.info("Synced command tree")
         self.loop.create_task(self.cog_watcher())
+        self.logger.info("Started cog watcher")
 
     async def close(self) -> None:
         await super().close()
@@ -98,9 +103,9 @@ class CustomBot(commands.Bot):
 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s: %(message)s")
-    bot = CustomBot(prefix="!", ext_dir="cogs", tree_cls=SlashCommandTree)
+    bot = CustomBot(prefix="!", ext_dir="cogs", tree_cls=SlashCommandTree, owner_ids={656838010532265994})
 
-    @bot.tree.context_menu(name="user_ping")
+    @bot.tree.context_menu(name=_("user_ping"))
     async def ping_user(ctx: discord.Interaction, user: discord.User) -> None:
         await ctx.response.send_message(f"Pong! {user.mention}")
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 import typing
+from gettext import gettext as _
 
 import discord
 from discord import app_commands
@@ -38,27 +39,27 @@ class DurationConverter(app_commands.Transformer):
 
 
 class General(commands.Cog):
-    group = app_commands.Group(name="utility", description="Utility commands")
+    group = app_commands.Group(name=_("utility"), description=_("Utility commands"))
 
     def __init__(self, bot: CustomBot) -> None:
         self.bot = bot
 
-    @group.command(name="duration", description="Convert a duration to a timedelta")
+    @group.command(name=_("duration"), description=_("Convert a duration to a timedelta"))
     @is_owner()
     async def duration(
         self, inter: discord.Interaction, duration: app_commands.Transform[datetime.timedelta, DurationConverter]
     ) -> None:
         await inter.response.send_message(f"Duration: {duration}")
 
-    @group.command(name="ping", description="Get the bot's latency")
+    @group.command(name=_("ping"), description=_("Get the bot's latency"))
     async def ping(self, inter: discord.Interaction) -> None:
         await inter.response.send_message(f"Pong! {round(self.bot.latency * 1000)}ms")
 
-    @app_commands.command(name="echo", description="Echo a message")
+    @app_commands.command(name=_("echo"), description=_("Echo a message"))
     async def echo(self, inter: discord.Interaction, message: str) -> None:
         await inter.response.send_message(message)
 
-    @commands.hybrid_command(name="say", description="Say a message")
+    @commands.hybrid_command(name=_("say"), description=_("Say a message"))
     async def say(self, ctx: commands.Context[CustomBot], message: str) -> None:
         await ctx.send(message)
 
