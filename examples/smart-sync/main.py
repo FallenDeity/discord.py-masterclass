@@ -11,8 +11,7 @@ import aiohttp
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-from utils.translator import GettextTranslator
-from utils.tree import SlashCommandTree
+from utils import GettextTranslator, SlashCommandTree
 
 
 class CustomBot(commands.Bot):
