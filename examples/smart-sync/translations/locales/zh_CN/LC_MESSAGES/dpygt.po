@@ -1,4 +1,4 @@
-# Hindi translations for PACKAGE package.
+# Chinese translations for PACKAGE package.
 # Copyright (C) 2023 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Automatically generated, 2023.
@@ -11,153 +11,153 @@ msgstr ""
 "PO-Revision-Date: 2023-12-09 18:06+0530\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: hi\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: cogs/groupcog.py:29
 msgid "Add two numbers"
-msgstr "द नबर जड"
+msgstr "添加两个数字"
 
 #: cogs/cog.py:47
 msgid "Convert a duration to a timedelta"
-msgstr "कस अवध क टइमडलट म बदल"
+msgstr "将持续时间转换为时间增量"
 
 #: cogs/groupcog.py:45
 msgid "Divide two numbers"
-msgstr "द सखयओ क वभजत कर"
+msgstr "两个数相除"
 
 #: cogs/cog.py:58
 msgid "Echo a message"
-msgstr "एक सदश परतधवनत कर"
+msgstr "回显一条消息"
 
 #: cogs/cog.py:62
 msgid "Get info about a user"
-msgstr "कस उपयगकरत क बर म जनकर परपत कर"
+msgstr "获取有关用户的信息"
 
 #: cogs/cog.py:54
 msgid "Get the bot's latency"
-msgstr "बॉट की विलंबता प्राप्त करें"
+msgstr "获取机器人的延迟"
 
 #: cogs/groupcog.py:25
 msgid "Get the square root of a number"
-msgstr "कस सखय क वरगमल परपत कर"
+msgstr "求一个数的平方根"
 
 #: cogs/groupcog.py:14
 msgid "Math Commands"
-msgstr "गणत आदश"
+msgstr "数学命令"
 
 #: cogs/groupcog.py:15
 msgid "Math Functions"
-msgstr "गणत क करय"
+msgstr "数学函数"
 
 #: cogs/groupcog.py:40
 msgid "Multiply two numbers"
-msgstr "द सखयओ क गण कर"
+msgstr "两个数字相乘"
 
 #: cogs/groupcog.py:21
 msgid "Raise a number to a power"
-msgstr "कस सखय क घत तक बढए"
+msgstr "计算一个数的幂"
 
 #: cogs/groupcog.py:34
 msgid "Subtract two numbers"
-msgstr "द सखयए घटए"
+msgstr "两个数相减"
 
 #: cogs/cog.py:66
 msgid "Tell a message"
-msgstr "एक सदश बतओ"
+msgstr "留言告诉我"
 
 #: cogs/cog.py:42
 msgid "Utility commands"
-msgstr "उपयगत आदश"
+msgstr "实用命令"
 
 #: cogs/groupcog.py:21 cogs/groupcog.py:25 cogs/groupcog.py:29
 #: cogs/groupcog.py:34 cogs/groupcog.py:40 cogs/groupcog.py:45
 msgid "a"
-msgstr "ए"
+msgstr "a"
 
 #: cogs/groupcog.py:29
 msgid "add"
-msgstr "जडन"
+msgstr "添加"
 
 #: cogs/groupcog.py:21 cogs/groupcog.py:29 cogs/groupcog.py:34
 #: cogs/groupcog.py:40 cogs/groupcog.py:45
 msgid "b"
-msgstr "ब"
+msgstr "乙"
 
 #: cogs/groupcog.py:45
 msgid "divide"
-msgstr "वभजत_करन"
+msgstr "划分"
 
 #: cogs/cog.py:47
 msgid "duration"
-msgstr "अवध"
+msgstr "期间"
 
 #: cogs/cog.py:58
 msgid "echo"
-msgstr "गज"
+msgstr "回声"
 
 #: cogs/groupcog.py:15
 msgid "functions"
-msgstr "करय"
+msgstr "功能"
 
 #: cogs/cog.py:70
 msgid "goodbye"
-msgstr "अलवद"
+msgstr "再见"
 
 #: cogs/cog.py:69
 msgid "hello"
-msgstr "नमसत"
+msgstr "你好"
 
 #: cogs/cog.py:71
 msgid "how are you?"
-msgstr "आप कैसे हैं?"
+msgstr "你好吗？"
 
 #: cogs/cog.py:62
 msgid "info"
-msgstr "जनकर"
+msgstr "信息"
 
 #: cogs/groupcog.py:14
 msgid "math"
-msgstr "गणत"
+msgstr "数学"
 
 #: cogs/cog.py:58 cogs/cog.py:66
 msgid "message"
-msgstr "सदश"
+msgstr "信息"
 
 #: cogs/groupcog.py:40
 msgid "multiply"
-msgstr "गण"
+msgstr "乘"
 
 #: cogs/cog.py:54
 msgid "ping"
-msgstr "गनगनहट"
+msgstr "平"
 
 #: cogs/groupcog.py:21
 msgid "power"
-msgstr "शकत"
+msgstr "力量"
 
 #: cogs/groupcog.py:25
 msgid "sqrt"
-msgstr "sqrt"
+msgstr "开方"
 
 #: cogs/groupcog.py:34
 msgid "subtract"
-msgstr "घटन"
+msgstr "减去"
 
 #: cogs/cog.py:66
 msgid "tell"
-msgstr "कहन"
+msgstr "告诉"
 
 #: cogs/cog.py:62
 msgid "user"
-msgstr "उपयगकरत"
+msgstr "用户"
 
 #: main.py:122
 msgid "user_ping"
-msgstr "उपयगकरत_पग"
+msgstr "用户ping"
 
 #: cogs/cog.py:42
 msgid "utility"
-msgstr "उपयगत"
+msgstr "公用事业"

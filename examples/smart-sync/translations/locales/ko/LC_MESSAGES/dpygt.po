@@ -1,4 +1,4 @@
-# Hindi translations for PACKAGE package.
+# Korean translations for PACKAGE package.
 # Copyright (C) 2023 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Automatically generated, 2023.
@@ -11,132 +11,133 @@ msgstr ""
 "PO-Revision-Date: 2023-12-09 18:06+0530\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: hi\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: cogs/groupcog.py:29
 msgid "Add two numbers"
-msgstr "द नबर जड"
+msgstr "두 개의 숫자를 추가"
 
 #: cogs/cog.py:47
 msgid "Convert a duration to a timedelta"
-msgstr "कस अवध क टइमडलट म बदल"
+msgstr "기간을 타임델타로 변환"
 
 #: cogs/groupcog.py:45
 msgid "Divide two numbers"
-msgstr "द सखयओ क वभजत कर"
+msgstr "두 숫자 나누기"
 
 #: cogs/cog.py:58
 msgid "Echo a message"
-msgstr "एक सदश परतधवनत कर"
+msgstr "메시지 에코"
 
 #: cogs/cog.py:62
 msgid "Get info about a user"
-msgstr "कस उपयगकरत क बर म जनकर परपत कर"
+msgstr "사용자에 대한 정보 얻기"
 
 #: cogs/cog.py:54
 msgid "Get the bot's latency"
-msgstr "बॉट की विलंबता प्राप्त करें"
+msgstr "봇의 대기 시간 가져오기"
 
 #: cogs/groupcog.py:25
 msgid "Get the square root of a number"
-msgstr "कस सखय क वरगमल परपत कर"
+msgstr "숫자의 제곱근 구하기"
 
 #: cogs/groupcog.py:14
 msgid "Math Commands"
-msgstr "गणत आदश"
+msgstr "수학 명령"
 
 #: cogs/groupcog.py:15
 msgid "Math Functions"
-msgstr "गणत क करय"
+msgstr "수학 함수"
 
 #: cogs/groupcog.py:40
 msgid "Multiply two numbers"
-msgstr "द सखयओ क गण कर"
+msgstr "두 숫자 곱하기"
 
 #: cogs/groupcog.py:21
 msgid "Raise a number to a power"
-msgstr "कस सखय क घत तक बढए"
+msgstr "숫자를 거듭제곱하세요"
 
 #: cogs/groupcog.py:34
 msgid "Subtract two numbers"
-msgstr "द सखयए घटए"
+msgstr "두 숫자 빼기"
 
 #: cogs/cog.py:66
 msgid "Tell a message"
-msgstr "एक सदश बतओ"
+msgstr "메시지를 전하세요"
 
 #: cogs/cog.py:42
 msgid "Utility commands"
-msgstr "उपयगत आदश"
+msgstr "유틸리티 명령"
 
 #: cogs/groupcog.py:21 cogs/groupcog.py:25 cogs/groupcog.py:29
 #: cogs/groupcog.py:34 cogs/groupcog.py:40 cogs/groupcog.py:45
 msgid "a"
-msgstr "ए"
+msgstr "ㅏ"
 
 #: cogs/groupcog.py:29
 msgid "add"
-msgstr "जडन"
+msgstr "추가하다"
 
 #: cogs/groupcog.py:21 cogs/groupcog.py:29 cogs/groupcog.py:34
 #: cogs/groupcog.py:40 cogs/groupcog.py:45
 msgid "b"
-msgstr "ब"
+msgstr "비"
 
 #: cogs/groupcog.py:45
 msgid "divide"
-msgstr "वभजत_करन"
+msgstr "나누다"
 
 #: cogs/cog.py:47
 msgid "duration"
-msgstr "अवध"
+msgstr "지속"
 
 #: cogs/cog.py:58
 msgid "echo"
-msgstr "गज"
+msgstr "에코"
 
 #: cogs/groupcog.py:15
 msgid "functions"
-msgstr "करय"
+msgstr "기능"
 
 #: cogs/cog.py:70
 msgid "goodbye"
-msgstr "अलवद"
+msgstr "안녕히_가세요"
 
 #: cogs/cog.py:69
 msgid "hello"
-msgstr "नमसत"
+msgstr "안녕하세요"
 
 #: cogs/cog.py:71
 msgid "how are you?"
-msgstr "आप कैसे हैं?"
+msgstr "어떻게 지내세요?"
 
 #: cogs/cog.py:62
 msgid "info"
-msgstr "जनकर"
+msgstr "정보"
 
 #: cogs/groupcog.py:14
 msgid "math"
-msgstr "गणत"
+msgstr "수학"
 
 #: cogs/cog.py:58 cogs/cog.py:66
 msgid "message"
-msgstr "सदश"
+msgstr "메시지"
 
 #: cogs/groupcog.py:40
 msgid "multiply"
-msgstr "गण"
+msgstr "곱하다"
 
 #: cogs/cog.py:54
 msgid "ping"
-msgstr "गनगनहट"
+msgstr "핑"
 
 #: cogs/groupcog.py:21
 msgid "power"
-msgstr "शकत"
+msgstr "힘"
 
 #: cogs/groupcog.py:25
 msgid "sqrt"
@@ -144,20 +145,20 @@ msgstr "sqrt"
 
 #: cogs/groupcog.py:34
 msgid "subtract"
-msgstr "घटन"
+msgstr "덜다"
 
 #: cogs/cog.py:66
 msgid "tell"
-msgstr "कहन"
+msgstr "말하다"
 
 #: cogs/cog.py:62
 msgid "user"
-msgstr "उपयगकरत"
+msgstr "사용자"
 
 #: main.py:122
 msgid "user_ping"
-msgstr "उपयगकरत_पग"
+msgstr "user_ping"
 
 #: cogs/cog.py:42
 msgid "utility"
-msgstr "उपयगत"
+msgstr "공익사업"

@@ -1,4 +1,4 @@
-# Hindi translations for PACKAGE package.
+# Portuguese translations for PACKAGE package.
 # Copyright (C) 2023 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Automatically generated, 2023.
@@ -11,153 +11,154 @@ msgstr ""
 "PO-Revision-Date: 2023-12-09 18:06+0530\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: hi\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: cogs/groupcog.py:29
 msgid "Add two numbers"
-msgstr "द नबर जड"
+msgstr "Adicione dois números"
 
 #: cogs/cog.py:47
 msgid "Convert a duration to a timedelta"
-msgstr "कस अवध क टइमडलट म बदल"
+msgstr "Converter uma duração em um timedelta"
 
 #: cogs/groupcog.py:45
 msgid "Divide two numbers"
-msgstr "द सखयओ क वभजत कर"
+msgstr "Divida dois números"
 
 #: cogs/cog.py:58
 msgid "Echo a message"
-msgstr "एक सदश परतधवनत कर"
+msgstr "Ecoar uma mensagem"
 
 #: cogs/cog.py:62
 msgid "Get info about a user"
-msgstr "कस उपयगकरत क बर म जनकर परपत कर"
+msgstr "Obter informações sobre um usuário"
 
 #: cogs/cog.py:54
 msgid "Get the bot's latency"
-msgstr "बॉट की विलंबता प्राप्त करें"
+msgstr "Obtenha a latência do bot"
 
 #: cogs/groupcog.py:25
 msgid "Get the square root of a number"
-msgstr "कस सखय क वरगमल परपत कर"
+msgstr "Obtenha a raiz quadrada de um número"
 
 #: cogs/groupcog.py:14
 msgid "Math Commands"
-msgstr "गणत आदश"
+msgstr "Comandos matemáticos"
 
 #: cogs/groupcog.py:15
 msgid "Math Functions"
-msgstr "गणत क करय"
+msgstr "Funções matemáticas"
 
 #: cogs/groupcog.py:40
 msgid "Multiply two numbers"
-msgstr "द सखयओ क गण कर"
+msgstr "Multiplicar dois números"
 
 #: cogs/groupcog.py:21
 msgid "Raise a number to a power"
-msgstr "कस सखय क घत तक बढए"
+msgstr "Elevar um número a uma potência"
 
 #: cogs/groupcog.py:34
 msgid "Subtract two numbers"
-msgstr "द सखयए घटए"
+msgstr "Subtraia dois números"
 
 #: cogs/cog.py:66
 msgid "Tell a message"
-msgstr "एक सदश बतओ"
+msgstr "Diga uma mensagem"
 
 #: cogs/cog.py:42
 msgid "Utility commands"
-msgstr "उपयगत आदश"
+msgstr "Comandos utilitários"
 
 #: cogs/groupcog.py:21 cogs/groupcog.py:25 cogs/groupcog.py:29
 #: cogs/groupcog.py:34 cogs/groupcog.py:40 cogs/groupcog.py:45
 msgid "a"
-msgstr "ए"
+msgstr "a"
 
 #: cogs/groupcog.py:29
 msgid "add"
-msgstr "जडन"
+msgstr "adicionar"
 
 #: cogs/groupcog.py:21 cogs/groupcog.py:29 cogs/groupcog.py:34
 #: cogs/groupcog.py:40 cogs/groupcog.py:45
 msgid "b"
-msgstr "ब"
+msgstr "b"
 
 #: cogs/groupcog.py:45
 msgid "divide"
-msgstr "वभजत_करन"
+msgstr "dividir"
 
 #: cogs/cog.py:47
 msgid "duration"
-msgstr "अवध"
+msgstr "duração"
 
 #: cogs/cog.py:58
 msgid "echo"
-msgstr "गज"
+msgstr "eco"
 
 #: cogs/groupcog.py:15
 msgid "functions"
-msgstr "करय"
+msgstr "funções"
 
 #: cogs/cog.py:70
 msgid "goodbye"
-msgstr "अलवद"
+msgstr "adeus"
 
 #: cogs/cog.py:69
 msgid "hello"
-msgstr "नमसत"
+msgstr "olá"
 
 #: cogs/cog.py:71
 msgid "how are you?"
-msgstr "आप कैसे हैं?"
+msgstr "como vai você?"
 
 #: cogs/cog.py:62
 msgid "info"
-msgstr "जनकर"
+msgstr "informações"
 
 #: cogs/groupcog.py:14
 msgid "math"
-msgstr "गणत"
+msgstr "matemática"
 
 #: cogs/cog.py:58 cogs/cog.py:66
 msgid "message"
-msgstr "सदश"
+msgstr "mensagem"
 
 #: cogs/groupcog.py:40
 msgid "multiply"
-msgstr "गण"
+msgstr "multiplicar"
 
 #: cogs/cog.py:54
 msgid "ping"
-msgstr "गनगनहट"
+msgstr "pingar"
 
 #: cogs/groupcog.py:21
 msgid "power"
-msgstr "शकत"
+msgstr "poder"
 
 #: cogs/groupcog.py:25
 msgid "sqrt"
-msgstr "sqrt"
+msgstr "quadrado"
 
 #: cogs/groupcog.py:34
 msgid "subtract"
-msgstr "घटन"
+msgstr "subtrair"
 
 #: cogs/cog.py:66
 msgid "tell"
-msgstr "कहन"
+msgstr "dizer"
 
 #: cogs/cog.py:62
 msgid "user"
-msgstr "उपयगकरत"
+msgstr "do_utilizador"
 
 #: main.py:122
 msgid "user_ping"
-msgstr "उपयगकरत_पग"
+msgstr "user_ping"
 
 #: cogs/cog.py:42
 msgid "utility"
-msgstr "उपयगत"
+msgstr "utilitário"

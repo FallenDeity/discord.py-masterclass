@@ -8,6 +8,7 @@ from discord import app_commands
 from discord.abc import Snowflake
 from discord.app_commands.errors import AppCommandError
 from discord.app_commands.models import AppCommand
+from discord.http import Route
 from discord.interactions import Interaction
 from tabulate import tabulate
 
@@ -47,8 +48,8 @@ class AppCommandGroupOption:
             "description": self.description,
             "type": self.type.value,
             "options": [opt.to_dict() for opt in self.options],
-            "name_localizations": self.name_localizations,
-            "description_localizations": self.description_localizations,
+            "name_localizations": {k.name: v for k, v in self.name_localizations.items()},
+            "description_localizations": {k.name: v for k, v in self.description_localizations.items()},
         }
 
     @classmethod
@@ -70,19 +71,22 @@ class AppCommandGroupOption:
                 description=cmd.description,
                 type=discord.AppCommandOptionType(cmd.to_dict()["type"]),
                 options=[
-                    AppCommandOption.from_parameter(data, param)
-                    for data, param in zip(cmd.to_dict()["options"], cmd.parameters)
+                    AppCommandOption.from_parameter(d, param) for d, param in zip(data["options"], cmd.parameters)
                 ],
-                name_localizations=data.get("name_localizations", {}),
-                description_localizations=data.get("description_localizations", {}),
+                name_localizations={discord.Locale(k): v for k, v in data.get("name_localizations", {}).items()},
+                description_localizations={
+                    discord.Locale(k): v for k, v in data.get("description_localizations", {}).items()
+                },
             )
         return cls(
             name=cmd.name,
             description=cmd.description,
             type=discord.AppCommandOptionType(cmd.to_dict()["type"]),
-            options=[AppCommandGroupOption.from_command(cmd.to_dict(), opt) for opt in cmd.commands],
-            name_localizations=data.get("name_localizations", {}),
-            description_localizations=data.get("description_localizations", {}),
+            options=[AppCommandGroupOption.from_command(data["options"][n], opt) for n, opt in enumerate(cmd.commands)],
+            name_localizations={discord.Locale(k): v for k, v in data.get("name_localizations", {}).items()},
+            description_localizations={
+                discord.Locale(k): v for k, v in data.get("description_localizations", {}).items()
+            },
         )
 
 
@@ -115,8 +119,8 @@ class AppCommandOption:
             "max_length": self.max_length,
             "channel_types": [ct.value for ct in self.channel_types],
             "choices": [{"name": choice.name, "value": choice.value} for choice in self.choices],
-            "name_localizations": self.name_localizations,
-            "description_localizations": self.description_localizations,
+            "name_localizations": {k.name: v for k, v in self.name_localizations.items()},
+            "description_localizations": {k.name: v for k, v in self.description_localizations.items()},
         }
 
     @classmethod
@@ -155,8 +159,10 @@ class AppCommandOption:
             max_length=int(param.max_value) if param.max_value else None,
             channel_types=param.channel_types,
             choices=param.choices,
-            name_localizations=data.get("name_localizations", {}),
-            description_localizations=data.get("description_localizations", {}),
+            name_localizations={discord.Locale(k): v for k, v in data.get("name_localizations", {}).items()},
+            description_localizations={
+                discord.Locale(k): v for k, v in data.get("description_localizations", {}).items()
+            },
         )
 
 
@@ -181,8 +187,8 @@ class AppCommandDict:
             "dm_permission": self.dm_permission,
             "nsfw": self.nsfw,
             "options": [opt.to_dict() for opt in self.options],
-            "description_localizations": self.description_localizations,
-            "name_localizations": self.name_localizations,
+            "description_localizations": {k.name: v for k, v in self.description_localizations.items()},
+            "name_localizations": {k.name: v for k, v in self.name_localizations.items()},
         }
 
     @classmethod
@@ -222,8 +228,10 @@ class AppCommandDict:
                     AppCommandOption.from_parameter(data, param)
                     for data, param in zip(common_data["options"], cmd.parameters)
                 ],
-                description_localizations=common_data["description_localizations"],
-                name_localizations=common_data["name_localizations"],
+                description_localizations={
+                    discord.Locale(k): v for k, v in common_data["description_localizations"].items()
+                },
+                name_localizations={discord.Locale(k): v for k, v in common_data["name_localizations"].items()},
             )
         elif isinstance(cmd, app_commands.ContextMenu):
             return cls(
@@ -234,8 +242,10 @@ class AppCommandDict:
                 dm_permission=common_data["dm_permission"],
                 nsfw=common_data["nsfw"],
                 options=[],
-                description_localizations=common_data["description_localizations"],
-                name_localizations=common_data["name_localizations"],
+                description_localizations={
+                    discord.Locale(k): v for k, v in common_data["description_localizations"].items()
+                },
+                name_localizations={discord.Locale(k): v for k, v in common_data["name_localizations"].items()},
             )
         return cls(
             type=common_data["type"],
@@ -244,9 +254,11 @@ class AppCommandDict:
             default_member_permissions=common_data["default_member_permissions"],
             dm_permission=common_data["dm_permission"],
             nsfw=common_data["nsfw"],
-            options=[AppCommandGroupOption.from_command(data, opt) for opt in cmd.commands],
-            description_localizations=common_data["description_localizations"],
-            name_localizations=common_data["name_localizations"],
+            options=[AppCommandGroupOption.from_command(data["options"][n], opt) for n, opt in enumerate(cmd.commands)],
+            description_localizations={
+                discord.Locale(k): v for k, v in common_data["description_localizations"].items()
+            },
+            name_localizations={discord.Locale(k): v for k, v in common_data["name_localizations"].items()},
         )
 
 
@@ -267,6 +279,14 @@ class SlashCommandTree(app_commands.CommandTree["CustomBot"]):
         except discord.InteractionResponded:
             await interaction.followup.send(f"An error occurred: {message}")
 
+    async def _fetch_commands(self) -> List[AppCommand]:
+        params = {"with_localizations": int(bool(self.translator))}
+        data = await self.client.http.request(
+            Route("GET", "/applications/{application_id}/commands", application_id=self.client.user.id),
+            params=params,
+        )
+        return [AppCommand(data=cmd, state=self.client._connection) for cmd in data]
+
     async def _revalidate_commands(self) -> None:
         if not self.translator:
             self._current_commands_list = [
@@ -278,25 +298,25 @@ class SlashCommandTree(app_commands.CommandTree["CustomBot"]):
                 for cmd in self.get_commands()
             ]
 
-    async def _sync_commands(self, diff: Diff, *, guild: Snowflake | None = None) -> List[AppCommand]:
+    async def _sync_commands(self, diff: Diff, *, guild: Snowflake | None = None) -> Diff | None:
         if any((diff.added, diff.removed, diff.updated)):
             self.client.logger.info(f"Detected changes to commands:\n{str(diff)}")
             cmds = await super().sync(guild=guild)
             self.client.logger.info(f"Successfully synced {len(cmds)} commands.")
-            return cmds
+            return diff
         self.client.logger.info("No changes to commands detected.")
-        return await self.fetch_commands()
+        return None
 
-    async def sync(self, *, guild: Snowflake | None = None) -> List[AppCommand]:
-        _global_commands_list = [AppCommandDict.from_app_command(cmd) for cmd in await self.fetch_commands()]
+    async def _sync(self, *, guild: Snowflake | None = None) -> Diff | None:
+        _global_commands_list = [AppCommandDict.from_app_command(cmd) for cmd in await self._fetch_commands()]
         await self._revalidate_commands()
         diff = self._app_commands_diff(_global_commands_list, self._current_commands_list)
         return await self._sync_commands(diff, guild=guild)
 
-    async def smart_sync(self, *, guild: Snowflake | None = None) -> List[AppCommand]:
+    async def smart_sync(self, *, guild: Snowflake | None = None) -> Diff | None:
         _old_commands_list = self._current_commands_list.copy()
         await self._revalidate_commands()
-        diff = self._app_commands_diff(self._current_commands_list, _old_commands_list)
+        diff = self._app_commands_diff(_old_commands_list, self._current_commands_list)
         return await self._sync_commands(diff, guild=guild)
 
     def _app_commands_diff(self, old: Sequence[AppCommandDict], new: Sequence[AppCommandDict]) -> Diff:

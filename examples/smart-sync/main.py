@@ -45,12 +45,28 @@ class CustomBot(commands.Bot):
     async def on_ready(self) -> None:
         self.logger.info(f"Logged in as {self.user} ({self.user.id})")
 
+    async def _compile_translations(self) -> None:
+        if self.tree.translator is None:
+            return
+        proc = await asyncio.create_subprocess_shell(
+            "bash -c ./translations.sh", stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+        )
+        while True:
+            line = await proc.stdout.readline() if proc.stdout else None
+            if not line:
+                break
+            self.logger.info(line.decode().strip())
+        await proc.wait()
+
     async def setup_hook(self) -> None:
         await self.tree.set_translator(GettextTranslator())
         self.client = aiohttp.ClientSession()
         await self._load_extensions()
         await self.load_extension("jishaku")
-        await self.tree.sync()
+        if await self.tree._sync():
+            self.logger.info("Command diff detected, generating new translations...")
+            await self._compile_translations()
+            await self.tree.smart_sync()
         self.logger.info("Synced command tree")
         self.loop.create_task(self.cog_watcher())
         self.logger.info("Started cog watcher")
@@ -76,13 +92,19 @@ class CustomBot(commands.Bot):
             for name, module in self.extensions.items():
                 if module.__file__ and os.stat(module.__file__).st_mtime > last:
                     extensions.add(name)
+            reloaded = False
             for name in extensions:
                 self.logger.info(f"Reloading extension {name}")
                 try:
                     await self.reload_extension(name)
-                    await self.tree.smart_sync()
+                    reloaded = True
                 except commands.ExtensionError:
                     self.logger.error(f"Failed to reload extension {name}\n{traceback.format_exc()}")
+            if reloaded:
+                self.logger.info("Finished reloading extensions, syncing command tree...")
+                await self._compile_translations()
+                await self.tree.smart_sync()
+                self.logger.info("Synced command tree")
             last = time.time()
             await asyncio.sleep(1)
 

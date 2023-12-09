@@ -28,7 +28,6 @@ def yield_mo_paths() -> Iterator[Path]:
         lc_messages = locale / "LC_MESSAGES"
         if not lc_messages.is_dir():
             continue
-        log.info(f"Found compiled localizations in {lc_messages}")
         yield from lc_messages.glob("*.mo")
 
 
@@ -67,7 +66,6 @@ class GettextTranslator(app_commands.Translator):
                 localedir=str(_LOCALES_PATH),
                 languages=(locale_to_gnu(locale), "en_US"),
             )
-            log.info(f"Using compiled localizations for {locale}")
         except OSError:
             return
 
@@ -79,5 +77,5 @@ class GettextTranslator(app_commands.Translator):
             translated = t.ngettext(string.message, plural, context.data)
         else:
             translated = t.gettext(string.message)
-        log.info(f"Translated {string.message} to {translated}")
+
         return translated or None

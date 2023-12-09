@@ -55,11 +55,22 @@ class General(commands.Cog):
     async def ping(self, inter: discord.Interaction) -> None:
         await inter.response.send_message(f"Pong! {round(self.bot.latency * 1000)}ms")
 
-    @app_commands.command(name=_("echo"), description=_("Echo a message"))
+    @app_commands.command(name=_("echo"), description=_("Echo a message"), extras={"params": (_("message"),)})
     async def echo(self, inter: discord.Interaction, message: str) -> None:
         await inter.response.send_message(message)
 
-    @commands.hybrid_command(name=_("say"), description=_("Say a message"))
+    @app_commands.command(name=_("info"), description=_("Get info about a user"), extras={"params": (_("user"),)})
+    async def info(self, inter: discord.Interaction, user: discord.User) -> None:
+        await inter.response.send_message(f"User: {user}")
+
+    @commands.hybrid_command(name=_("tell"), description=_("Tell a message"), extras={"params": (_("message"),)})
+    @app_commands.choices(
+        message=[
+            app_commands.Choice(name=_("hello"), value="Hello!"),
+            app_commands.Choice(name=_("goodbye"), value="Goodbye!"),
+            app_commands.Choice(name=_("how are you?"), value="I'm doing well, thanks!"),
+        ]
+    )
     async def say(self, ctx: commands.Context[CustomBot], message: str) -> None:
         await ctx.send(message)
 
