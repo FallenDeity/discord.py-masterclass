@@ -160,7 +160,7 @@ To edit a response, you can use the `discord.Interaction.edit_original_response`
 @bot.tree.command()
 async def echo(interaction: discord.Interaction, message: str) -> None:
     await interaction.response.send_message(message)
-    await interaction.response.edit_original_message("This is an edited message.")
+    await interaction.response.edit_original_response("This is an edited message.")
 ```
 
 ![Edited Message](assets/slash-commands/edited-message.png){: style="width: 100%;"}
@@ -173,7 +173,7 @@ To delete a response, you can use the `discord.Interaction.delete_original_respo
 @bot.tree.command()
 async def echo(interaction: discord.Interaction, message: str) -> None:
     await interaction.response.send_message(message)
-    await interaction.response.delete_original_message()
+    await interaction.response.delete_original_response()
 ```
 
 ### Deferring Responses
