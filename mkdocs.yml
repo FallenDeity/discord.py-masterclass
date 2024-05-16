@@ -126,3 +126,6 @@ extra:
   comments:
     enabled: true
     mode: giscus
+  analytics:
+    provider: google
+    property: G-B1XSJ1S12C
