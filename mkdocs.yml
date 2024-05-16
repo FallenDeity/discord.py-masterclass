@@ -67,6 +67,7 @@ nav:
   - Getting Started: index.md
   - Guide:
     - Creating a Discord Bot: creating-a-bot.md
+    - Cogs: cogs.md
     - Hybrid Commands: hybrid-commands.md
     - Slash Commands: slash-commands.md
     - Views: views.md
