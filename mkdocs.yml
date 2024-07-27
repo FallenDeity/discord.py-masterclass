@@ -78,6 +78,7 @@ nav:
     - Checks: checks.md
     - Tasks: tasks.md
     - ANSI and Markdown: markdown-and-ansi.md
+    - Audio Playback: audio-playback.md
 
 markdown_extensions:
   - tables
