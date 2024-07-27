@@ -48,7 +48,7 @@ async def foo(ctx: commands.Context):
 
 *property* [Embed.fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.fields)
 
-```pycon
+```pycon title="Python Console Session"
 >>> import discord
 >>> embed = discord.Embed()
 >>> embed.fields
@@ -72,7 +72,7 @@ async def foo(ctx: commands.Context):
 
 *method* [Embed.add_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.add_field)
 
-```pycon
+```pycon title="Python Console Session"
 >>> import discord
 >>> embed = discord.Embed()
 >>> embed.add_field(name="name1", value="value1")
@@ -86,7 +86,7 @@ async def foo(ctx: commands.Context):
 
 *method* [Embed.insert_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.insert_field_at)
 
-```pycon
+```pycon title="Python Console Session"
 >>> import discord
 >>> embed = discord.Embed()
 >>> embed.add_field(name="name1", value="value1")
@@ -101,7 +101,7 @@ async def foo(ctx: commands.Context):
 
 *method* [Embed.set_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.set_field_at)
 
-```pycon
+```pycon title="Python Console Session"
 >>> import discord
 >>> embed = discord.Embed()
 >>> embed.add_field(name="name1", value="value1")
@@ -116,7 +116,7 @@ async def foo(ctx: commands.Context):
 
 *method* [Embed.remove_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.remove_field)
 
-```pycon
+```pycon title="Python Console Session"
 >>> import discord
 >>> embed = discord.Embed()
 >>> embed.add_field(name="name1", value="value1")
@@ -131,7 +131,7 @@ async def foo(ctx: commands.Context):
 
 *method* [Embed.clear_fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.clear_fields)
 
-```pycon
+```pycon title="Python Console Session"
 >>> import discord
 >>> embed = discord.Embed()
 >>> embed.add_field(name="name1", value="value1")
@@ -165,7 +165,7 @@ Converting embed objects to the Python dictionary and vice versa is very simple.
 
 For that we can use [from_dict](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.from_dict) and [to_dict](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.to_dict) methods
 
-```pycon
+```pycon title="Python Console Session"
 >>> import discord
 >>> embed = discord.Embed(title="Hello", description="world!")
 >>> embed.add_field(name="Field name", value="Field value")

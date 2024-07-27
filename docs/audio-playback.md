@@ -1,7 +1,7 @@
 # Audio Playback
 
-!!! warning "Warning"
-    Don't forget to install `discord.py[voice]` and not just `discord.py` to get all required libraries to work with voice.
+!!! warning "Reminder"
+    Remember to install `discord.py[voice]` rather than just `discord.py` in order to obtain all necessary libraries for voice functionality.
 
 ## Installing ffmpeg
 

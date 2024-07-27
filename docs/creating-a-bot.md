@@ -19,7 +19,7 @@ After opening the folder in your code editor, we need to create a new file calle
 
 ![Files](assets/creating-a-bot/files.png){ width="30%" }
 
-```dotenv
+```dotenv title=".env"
 TOKEN=your_token_here
 ```
 
