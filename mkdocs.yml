@@ -78,6 +78,7 @@ nav:
     - Checks: checks.md
     - Tasks: tasks.md
     - ANSI and Markdown: markdown-and-ansi.md
+    - Audio Playback: audio-playback.md
 
 markdown_extensions:
   - tables
@@ -103,7 +104,6 @@ markdown_extensions:
   - toc:
       permalink: ⚓︎
   - pymdownx.highlight:
-      auto_title: true
       line_spans: __span
       anchor_linenums: true
   - pymdownx.superfences:
