@@ -20,13 +20,13 @@ It's an executable needed to work with audio in discord.py. You can also use `av
 === "Linux"
 
     You can install ffmpeg using your package manager. An example of installing it with apt:
-    
+
     ```bash
     sudo apt install ffmpeg
     ```
 
 ### Adding ffmpeg to PATH (for Windows)
-    
+
 The steps may vary slightly depending on your Windows version, but they are generally the same. If you're having trouble, you can find guides for your particular version on YouTube.
 
 Press `Win` and search for "Edit environment variables"
@@ -44,7 +44,7 @@ Click `New`
 Enter your path to the `bin` directory of ffmpeg
 
 ![](assets/audio-playback/6.png)
-    
+
 
 ## Voice basics
 
@@ -90,7 +90,7 @@ If you need to set path to `ffmpeg` executable directly, use
 ctx.voice_client.play(discord.FFmpegPCMAudio("my-cool-music.mp3", executable="path/to/ffmpeg.exe"))
 ```
 
-You can see other `FFmpegPCMAudio` possible arguments in the [docs](https://discordpy.readthedocs.io/en/stable/api.html#ffmpegpcmaudio). Instead of `FFmpegPCMAudio` also `FFmpegOpusAudio` can be used. 
+You can see other `FFmpegPCMAudio` possible arguments in the [docs](https://discordpy.readthedocs.io/en/stable/api.html#ffmpegpcmaudio). Instead of `FFmpegPCMAudio` also `FFmpegOpusAudio` can be used.
 
 #### What is PCM and Opus
 
@@ -203,7 +203,7 @@ bot.run("token")
 
 ![](assets/audio-playback/7.png)
 
-### Creating custom voice client 
+### Creating custom voice client
 
 We can only play one song at a time right now. Let's extend `VoiceCLient` class to include a music queue
 
@@ -320,7 +320,7 @@ bot.run("token")
 
 ![](assets/audio-playback/8.png)
 
-### Getting music from SoundCloud 
+### Getting music from SoundCloud
 
 For that we will use a very nice wrapper of [Lavalink](https://github.com/lavalink-devs/Lavalink) for discord.py named wavelink. In addition, it can work with other platforms besides SoundCloud.
 

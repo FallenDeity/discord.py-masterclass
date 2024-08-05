@@ -38,6 +38,30 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
     pip install discord.py[voice]
     ```
 
+    Linux users might need to install the following packages to enable voice support:
+
+    === "Debian/Ubuntu"
+        ```bash
+        sudo apt install libffi-dev libsodium-dev python3-dev
+        ```
+
+    === "Fedora/RHEL/CentOS"
+        ```bash
+        sudo dnf install libffi-devel libsodium-devel python3-devel
+        ```
+
+    === "Arch"
+        ```bash
+        sudo pacman -Syu libffi libsodium
+        ```
+
+    !!! warning "Warning"
+        If you are on any other distribution, you will need to install the required packages using your package manager.
+
+        - `libffi-dev` or `libffi-devel`
+        - `libsodium-dev` or `libsodium-devel`
+
+
 !!! note "Note"
     You can use ++ctrl+"`"++ to open a new terminal in Visual Studio Code.  
 
@@ -210,7 +234,7 @@ The default intents contain all intents except for the `discord.Intents.members`
 
 ### Using Commands and Events
 
-Now that we have our bot ready, we can start adding commands and events.
+Now that we have our bot ready, we can start adding commands and events. Here is the list of possible [events](https://discordpy.readthedocs.io/en/stable/api.html#event-reference).
 
 === "Prefix Commands"
     ```python
@@ -224,7 +248,9 @@ Now that we have our bot ready, we can start adding commands and events.
 
     TOKEN = os.getenv("TOKEN")
 
-    bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=discord.Intents.all())  # commands.when_mentioned_or("!") is used to make the bot respond to !ping and @bot ping
+    intents = discord.Intents.default()
+    intents.message_content = True
+    bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=intents)  # commands.when_mentioned_or("!") is used to make the bot respond to !ping and @bot ping
 
     @bot.event
     async def on_ready() -> None:  # This event is called when the bot is ready
@@ -249,6 +275,18 @@ Now that we have our bot ready, we can start adding commands and events.
     ![Prefix Commands](assets/creating-a-bot/prefix-commands.png){: style="width: 100%"}
     !!! warning "Warning"
         If you don't call `bot.process_commands(message)` in the `on_message` event, the bot will not process commands the way it is supposed to. This means that the bot will not respond to commands.
+
+    !!! note "Greedy Arguments"
+        If you want to pass multiple arguments to a command, you can use the `*` operator. The `*` operator marks the parameter after it as a greedy argument. This means that the parameter will consume all the arguments passed to the command.
+
+        ```python
+        @bot.command()
+        async def echo(ctx: commands.Context, *, message: str) -> None:
+            await ctx.send(message)
+        ```
+        In the above example, the `message` parameter will consume all the arguments passed to the command. This also means that any parameter after the `message` parameter will cause an error due to missing arguments.
+
+        A thing to note however is that this specific behavior is only with respect to `discord.py` and not Python itself. In Python, any parameters defined after a `*` operator are considered keyword-only arguments.
 === "Slash Commands"
     ```python
     import os
@@ -261,7 +299,9 @@ Now that we have our bot ready, we can start adding commands and events.
 
     TOKEN = os.getenv("TOKEN")
 
-    bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=discord.Intents.all())  # commands.when_mentioned_or("!") is used to make the bot respond to !ping and @bot ping
+    intents = discord.Intents.default()
+    intents.message_content = True
+    bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=intents)  # commands.when_mentioned_or("!") is used to make the bot respond to !ping and @bot ping
 
     async def setup_hook() -> None:  # This function is automatically called before the bot starts
         await bot.tree.sync()   # This function is used to sync the slash commands with Discord it is mandatory if you want to use slash commands
@@ -293,7 +333,9 @@ Now that we have our bot ready, we can start adding commands and events.
 
     TOKEN = os.getenv("TOKEN")
 
-    bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=discord.Intents.all())  # commands.when_mentioned_or("!") is used to make the bot respond to !ping and @bot ping
+    intents = discord.Intents.default()
+    intents.message_content = True
+    bot = commands.Bot(command_prefix=commands.when_mentioned_or("!"), intents=intents)  # commands.when_mentioned_or("!") is used to make the bot respond to !ping and @bot ping
 
     async def setup_hook() -> None:  # This function is automatically called before the bot starts
         await bot.tree.sync()   # This function is used to sync the slash commands with Discord it is mandatory if you want to use slash commands
@@ -313,6 +355,17 @@ Now that we have our bot ready, we can start adding commands and events.
     ![Hybrid Commands](assets/creating-a-bot/hybrid-commands.png){: style="width: 100%;"}
     !!! info "Note"
         In hybrid commands, the first required argument must be `ctx: commands.Context` and all further arguments must be type hinted so as to support slash commands.
+
+!!! danger "Danger"
+    You should be careful when using the `on_ready` event. This event is called whenever the bot is ready. This means that if the bot disconnects and reconnects, the `on_ready` event will be called again. This can cause unexpected behavior in your bot by running the same code multiple times.
+    If you want to run a piece of code only once before the bot starts, you should use the `setup_hook` function.
+
+    ```python
+    async def setup_hook() -> None:
+        # Your code here
+
+    bot.setup_hook = setup_hook
+    ```
 
 !!! note "Note"
     If you want to use `discord.Client` for slash commands, the process is the same as the one for `discord.ext.commands.Bot`. The only difference is that you need to create a tree attribute for your client instance manually.

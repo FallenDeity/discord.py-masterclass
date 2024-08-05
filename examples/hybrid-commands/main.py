@@ -75,6 +75,10 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s: %(message)s")
     bot = CustomBot(prefix="!", ext_dir="cogs")
 
+    @bot.tree.command()
+    async def mnrg_add(interaction: discord.Interaction, snowflake: typing.Union[discord.User, discord.Role]):
+        await interaction.response.send_message(f"Added {snowflake} to the list of managers.")
+
     bot.run()
 
 
