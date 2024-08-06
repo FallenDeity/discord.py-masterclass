@@ -188,7 +188,7 @@ In most cases, you will be using the `commands.Bot` class.
 | Can be used to create a minimal bot.                                   | Can be used to create a bot with more functionality.                                       |
 | Not possible to add cogs.                                              | Possible to add cogs.                                                                      |
 | Not possible to make prefix commands.                                  | Possible to make prefix commands.                                                          |
-| Only possible to have 1 callback per event.                            | Possible to have multiple callbacks per even using `listen` decorators.                    |
+| Only possible to have 1 callback per event.                            | Possible to have multiple callbacks per event using `listen` decorators.                    |
 
 !!! note "Note"
     A `discord.Client` instance allows for only 1 callback per event. This means that if you have 2 `on_message` callbacks, only 1 of them will be called.
