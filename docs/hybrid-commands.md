@@ -10,7 +10,7 @@ Hybrid commands are commands that can be used both as a slash command and as a r
 
 ## Creating a Hybrid Command
 
-To create a hybrid command, you must use the `hybrid_command` decorator. This decorator takes an additional `name` and `description` parameter, which are used to register the slash command. In case `name` is not provided, the name of the function will be used.
+To create a hybrid command, you must use the `hybrid_command` decorator. This decorator takes an additional `name` and `description` parameters, which are used to register the slash command. In case `name` is not provided, the name of the function will be used.
 
 There are two ways to document hybrid commands. You can either use the `app_commands.describe` decorator or docstrings. `discord.py` accepts multiple docstring formats, including [Google-style](https://google.github.io/styleguide/pyguide.html#383-functions-and-methods), [NumPy-style](https://numpydoc.readthedocs.io/en/stable/format.html#parameters), and [Sphinx-style](https://www.sphinx-doc.org/en/master/usage/domains/python.html#info-field-lists).
 
