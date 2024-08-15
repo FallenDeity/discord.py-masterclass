@@ -400,6 +400,44 @@ To have syntax highlighting in code blocks, you can specify the language after t
 !!! tip "Tip"
     Above were just a few examples, You can find a list of supported languages [here](https://highlightjs.org/static/demo/).
 
+### Mentions
+
+Discord supports mentioning users, roles, and channels in messages and a few other special mentions such as `@everyone` and `@here`.
+
+| Mention Type | Code                          | Remarks                                                                                                                                                                                              |
+|--------------|-------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| User         | `<@user_id>` or `<@!user_id>` | Replace `user_id` with the user's id, this will ping the user. If the user is not found it will display `@unknown-user`.                                                                             |
+| Role         | `<@&role_id>`                 | Replace `role_id` with the role's id, this will ping all the users with the role. If the role is not found it will display `@unknown-role`.                                                          |
+| Channel      | `<#channel_id>`               | Replace `channel_id` with the channel's id, this will display the channel's name as a hyperlink making it easier to navigate to the channel. If the channel is not found it will display `#unknown`. |
+| Everyone     | `@everyone`                   | Pings everyone in the server.                                                                                                                                                                        |
+| Here         | `@here`                       | Pings everyone in the server who is online.                                                                                                                                                          |
+
+### Timestamps
+
+You can use timestamps in messages and embeds to display the time in a user's local timezone, in a relative format, or in a specific format.
+
+| Style       | Format            | Example Input      | Example Output                    | Description                                                     |
+|-------------|-------------------|--------------------|-----------------------------------|-----------------------------------------------------------------|
+| t           | `<t:timestamp:t>` | `<t:1633660800:t>` | `8:10 AM`                         | Short time format (HH:MM AM/PM) in the user's local timezone.   |
+| T           | `<t:timestamp:T>` | `<t:1633660800:T>` | `8:10:00 AM`                      | Long time format (HH:MM:SS AM/PM) in the user's local timezone. |
+| d           | `<t:timestamp:d>` | `<t:1633660800:d>` | `10/8/2021`                       | Short date format (MM/DD/YYYY) in the user's local timezone.    |
+| D           | `<t:timestamp:D>` | `<t:1633660800:D>` | `October 8, 2021`                 | Long date format (Month DD, YYYY) in the user's local timezone. |
+| f (default) | `<t:timestamp:f>` | `<t:1633660800:f>` | `October 8, 2021 8:10 AM`         | Short date and time format in the user's local timezone.        |
+| F           | `<t:timestamp:F>` | `<t:1633660800:F>` | `Friday, October 8, 2021 8:10 AM` | Long date and time format in the user's local timezone.         |
+| R           | `<t:timestamp:R>` | `<t:1633660800:R>` | `3 years ago`                     | Relative time format.                                           |
+
+```pycon
+In [1]: import discord
+   ...: import datetime
+   ...:
+   ...: timestamp = datetime.datetime(2021, 10, 8, 8, 10)
+   ...: print(discord.utils.format_dt(timestamp, "f"))
+<t:1633660800:f>
+
+In [2]: print(discord.utils.format_dt(timestamp, "t"))
+<t:1633660800:t>
+```
+
 ## Conclusion
 
 In this tutorial, we learned how to use markdown and ANSI highlighting in discord.py. We also learned how to use the `AnsiBuilder` class to create custom ANSI blocks.

@@ -1,8 +1,8 @@
 # Embeds
 
-## What is Embed?
+## What is an Embed?
 
-Discord Embed object is a message component that is used as a way of adding rich content with different structures and formatting styles
+Discord Embed object is a message component that is used as a way of adding rich content with different structures and formatting styles. Discord embeds also allow you to use markdown in the fields and descriptions, which can be useful for formatting. Check out our [Markdown](./markdown-and-ansi.md) page for more information.
 
 ## Overview
 
@@ -31,22 +31,43 @@ async def foo(ctx: commands.Context):
     await ctx.send(embed=embed)
 ```
 
-!!! warning "Warning"
-    Almost all embed methods require keyword-only arguments
-
 !!! info "Note"
-    Since most embed methods return the embed itself, you can nest them as follows:
+    Since most embed methods return the embed itself, you can chain them like this:
     ```py
     discord.Embed(...).set_image(...).add_field(...)
     ```
+    Almost all methods have a default value of `None`, so you can skip them if you don't need them.
 
 ![Showcase](assets/embeds/1.png)
 
+## Creating an Embed
+
+To create an embed, you need to create an instance of the `discord.Embed` class. You can pass various parameters to the constructor to set the properties of the embed.
+
+```py
+embed = discord.Embed(
+    title="Title",
+    description="Description",
+    color=discord.Color.random(),
+    timestamp=datetime.datetime.utcnow()
+)
+```
+
+- `title` - The title of the embed
+- `description` - The description of the embed
+- `color` - The color of the embed, you can use [`discord.Color`](https://discordpy.readthedocs.io/en/stable/api.html#colour) to set the color or construct colors using the following methods:
+    - `discord.Color.from_rgb(r, g, b)`
+    - `discord.Color.from_hsv(h, s, v)`
+    - `discord.Color.from_str("0x<HEX> | #<HEX> | 0x#<HEX> | rgb(r, g, b)")`
+- `timestamp` - The timestamp of the embed, you can use `discord.utils.utcnow()` to get the current time
+
 ## Working with specific fields
+
+---
 
 ### Getting a list of fields
 
-*property* [Embed.fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.fields)
+**property** [Embed.fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.fields)
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -67,10 +88,9 @@ async def foo(ctx: commands.Context):
     ([pep8](https://peps.python.org/pep-0008/#descriptive-naming-styles))
 
 
-
 ### Appending a field
 
-*method* [Embed.add_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.add_field)
+**method** [Embed.add_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.add_field)
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -84,7 +104,7 @@ async def foo(ctx: commands.Context):
 
 ### Inserting field at index
 
-*method* [Embed.insert_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.insert_field_at)
+**method** [Embed.insert_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.insert_field_at)
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -99,7 +119,7 @@ async def foo(ctx: commands.Context):
 
 ### Changing field at index
 
-*method* [Embed.set_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.set_field_at)
+**method** [Embed.set_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.set_field_at)
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -114,7 +134,7 @@ async def foo(ctx: commands.Context):
 
 ### Removing one field
 
-*method* [Embed.remove_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.remove_field)
+**method** [Embed.remove_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.remove_field)
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -129,7 +149,7 @@ async def foo(ctx: commands.Context):
 
 ### Removing all fields
 
-*method* [Embed.clear_fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.clear_fields)
+**method** [Embed.clear_fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.clear_fields)
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -197,20 +217,16 @@ async def foo(ctx: commands.Context):
 
 ## How to use local image for an embed image?
 
-!!! info "Note"
-    It's a copy from [discord.py faq](https://discordpy.readthedocs.io/en/stable/faq.html#local-image)
+Discord.py allows you to send images as attachments in messages. You can use the `discord.File` class to send images as attachments in messages. You can then use the `attachment://` protocol followed by the filename to reference the attachment in the embed.
 
-Discord special-cases uploading an image attachment and using it within an embed so that it will not display separately, but instead in the embed’s thumbnail, image, footer or author icon.
-
-To do so, upload the image normally with [abc.Messageable.send()](https://discordpy.readthedocs.io/en/stable/api.html#discord.abc.Messageable.send), and set the embed’s image URL to `attachment://image.png`, where `image.png` is the filename of the image you will send.
-
-Quick example:
 ```py
 file = discord.File("path/to/my/image.png", filename="image.png")
 embed = discord.Embed()
 embed.set_image(url="attachment://image.png")
 await channel.send(file=file, embed=embed)
 ```
+
+Always remember to also send pass the `file` object when sending the message, without it discord will not be able to find the image you are trying to refer to.
 
 ## Embed limits
 
@@ -229,9 +245,10 @@ await channel.send(file=file, embed=embed)
 
     The **total of characters** allowed in an embed is **6000**
 
-## Embed generating website
+## Embed Playgrounds
+
+- [Discord Embed Sandbox](https://cog-creators.github.io/discord-embed-sandbox/)
+- [Embed Visualizer](https://leovoel.github.io/embed-visualizer/)
 
 !!! warning "Warning"
-    We don't advise using the website to create embeds: it's best to do it on your own. But it's actually very comfortable.
-
-On this [site](https://cog-creators.github.io/discord-embed-sandbox/) you can generate discord.py code for creating an embed
+    We don't advise using the website to create embeds: it's best to do it on your own and far more efficient and customizable. But however, the site can be a good playground for testing and learning.

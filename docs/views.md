@@ -38,7 +38,6 @@ So keeping these methods in mind, let's create a view:
 ```py
 from __future__ import annotations
 
-import logging
 import typing
 
 import discord
