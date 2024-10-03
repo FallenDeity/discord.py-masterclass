@@ -1,8 +1,7 @@
 from discord.ext import commands
 
 
-class SubCog(commands.Cog):
-    ...
+class SubCog(commands.Cog): ...
 
 
 async def setup(bot: commands.Bot):
