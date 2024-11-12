@@ -13,6 +13,8 @@ from discord.ext import commands
 from discord.ui.item import Item
 from dotenv import load_dotenv
 from views import BaseModal, BaseView
+from paginators.button_paginator import EmbedButtonPaginator, FileButtonPaginator
+from paginators.select_paginator import EmbedSelectPaginator, FileSelectPaginator
 
 
 class TagModal(BaseModal, title="Tag Creation"):
@@ -249,7 +251,7 @@ class CustomBot(commands.Bot):
         self.client = aiohttp.ClientSession()
         await self._load_extensions()
         if not self.synced:
-            # await self.tree.sync()
+            await self.tree.sync()
             self.synced = not self.synced
             self.logger.info("Synced command tree")
 
@@ -321,6 +323,27 @@ def main() -> None:
     async def modal(inter: discord.Interaction):
         """A command to test modals"""
         await inter.response.send_modal(TagModal(timeout=60.0))
+
+    @bot.tree.command()
+    async def embed_button_paginators(inter: discord.Interaction):
+        embeds = [
+            discord.Embed(title="sus"),
+            discord.Embed(title="lmao"),
+            discord.Embed(title="sus1"),
+            discord.Embed(title="lmao2"),
+        ]
+        paginator = EmbedButtonPaginator(inter.user, embeds)
+        await paginator.start_paginator(inter)
+
+    @bot.tree.command()
+    async def file_button_paginators(interaction: discord.Interaction):
+        files = [
+            "cc.png",
+            "cc.png",
+            "cc.png"
+        ]
+        paginator = FileButtonPaginator(interaction.user, files)
+        await paginator.start_paginator(interaction)
 
     bot.run()
 
