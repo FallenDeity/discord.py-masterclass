@@ -1,15 +1,16 @@
 """Base class for paginators."""
+
 from __future__ import annotations
-from typing import TypeVar, Union, Generic, List, Any, TYPE_CHECKING
 
 import asyncio
-from os import PathLike
 from io import BufferedIOBase
+from os import PathLike
+from typing import TYPE_CHECKING, Any, Generic, List, TypeVar, Union
 
 import discord
+from views import BaseView
 
 # we use the BaseView class defined in the other example
-from views import BaseView
 
 if TYPE_CHECKING:
     from typing_extensions import TypeAlias
@@ -52,23 +53,11 @@ class BasePaginator(Generic[T], BaseView):
         await self._edit(view=self)
 
     async def next_page(self, inter: discord.Interaction) -> None:
-        # if we are at the end of the pages list
-        # we start again from the first page
-        # otherwise we normally increment the page index
-        if self.current_page == (len(self.pages) - 1):
-            self.current_page = 0
-        else:
-            self.current_page += 1
+        self.current_page = (self.current_page + 1) % len(self.pages)
         page = self.pages[self.current_page]
         await self.send_page(inter, page)
-    
+
     async def previous_page(self, inter: discord.Interaction) -> None:
-        # if we are at the start of the pages list
-        # we start again from the last page
-        # otherwise we normally decrement the page index
-        if self.current_page == 0:
-            self.current_page = len(self.pages) - 1
-        else:
-            self.current_page -= 1
+        self.current_page = (self.current_page - 1) % len(self.pages)
         page = self.pages[self.current_page]
         await self.send_page(inter, page)

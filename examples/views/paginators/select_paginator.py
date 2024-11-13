@@ -1,10 +1,9 @@
 from __future__ import annotations
-from typing import Generic, List, TypeVar, Union, Optional
+
+from typing import Generic, List, Optional, TypeVar, Union
 
 import discord
-
 from paginators import BasePaginator, FileLike, PageLike
-
 
 T = TypeVar("T", bound=PageLike)
 
@@ -31,7 +30,7 @@ class SelectMenuBasedPaginator(Generic[T], BasePaginator[T]):
     ) -> None:
         self.select = PaginatorSelect(view=self)
         pages_: List[T] = []
-        for (i, page) in enumerate(pages):
+        for i, page in enumerate(pages):
             pages_.append(page.value)
             self.select.add_option(
                 label=page.page_title,
@@ -39,7 +38,7 @@ class SelectMenuBasedPaginator(Generic[T], BasePaginator[T]):
                 description=page.page_description,
             )
         super().__init__(user, pages=pages_)
-
+        self.add_item(self.select)
 
 
 class PaginatorSelect(discord.ui.Select[SelectMenuBasedPaginator[PageLike]]):
@@ -50,29 +49,20 @@ class PaginatorSelect(discord.ui.Select[SelectMenuBasedPaginator[PageLike]]):
     async def callback(self, interaction: discord.Interaction) -> None:
         # the user can only select one value and shoud at least select it
         # so this is always fine
+        await interaction.response.defer()
         self.base_view.current_page = int(self.values[0])
         page = self.base_view.pages[self.base_view.current_page]
         await self.base_view.send_page(interaction, page)
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         return await self.base_view.interaction_check(interaction)
-    
+
 
 class EmbedSelectPaginator(SelectMenuBasedPaginator[discord.Embed]):
-    def __init__(
-        self,
-        user: Union[discord.User, discord.Member],
-        *,
-        pages: List[PageEntry[discord.Embed]]
-    ) -> None:
+    def __init__(self, user: Union[discord.User, discord.Member], *, pages: List[PageEntry[discord.Embed]]) -> None:
         super().__init__(user, pages=pages)
 
 
 class FileSelectPaginator(SelectMenuBasedPaginator[FileLike]):
-    def __init__(
-        self,
-        user: Union[discord.User, discord.Member],
-        *,
-        pages: List[PageEntry[FileLike]]
-    ) -> None:
+    def __init__(self, user: Union[discord.User, discord.Member], *, pages: List[PageEntry[FileLike]]) -> None:
         super().__init__(user, pages=pages)

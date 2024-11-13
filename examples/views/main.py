@@ -12,9 +12,9 @@ import discord
 from discord.ext import commands
 from discord.ui.item import Item
 from dotenv import load_dotenv
-from views import BaseModal, BaseView
 from paginators.button_paginator import EmbedButtonPaginator, FileButtonPaginator
-from paginators.select_paginator import EmbedSelectPaginator, FileSelectPaginator
+from paginators.select_paginator import EmbedSelectPaginator, FileSelectPaginator, PageEntry
+from views import BaseModal, BaseView
 
 
 class TagModal(BaseModal, title="Tag Creation"):
@@ -223,7 +223,7 @@ class CustomBot(commands.Bot):
         super().__init__(*args, **kwargs, command_prefix=commands.when_mentioned_or(prefix), intents=intents)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir
-        self.synced = False
+        self.synced = True
 
     async def _load_extensions(self) -> None:
         if not os.path.isdir(self.ext_dir):
@@ -338,11 +338,55 @@ def main() -> None:
     @bot.tree.command()
     async def file_button_paginators(interaction: discord.Interaction):
         files = [
-            "cc.png",
-            "cc.png",
-            "cc.png"
+            "assets/1.png",
+            "assets/2.png",
+            "assets/3.png",
         ]
         paginator = FileButtonPaginator(interaction.user, files)
+        await paginator.start_paginator(interaction)
+
+    @bot.tree.command()
+    async def embed_select_paginators(interaction: discord.Interaction):
+        pages = [
+            PageEntry(
+                discord.Embed(title="sus"),
+                page_title="sus",
+                page_description="lmao",
+            ),
+            PageEntry(
+                discord.Embed(title="lmao"),
+                page_title="lmao",
+                page_description="sus",
+            ),
+            PageEntry(
+                discord.Embed(title="sus"),
+                page_title="sus",
+                page_description="lmao",
+            ),
+        ]
+        paginator = EmbedSelectPaginator(interaction.user, pages=pages)
+        await paginator.start_paginator(interaction)
+
+    @bot.tree.command()
+    async def file_select_paginators(interaction: discord.Interaction):
+        pages = [
+            PageEntry(
+                "assets/1.png",
+                page_title="sus",
+                page_description="lmao",
+            ),
+            PageEntry(
+                "assets/2.png",
+                page_title="lmao",
+                page_description="sus",
+            ),
+            PageEntry(
+                "assets/3.png",
+                page_title="sus",
+                page_description="lmao",
+            ),
+        ]
+        paginator = FileSelectPaginator(interaction.user, pages=pages)
         await paginator.start_paginator(interaction)
 
     bot.run()
