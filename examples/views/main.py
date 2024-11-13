@@ -326,13 +326,14 @@ def main() -> None:
 
     @bot.tree.command()
     async def embed_button_paginators(inter: discord.Interaction):
-        embeds = [
-            discord.Embed(title="sus"),
-            discord.Embed(title="lmao"),
-            discord.Embed(title="sus1"),
-            discord.Embed(title="lmao2"),
-        ]
-        paginator = EmbedButtonPaginator(inter.user, embeds)
+        embeds = []
+        attachments: list[discord.File] = []
+        for i in range(1, 4):
+            embed = discord.Embed(title=f"Page {i}", description=f"Page {i} description")
+            embed.set_image(url=f"attachment://{i}.png")
+            embeds.append(embed)
+            attachments.append(discord.File(f"assets/{i}.png"))
+        paginator = EmbedButtonPaginator(inter.user, embeds, attachments=attachments)
         await paginator.start_paginator(inter)
 
     @bot.tree.command()
@@ -347,21 +348,30 @@ def main() -> None:
 
     @bot.tree.command()
     async def embed_select_paginators(interaction: discord.Interaction):
+        embed1 = discord.Embed(title="Page 1", description="Page 1 description")
+        embed1.set_image(url="attachment://1.png")
+        embed2 = discord.Embed(title="Page 2", description="Page 2 description")
+        embed2.set_image(url="attachment://2.png")
+        embed3 = discord.Embed(title="Page 3", description="Page 3 description")
+        embed3.set_image(url="attachment://3.png")
         pages = [
             PageEntry(
-                discord.Embed(title="sus"),
+                embed1,
                 page_title="sus",
                 page_description="lmao",
+                attachment=discord.File("assets/1.png"),
             ),
             PageEntry(
-                discord.Embed(title="lmao"),
+                embed2,
                 page_title="lmao",
                 page_description="sus",
+                attachment=discord.File("assets/2.png"),
             ),
             PageEntry(
-                discord.Embed(title="sus"),
+                embed3,
                 page_title="sus",
                 page_description="lmao",
+                attachment=discord.File("assets/3.png"),
             ),
         ]
         paginator = EmbedSelectPaginator(interaction.user, pages=pages)

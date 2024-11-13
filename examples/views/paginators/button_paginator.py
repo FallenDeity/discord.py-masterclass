@@ -45,8 +45,14 @@ class ButtonBasedPaginator(Generic[T], BasePaginator[T]):
 
 
 class EmbedButtonPaginator(ButtonBasedPaginator[discord.Embed]):
-    def __init__(self, user: Union[discord.User, discord.Member], pages: List[discord.Embed]) -> None:
-        super().__init__(user, pages)
+    def __init__(
+        self,
+        user: Union[discord.User, discord.Member],
+        pages: List[discord.Embed],
+        *,
+        attachments: List[discord.File] = None,
+    ) -> None:
+        super().__init__(user, pages, attachments=attachments)
 
 
 class FileButtonPaginator(ButtonBasedPaginator[FileLike]):

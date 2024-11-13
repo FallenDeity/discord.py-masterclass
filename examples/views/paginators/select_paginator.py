@@ -15,10 +15,12 @@ class PageEntry(Generic[T]):
         *,
         page_title: str,
         page_description: Optional[str] = None,
+        attachment: discord.File = None,
     ) -> None:
         self.page_title = page_title
         self.page_description = page_description
         self.value = value
+        self.attachment = attachment
 
 
 class SelectMenuBasedPaginator(Generic[T], BasePaginator[T]):
@@ -30,14 +32,17 @@ class SelectMenuBasedPaginator(Generic[T], BasePaginator[T]):
     ) -> None:
         self.select = PaginatorSelect(view=self)
         pages_: List[T] = []
+        attachments_: List[discord.File] = []
         for i, page in enumerate(pages):
             pages_.append(page.value)
+            if page.attachment:
+                attachments_.append(page.attachment)
             self.select.add_option(
                 label=page.page_title,
                 value=str(i),
                 description=page.page_description,
             )
-        super().__init__(user, pages=pages_)
+        super().__init__(user, pages=pages_, attachments=attachments_)
         self.add_item(self.select)
 
 
