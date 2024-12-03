@@ -12,6 +12,7 @@ import discord
 from discord.ext import commands
 from discord.ui.item import Item
 from dotenv import load_dotenv
+from paginators.advanced_paginator import CategoryBasedPaginator, CategoryEntry
 from paginators.button_paginator import EmbedButtonPaginator, FileButtonPaginator
 from paginators.select_paginator import EmbedSelectPaginator, FileSelectPaginator, PageEntry
 from views import BaseModal, BaseView
@@ -397,6 +398,73 @@ def main() -> None:
             ),
         ]
         paginator = FileSelectPaginator(interaction.user, pages=pages)
+        await paginator.start_paginator(interaction)
+
+    @bot.tree.command()
+    async def category_based_paginators(interaction: discord.Interaction):
+        pages = [
+            CategoryEntry(
+                "1",
+                category_title="Category 1",
+                category_description="Category 1 description",
+                pages=[
+                    discord.Embed(title="Page 1", description="Page 1 description")
+                    .set_footer(text="Category 1")
+                    .set_image(url="attachment://1.png"),
+                    discord.Embed(title="Page 2", description="Page 2 description")
+                    .set_footer(text="Category 1")
+                    .set_image(url="attachment://1.png"),
+                    discord.Embed(title="Page 3", description="Page 3 description")
+                    .set_footer(text="Category 1")
+                    .set_image(url="attachment://1.png"),
+                ],
+                attachments=[
+                    discord.File("assets/1.png"),
+                ]
+                * 3,
+            ),
+            CategoryEntry(
+                "2",
+                category_title="Category 2",
+                category_description="Category 2 description",
+                pages=[
+                    discord.Embed(title="Page 1", description="Page 1 description")
+                    .set_footer(text="Category 2")
+                    .set_image(url="attachment://2.png"),
+                    discord.Embed(title="Page 2", description="Page 2 description")
+                    .set_footer(text="Category 2")
+                    .set_image(url="attachment://2.png"),
+                    discord.Embed(title="Page 3", description="Page 3 description")
+                    .set_footer(text="Category 2")
+                    .set_image(url="attachment://2.png"),
+                ],
+                attachments=[
+                    discord.File("assets/2.png"),
+                ]
+                * 3,
+            ),
+            CategoryEntry(
+                "3",
+                category_title="Category 3",
+                category_description="Category 3 description",
+                pages=[
+                    discord.Embed(title="Page 1", description="Page 1 description")
+                    .set_footer(text="Category 3")
+                    .set_image(url="attachment://3.png"),
+                    discord.Embed(title="Page 2", description="Page 2 description")
+                    .set_footer(text="Category 3")
+                    .set_image(url="attachment://3.png"),
+                    discord.Embed(title="Page 3", description="Page 3 description")
+                    .set_footer(text="Category 3")
+                    .set_image(url="attachment://3.png"),
+                ],
+                attachments=[
+                    discord.File("assets/3.png"),
+                ]
+                * 3,
+            ),
+        ]
+        paginator = CategoryBasedPaginator(interaction.user, pages=pages)
         await paginator.start_paginator(interaction)
 
     bot.run()

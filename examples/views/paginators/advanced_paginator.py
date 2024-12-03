@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from typing import Optional, Generic, List, TypeVar, Union
+from typing import Generic, List, Optional, TypeVar, Union
 
 import discord
 from discord import File, Member, User
-
-from paginators import PageLike, FileLike
+from paginators import PageLike
 from paginators.button_paginator import ButtonBasedPaginator
-
 
 T = TypeVar("T", bound=PageLike)
 
@@ -20,12 +18,14 @@ class CategoryEntry(Generic[T]):
         category_title: str,
         category_description: Optional[str] = None,
         pages: Optional[List[T]] = None,
+        attachments: Optional[List[File]] = None,
     ) -> None:
         self.category_title = category_title
         self.category_description = category_description
         self.value = value
         self.pages = pages or []
-    
+        self.attachments = attachments or []
+
     def add_page(self, page: T) -> None:
         self.pages.append(page)
 
@@ -39,7 +39,8 @@ class CategoryBasedPaginator(Generic[T], ButtonBasedPaginator[T]):
     ) -> None:
         self.categories = pages
         self.current_category: int = 0
-        self.current_page: int = 0
+
+        super().__init__(user, pages[self.current_category].pages, attachments=pages[self.current_category].attachments)
 
         self.select = CategoryPaginatorSelect()
         for i, page in enumerate(pages):
@@ -59,9 +60,13 @@ class CategoryPaginatorSelect(discord.ui.Select[CategoryBasedPaginator[PageLike]
         # the user can only select one value and shoud at least select it
         # so this is always fine
         await interaction.response.defer()
-        self.base_view.current_page = int(self.values[0])
-        page = self.base_view.pages[self.base_view.current_page]
-        await self.base_view.send_page(interaction, page)
+        self.view.current_category = int(self.values[0])
+        view: CategoryBasedPaginator[PageLike] = self.view
+        view.pages = view.categories[self.view.current_category].pages
+        view.attachments = view.categories[self.view.current_category].attachments
+        view.current_page = 0
+        page = view.pages[view.current_page]
+        await view.send_page(interaction, page)
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        return await self.base_view.interaction_check(interaction)
+        return await self.view.interaction_check(interaction)
