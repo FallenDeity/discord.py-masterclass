@@ -12,9 +12,14 @@ import discord
 from discord.ext import commands
 from discord.ui.item import Item
 from dotenv import load_dotenv
-from paginators.advanced_paginator import CategoryBasedPaginator, CategoryEntry
-from paginators.button_paginator import EmbedButtonPaginator, FileButtonPaginator
-from paginators.select_paginator import EmbedSelectPaginator, FileSelectPaginator, PageEntry
+from paginators.advanced_paginator import (
+    CategoryEntry,
+    EmbedCategoryPaginator,
+    FileCategoryPaginator,
+    StringCategoryPaginator,
+)
+from paginators.button_paginator import EmbedButtonPaginator, FileButtonPaginator, StringButtonPaginator
+from paginators.select_paginator import EmbedSelectPaginator, FileSelectPaginator, PageEntry, StringSelectPaginator
 from views import BaseModal, BaseView
 
 
@@ -224,7 +229,7 @@ class CustomBot(commands.Bot):
         super().__init__(*args, **kwargs, command_prefix=commands.when_mentioned_or(prefix), intents=intents)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir
-        self.synced = True
+        self.synced = False
 
     async def _load_extensions(self) -> None:
         if not os.path.isdir(self.ext_dir):
@@ -326,146 +331,374 @@ def main() -> None:
         await inter.response.send_modal(TagModal(timeout=60.0))
 
     @bot.tree.command()
-    async def embed_button_paginators(inter: discord.Interaction):
-        embeds = []
-        attachments: list[discord.File] = []
-        for i in range(1, 4):
-            embed = discord.Embed(title=f"Page {i}", description=f"Page {i} description")
-            embed.set_image(url=f"attachment://{i}.png")
-            embeds.append(embed)
-            attachments.append(discord.File(f"assets/{i}.png"))
-        paginator = EmbedButtonPaginator(inter.user, embeds, attachments=attachments)
+    async def button_paginator(
+        inter: discord.Interaction,
+        paginator_type: typing.Literal[
+            "strings", "string_with_attachments", "embeds", "files", "embed_with_attachments"
+        ],
+    ):
+        """A command to test button paginators"""
+        if paginator_type == "strings":
+            pages = [
+                "Page 1",
+                "Page 2",
+                "Page 3",
+            ]
+            paginator = StringButtonPaginator(inter.user, pages)
+        elif paginator_type == "string_with_attachments":
+            pages = [
+                "Page 1",
+                "Page 2",
+                "Page 3",
+            ]
+            attachments = [
+                discord.File("assets/1.png"),
+                discord.File("assets/2.png"),
+                discord.File("assets/3.png"),
+            ]
+            paginator = StringButtonPaginator(inter.user, pages, attachments=attachments)
+        elif paginator_type == "embeds":
+            embeds = [
+                discord.Embed(title="Page 1", description="Page 1 description"),
+                discord.Embed(title="Page 2", description="Page 2 description"),
+                discord.Embed(title="Page 3", description="Page 3 description"),
+            ]
+            paginator = EmbedButtonPaginator(inter.user, embeds)
+        elif paginator_type == "files":
+            files = [
+                discord.File("assets/1.png"),
+                discord.File("assets/2.png"),
+                discord.File("assets/3.png"),
+            ]
+            paginator = FileButtonPaginator(inter.user, files)
+        else:
+            embeds = []
+            attachments: list[discord.File] = []
+            for i in range(1, 4):
+                embed = discord.Embed(title=f"Page {i}", description=f"Page {i} description")
+                embed.set_image(url=f"attachment://{i}.png")
+                embeds.append(embed)
+                attachments.append(discord.File(f"assets/{i}.png"))
+            paginator = EmbedButtonPaginator(inter.user, embeds, attachments=attachments)
         await paginator.start_paginator(inter)
 
     @bot.tree.command()
-    async def file_button_paginators(interaction: discord.Interaction):
-        files = [
-            "assets/1.png",
-            "assets/2.png",
-            "assets/3.png",
-        ]
-        paginator = FileButtonPaginator(interaction.user, files)
-        await paginator.start_paginator(interaction)
-
-    @bot.tree.command()
-    async def embed_select_paginators(interaction: discord.Interaction):
-        embed1 = discord.Embed(title="Page 1", description="Page 1 description")
-        embed1.set_image(url="attachment://1.png")
-        embed2 = discord.Embed(title="Page 2", description="Page 2 description")
-        embed2.set_image(url="attachment://2.png")
-        embed3 = discord.Embed(title="Page 3", description="Page 3 description")
-        embed3.set_image(url="attachment://3.png")
-        pages = [
-            PageEntry(
-                embed1,
-                page_title="sus",
-                page_description="lmao",
-                attachment=discord.File("assets/1.png"),
-            ),
-            PageEntry(
-                embed2,
-                page_title="lmao",
-                page_description="sus",
-                attachment=discord.File("assets/2.png"),
-            ),
-            PageEntry(
-                embed3,
-                page_title="sus",
-                page_description="lmao",
-                attachment=discord.File("assets/3.png"),
-            ),
-        ]
-        paginator = EmbedSelectPaginator(interaction.user, pages=pages)
-        await paginator.start_paginator(interaction)
-
-    @bot.tree.command()
-    async def file_select_paginators(interaction: discord.Interaction):
-        pages = [
-            PageEntry(
-                "assets/1.png",
-                page_title="sus",
-                page_description="lmao",
-            ),
-            PageEntry(
-                "assets/2.png",
-                page_title="lmao",
-                page_description="sus",
-            ),
-            PageEntry(
-                "assets/3.png",
-                page_title="sus",
-                page_description="lmao",
-            ),
-        ]
-        paginator = FileSelectPaginator(interaction.user, pages=pages)
-        await paginator.start_paginator(interaction)
-
-    @bot.tree.command()
-    async def category_based_paginators(interaction: discord.Interaction):
-        pages = [
-            CategoryEntry(
-                "1",
-                category_title="Category 1",
-                category_description="Category 1 description",
-                pages=[
-                    discord.Embed(title="Page 1", description="Page 1 description")
-                    .set_footer(text="Category 1")
-                    .set_image(url="attachment://1.png"),
-                    discord.Embed(title="Page 2", description="Page 2 description")
-                    .set_footer(text="Category 1")
-                    .set_image(url="attachment://1.png"),
-                    discord.Embed(title="Page 3", description="Page 3 description")
-                    .set_footer(text="Category 1")
-                    .set_image(url="attachment://1.png"),
-                ],
-                attachments=[
+    async def select_paginator(
+        inter: discord.Interaction,
+        paginator_type: typing.Literal[
+            "strings", "string_with_attachments", "embeds", "files", "embed_with_attachments"
+        ],
+    ):
+        """A command to test select paginators"""
+        if paginator_type == "strings":
+            pages = [
+                PageEntry("John Doe", page_title="Name", page_description="John Doe"),
+                PageEntry("Jane Doe", page_title="Name", page_description="Jane Doe"),
+                PageEntry("John Smith", page_title="Name", page_description="John Smith"),
+            ]
+            paginator = StringSelectPaginator(inter.user, pages=pages)
+        elif paginator_type == "string_with_attachments":
+            pages = [
+                PageEntry(
+                    "John Doe",
+                    page_title="Name",
+                    page_description="John Doe",
+                    attachment=discord.File("assets/1.png"),
+                ),
+                PageEntry(
+                    "Jane Doe",
+                    page_title="Name",
+                    page_description="Jane Doe",
+                    attachment=discord.File("assets/2.png"),
+                ),
+                PageEntry(
+                    "John Smith",
+                    page_title="Name",
+                    page_description="John Smith",
+                    attachment=discord.File("assets/3.png"),
+                ),
+            ]
+            paginator = StringSelectPaginator(inter.user, pages=pages)
+        elif paginator_type == "embeds":
+            pages = [
+                PageEntry(
+                    discord.Embed(title="John Doe", description="John Doe description"),
+                    page_title="Name",
+                    page_description="John Doe",
+                ),
+                PageEntry(
+                    discord.Embed(title="Jane Doe", description="Jane Doe description"),
+                    page_title="Name",
+                    page_description="Jane Doe",
+                ),
+                PageEntry(
+                    discord.Embed(title="John Smith", description="John Smith description"),
+                    page_title="Name",
+                    page_description="John Smith",
+                ),
+            ]
+            paginator = EmbedSelectPaginator(inter.user, pages=pages)
+        elif paginator_type == "files":
+            pages = [
+                PageEntry(
                     discord.File("assets/1.png"),
-                ]
-                * 3,
-            ),
-            CategoryEntry(
-                "2",
-                category_title="Category 2",
-                category_description="Category 2 description",
-                pages=[
-                    discord.Embed(title="Page 1", description="Page 1 description")
-                    .set_footer(text="Category 2")
-                    .set_image(url="attachment://2.png"),
-                    discord.Embed(title="Page 2", description="Page 2 description")
-                    .set_footer(text="Category 2")
-                    .set_image(url="attachment://2.png"),
-                    discord.Embed(title="Page 3", description="Page 3 description")
-                    .set_footer(text="Category 2")
-                    .set_image(url="attachment://2.png"),
-                ],
-                attachments=[
+                    page_title="Name",
+                    page_description="John Doe",
+                ),
+                PageEntry(
                     discord.File("assets/2.png"),
-                ]
-                * 3,
-            ),
-            CategoryEntry(
-                "3",
-                category_title="Category 3",
-                category_description="Category 3 description",
-                pages=[
-                    discord.Embed(title="Page 1", description="Page 1 description")
-                    .set_footer(text="Category 3")
-                    .set_image(url="attachment://3.png"),
-                    discord.Embed(title="Page 2", description="Page 2 description")
-                    .set_footer(text="Category 3")
-                    .set_image(url="attachment://3.png"),
-                    discord.Embed(title="Page 3", description="Page 3 description")
-                    .set_footer(text="Category 3")
-                    .set_image(url="attachment://3.png"),
-                ],
-                attachments=[
+                    page_title="Name",
+                    page_description="Jane Doe",
+                ),
+                PageEntry(
                     discord.File("assets/3.png"),
-                ]
-                * 3,
-            ),
-        ]
-        paginator = CategoryBasedPaginator(interaction.user, pages=pages)
-        await paginator.start_paginator(interaction)
+                    page_title="Name",
+                    page_description="John Smith",
+                ),
+            ]
+            paginator = FileSelectPaginator(inter.user, pages=pages)
+        else:
+            pages = [
+                PageEntry(
+                    discord.Embed(title="John Doe", description="John Doe description").set_image(
+                        url="attachment://1.png"
+                    ),
+                    page_title="Name",
+                    page_description="John Doe",
+                    attachment=discord.File("assets/1.png"),
+                ),
+                PageEntry(
+                    discord.Embed(title="Jane Doe", description="Jane Doe description").set_image(
+                        url="attachment://2.png"
+                    ),
+                    page_title="Name",
+                    page_description="Jane Doe",
+                    attachment=discord.File("assets/2.png"),
+                ),
+                PageEntry(
+                    discord.Embed(title="John Smith", description="John Smith description").set_image(
+                        url="attachment://3.png"
+                    ),
+                    page_title="Name",
+                    page_description="John Smith",
+                    attachment=discord.File("assets/3.png"),
+                ),
+            ]
+            paginator = EmbedSelectPaginator(inter.user, pages=pages)
+        await paginator.start_paginator(inter)
+
+    @bot.tree.command()
+    async def category_paginator(
+        inter: discord.Interaction,
+        paginator_type: typing.Literal[
+            "strings", "string_with_attachments", "embeds", "files", "embed_with_attachments"
+        ],
+    ):
+        """A command to test category paginators"""
+        if paginator_type == "strings":
+            pages = [
+                CategoryEntry(
+                    category_title="Category 1",
+                    category_description="Category 1 description",
+                    pages=[
+                        "Category 1 Page 1",
+                        "Category 1 Page 2",
+                        "Category 1 Page 3",
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 2",
+                    category_description="Category 2 description",
+                    pages=[
+                        "Category 2 Page 1",
+                        "Category 2 Page 2",
+                        "Category 2 Page 3",
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 3",
+                    category_description="Category 3 description",
+                    pages=[
+                        "Category 3 Page 1",
+                        "Category 3 Page 2",
+                        "Category 3 Page 3",
+                    ],
+                ),
+            ]
+            paginator = StringCategoryPaginator(inter.user, pages=pages)
+        elif paginator_type == "string_with_attachments":
+            pages = [
+                CategoryEntry(
+                    category_title="Category 1",
+                    category_description="Category 1 description",
+                    pages=[
+                        "Category 1 Page 1",
+                        "Category 1 Page 2",
+                        "Category 1 Page 3",
+                    ],
+                    attachments=[
+                        discord.File("assets/1.png"),
+                        discord.File("assets/2.png"),
+                        discord.File("assets/3.png"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 2",
+                    category_description="Category 2 description",
+                    pages=[
+                        "Category 2 Page 1",
+                        "Category 2 Page 2",
+                        "Category 2 Page 3",
+                    ],
+                    attachments=[
+                        discord.File("assets/4.png"),
+                        discord.File("assets/5.png"),
+                        discord.File("assets/6.png"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 3",
+                    category_description="Category 3 description",
+                    pages=[
+                        "Category 3 Page 1",
+                        "Category 3 Page 2",
+                        "Category 3 Page 3",
+                    ],
+                    attachments=[
+                        discord.File("assets/7.png"),
+                        discord.File("assets/8.png"),
+                        discord.File("assets/9.png"),
+                    ],
+                ),
+            ]
+            paginator = StringCategoryPaginator(inter.user, pages=pages)
+        elif paginator_type == "embeds":
+            pages = [
+                CategoryEntry(
+                    category_title="Category 1",
+                    category_description="Category 1 description",
+                    pages=[
+                        discord.Embed(title="Category 1 Page 1", description="Category 1 Page 1 description"),
+                        discord.Embed(title="Category 1 Page 2", description="Category 1 Page 2 description"),
+                        discord.Embed(title="Category 1 Page 3", description="Category 1 Page 3 description"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 2",
+                    category_description="Category 2 description",
+                    pages=[
+                        discord.Embed(title="Category 2 Page 1", description="Category 2 Page 1 description"),
+                        discord.Embed(title="Category 2 Page 2", description="Category 2 Page 2 description"),
+                        discord.Embed(title="Category 2 Page 3", description="Category 2 Page 3 description"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 3",
+                    category_description="Category 3 description",
+                    pages=[
+                        discord.Embed(title="Category 3 Page 1", description="Category 3 Page 1 description"),
+                        discord.Embed(title="Category 3 Page 2", description="Category 3 Page 2 description"),
+                        discord.Embed(title="Category 3 Page 3", description="Category 3 Page 3 description"),
+                    ],
+                ),
+            ]
+            paginator = EmbedCategoryPaginator(inter.user, pages=pages)
+        elif paginator_type == "files":
+            pages = [
+                CategoryEntry(
+                    category_title="Category 1",
+                    category_description="Category 1 description",
+                    pages=[
+                        discord.File("assets/1.png"),
+                        discord.File("assets/2.png"),
+                        discord.File("assets/3.png"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 2",
+                    category_description="Category 2 description",
+                    pages=[
+                        discord.File("assets/4.png"),
+                        discord.File("assets/5.png"),
+                        discord.File("assets/6.png"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 3",
+                    category_description="Category 3 description",
+                    pages=[
+                        discord.File("assets/7.png"),
+                        discord.File("assets/8.png"),
+                        discord.File("assets/9.png"),
+                    ],
+                ),
+            ]
+            paginator = FileCategoryPaginator(inter.user, pages=pages)
+        else:
+            pages = [
+                CategoryEntry(
+                    category_title="Category 1",
+                    category_description="Category 1 description",
+                    pages=[
+                        discord.Embed(title="Category 1 Page 1", description="Category 1 Page 1 description").set_image(
+                            url="attachment://1.png"
+                        ),
+                        discord.Embed(title="Category 1 Page 2", description="Category 1 Page 2 description").set_image(
+                            url="attachment://2.png"
+                        ),
+                        discord.Embed(title="Category 1 Page 3", description="Category 1 Page 3 description").set_image(
+                            url="attachment://3.png"
+                        ),
+                    ],
+                    attachments=[
+                        discord.File("assets/1.png"),
+                        discord.File("assets/2.png"),
+                        discord.File("assets/3.png"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 2",
+                    category_description="Category 2 description",
+                    pages=[
+                        discord.Embed(title="Category 2 Page 1", description="Category 2 Page 1 description").set_image(
+                            url="attachment://4.png"
+                        ),
+                        discord.Embed(title="Category 2 Page 2", description="Category 2 Page 2 description").set_image(
+                            url="attachment://5.png"
+                        ),
+                        discord.Embed(title="Category 2 Page 3", description="Category 2 Page 3 description").set_image(
+                            url="attachment://6.png"
+                        ),
+                    ],
+                    attachments=[
+                        discord.File("assets/4.png"),
+                        discord.File("assets/5.png"),
+                        discord.File("assets/6.png"),
+                    ],
+                ),
+                CategoryEntry(
+                    category_title="Category 3",
+                    category_description="Category 3 description",
+                    pages=[
+                        discord.Embed(title="Category 3 Page 1", description="Category 3 Page 1 description").set_image(
+                            url="attachment://7.png"
+                        ),
+                        discord.Embed(title="Category 3 Page 2", description="Category 3 Page 2 description").set_image(
+                            url="attachment://8.png"
+                        ),
+                        discord.Embed(title="Category 3 Page 3", description="Category 3 Page 3 description").set_image(
+                            url="attachment://9.png"
+                        ),
+                    ],
+                    attachments=[
+                        discord.File("assets/7.png"),
+                        discord.File("assets/8.png"),
+                        discord.File("assets/9.png"),
+                    ],
+                ),
+            ]
+            paginator = EmbedCategoryPaginator(inter.user, pages=pages)
+        await paginator.start_paginator(inter)
 
     bot.run()
 

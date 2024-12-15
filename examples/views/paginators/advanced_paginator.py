@@ -4,7 +4,7 @@ from typing import Generic, List, Optional, TypeVar, Union
 
 import discord
 from discord import File, Member, User
-from paginators import PageLike
+from paginators import FileLike, PageLike
 from paginators.button_paginator import ButtonBasedPaginator
 
 T = TypeVar("T", bound=PageLike)
@@ -13,7 +13,6 @@ T = TypeVar("T", bound=PageLike)
 class CategoryEntry(Generic[T]):
     def __init__(
         self,
-        value: T,
         *,
         category_title: str,
         category_description: Optional[str] = None,
@@ -22,7 +21,6 @@ class CategoryEntry(Generic[T]):
     ) -> None:
         self.category_title = category_title
         self.category_description = category_description
-        self.value = value
         self.pages = pages or []
         self.attachments = attachments or []
 
@@ -70,3 +68,18 @@ class CategoryPaginatorSelect(discord.ui.Select[CategoryBasedPaginator[PageLike]
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         return await self.view.interaction_check(interaction)
+
+
+class EmbedCategoryPaginator(CategoryBasedPaginator[discord.Embed]):
+    def __init__(self, user: Union[discord.User, discord.Member], *, pages: List[CategoryEntry[discord.Embed]]) -> None:
+        super().__init__(user, pages=pages)
+
+
+class FileCategoryPaginator(CategoryBasedPaginator[FileLike]):
+    def __init__(self, user: Union[discord.User, discord.Member], *, pages: List[CategoryEntry[FileLike]]) -> None:
+        super().__init__(user, pages=pages)
+
+
+class StringCategoryPaginator(CategoryBasedPaginator[str]):
+    def __init__(self, user: Union[discord.User, discord.Member], *, pages: List[CategoryEntry[str]]) -> None:
+        super().__init__(user, pages=pages)

@@ -71,3 +71,8 @@ class EmbedSelectPaginator(SelectMenuBasedPaginator[discord.Embed]):
 class FileSelectPaginator(SelectMenuBasedPaginator[FileLike]):
     def __init__(self, user: Union[discord.User, discord.Member], *, pages: List[PageEntry[FileLike]]) -> None:
         super().__init__(user, pages=pages)
+
+
+class StringSelectPaginator(SelectMenuBasedPaginator[str]):
+    def __init__(self, user: Union[discord.User, discord.Member], *, pages: List[PageEntry[str]]) -> None:
+        super().__init__(user, pages=pages)

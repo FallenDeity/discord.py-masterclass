@@ -9,12 +9,10 @@ from typing import TYPE_CHECKING, Any, Generic, List, TypeVar, Union
 import discord
 from views import BaseView
 
-# we use the BaseView class defined in the other example
-
 if TYPE_CHECKING:
     from typing_extensions import TypeAlias
 
-PageLike: TypeAlias = Union[discord.Embed, str, bytes, PathLike[Any], BufferedIOBase]
+PageLike: TypeAlias = Union[discord.Embed, str, bytes, PathLike[Any], BufferedIOBase, discord.File]
 FileLike: TypeAlias = Union[str, bytes, PathLike[Any], BufferedIOBase]
 
 T = TypeVar("T", bound=PageLike)
@@ -33,7 +31,8 @@ class BasePaginator(Generic[T], BaseView):
         self.attachments = attachments or []
 
     async def send_page(self, inter: discord.Interaction, page: T) -> None:
-        if isinstance(page, discord.Embed):
+        if isinstance(page, discord.Embed):  # Embed
+            # Check if the embed has an associated attachment and send it along with the embed
             attachment = None
             if (page.image.url or "").startswith("attachment://") and len(self.attachments) > self.current_page:
                 attachment = discord.File(self.attachments[self.current_page].fp.name)
@@ -43,9 +42,22 @@ class BasePaginator(Generic[T], BaseView):
             self.message = await inter.edit_original_response(embed=page, view=self, attachments=attachments)
             return
 
+        if isinstance(page, str):  # String
+            # Check if the string has an associated attachment and send it along with the string
+            attachment = None
+            if len(self.attachments) > self.current_page:
+                attachment = discord.File(self.attachments[self.current_page].fp.name)
+            attachments = [attachment] if attachment else []
+            if self.message is None:
+                return await inter.response.send_message(content=page, view=self, files=attachments)
+            self.message = await inter.edit_original_response(content=page, view=self, attachments=attachments)
+            return
+
+        # File
+        file = discord.File(page) if not isinstance(page, discord.File) else discord.File(page.fp.name)
         if self.message is None:
-            return await inter.response.send_message(file=discord.File(page), view=self)
-        self.message = await inter.edit_original_response(attachments=[discord.File(page)], view=self)
+            return await inter.response.send_message(file=file, view=self)
+        self.message = await inter.edit_original_response(attachments=[file], view=self)
 
     async def start_paginator(self, inter: discord.Interaction, *, starting_page: int = 0) -> None:
         self.current_page = starting_page
