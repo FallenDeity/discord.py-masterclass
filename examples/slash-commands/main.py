@@ -10,7 +10,6 @@ from discord import app_commands
 from discord.app_commands import locale_str as _
 from discord.ext import commands
 from dotenv import load_dotenv
-from utils.translator import Translator
 from utils.tree import SlashCommandTree
 
 
@@ -22,10 +21,16 @@ class CustomBot(commands.Bot):
         intents = discord.Intents.default()
         intents.members = True
         intents.message_content = True
-        super().__init__(*args, **kwargs, command_prefix=commands.when_mentioned_or(prefix), intents=intents)
+        super().__init__(
+            *args,
+            **kwargs,
+            command_prefix=commands.when_mentioned_or(prefix),
+            intents=intents,
+            help_command=commands.MinimalHelpCommand(),
+        )
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir
-        self.synced = False
+        self.synced = True
 
     async def _load_extensions(self) -> None:
         if not os.path.isdir(self.ext_dir):
@@ -46,7 +51,7 @@ class CustomBot(commands.Bot):
         self.logger.info(f"Logged in as {self.user} ({self.user.id})")
 
     async def setup_hook(self) -> None:
-        await self.tree.set_translator(Translator())
+        # await self.tree.set_translator(Translator())
         self.client = aiohttp.ClientSession()
         await self._load_extensions()
         if not self.synced:

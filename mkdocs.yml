@@ -81,6 +81,7 @@ nav:
     - Audio Playback: audio-playback.md
   - Examples:
     - Pagination: pagination.md
+    - Help Command: help-command.md
 
 markdown_extensions:
   - tables

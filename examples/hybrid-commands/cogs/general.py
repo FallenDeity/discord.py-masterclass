@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 import typing
 
 from discord.ext import commands
@@ -10,6 +9,8 @@ if typing.TYPE_CHECKING:
 
 
 class General(commands.Cog):
+    """General commands"""
+
     def __init__(self, bot: CustomBot) -> None:
         self.bot = bot
 
@@ -17,7 +18,6 @@ class General(commands.Cog):
     async def ping(self, ctx: commands.Context[CustomBot]) -> None:
         """Pong!"""
         await ctx.defer(ephemeral=True)
-        await asyncio.sleep(5)
         await ctx.send(f"Pong! ({self.bot.latency * 1000:.2f}ms)")
 
     @commands.hybrid_group(name="math")
