@@ -1,6 +1,6 @@
 # Pagination
 
-Pagination is a way to split a large list of items into multiple pages or subsets. This is useful when you have a large number of items to display, and you don't want to overwhelm the user with a long list.
+Pagination is a way to split a large list of items into multiple pages or subsets. This is useful when you have a large number of items to display, and you don't want to overwhelm the user with a long list or when your message surpasses the [discord limits for messages](https://discord.com/developers/docs/resources/message#create-message-jsonform-params).
 
 In discord bots, pagination is often used to display a list of items in a more user-friendly way. Instead of displaying all items at once, you can split them information into multiple pages/enbeds, and allow the user to navigate between them.
 
