@@ -2,13 +2,13 @@
 
 Pagination is a way to split a large list of items into multiple pages or subsets. This is useful when you have a large number of items to display, and you don't want to overwhelm the user with a long list or when your message surpasses the [discord limits for messages](https://discord.com/developers/docs/resources/message#create-message-jsonform-params).
 
-In discord bots, pagination is often used to display a list of items in a more user-friendly way. Instead of displaying all items at once, you can split them information into multiple pages/enbeds, and allow the user to navigate between them.
+In discord bots, pagination is often used to display a list of items in a more user-friendly way. Instead of displaying all items at once, you can split the information into multiple pages/embeds, and allow the user to navigate between them.
 
 There are primarily two ways to implement pagination in discord bots:
 
 | Reaction-based pagination                                                                                                                   | View-based pagination                                                                                                                              |
 |---------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| In this method, you display a list of items in an embed, and allow the user to navigate between pages by reacting to the embed with emojis. | In this method, you display a list of items in an embed, and allow the user to navigate between pages by clicking on buttons or selecting options. |
+| In this method, you display a list of items in an embed, and allow the user to navigate between pages by reacting to the embed with emojis. | In this method, you display a list of items in an embed, and allow the user to navigate between pages by clicking buttons or selecting options. |
 | Reactions can only include a single emoji, limited interactivity and usually used for simplistic logic handling.                            | Views can include multiple buttons, dropdowns, and other interactive elements, allowing for more complex logic handling.                           |
 | Utilizes `reaction_add` and `reaction_remove` events to handle user interactivity.                                                          | Utilizes custom interaction objects sent to your application to handle user interactivity.                                                         |
 | Easier to implement but becomes cluttered with more complex logic or handling.                                                              | Simple to implement using `discord.ui` components, but requires more setup and understanding of interactions.                                      |
@@ -125,13 +125,13 @@ So, let's break down the code above:
 - The `send_page` method sends the current page to the user. If the page is an embed with an attachment, it sends the attachment along with the embed. If the page is a string or a file, it sends the content or file to the user.
 - The `start_paginator` method initializes the paginator by sending the first page to the user and storing the message object for future edits and cleanup.
 - The `stop_paginator` method disables all interactions and disables the view.
-- The `next_page` and `previous_page` methods handle moving to the next and previous pages respectively. They update the current page index and send the new page to the user. The modulo operation is used to loop around the pages when reaching the end or beginning of the list.
+- The `next_page` and `previous_page` methods handle moving to the next and previous pages respectively. They update the current page index and send the new page to the user. The modulo operator is used to loop around the pages when reaching the end or beginning of the list.
 
-This class we implemented satisfies requirements `2 - Pagination Logic` and `4 - Interaction Handling` from the list above. Now let's look at how we can implement the `User Interface` part of the pagination based on our `Data` we possess.
+The class we implemented satisfies requirements `2 - Pagination Logic` and `4 - Interaction Handling` from the list above. Now let's look at how we can implement the `User Interface` part of the pagination based on the `Data` we possess.
 
 ## Pagination Interfaces
 
-Lets took a look at typical bulk data we could paginate:
+Lets take a look at typical bulk data we could paginate:
 
 ### Button Based Pagination
 
@@ -381,7 +381,7 @@ class PaginatorSelect(discord.ui.Select[SelectMenuBasedPaginator[PageLike]]):
         return await self.base_view.interaction_check(interaction)
 ```
 
-- We define a `PageEntry` class that represents an entry in the select menu. It contains the value to be displayed, the title and description of the page added to the select menu, and an optional attachment.
+- We define a `PageEntry` class that represents an entry in the select menu. It contains the value to be displayed: the title, the description of the page added to the select menu and an optional attachment.
 - We define a `SelectMenuBasedPaginator` class that extends `BasePaginator` and adds a select menu for navigating between pages.
 - The `SelectMenuBasedPaginator` class takes a list of `PageEntry` objects as input and creates a select menu with options for each entry.
 - The `PaginatorSelect` class is a custom select menu that handles user interactions and updates the current page based on the selected option and sends the new page to the user.
@@ -598,7 +598,7 @@ class CategoryPaginatorSelect(discord.ui.Select[CategoryBasedPaginator[PageLike]
         return await self.view.interaction_check(interaction)
 ```
 
-- We define a `CategoryEntry` class that represents a category in the paginator. It contains the value to be displayed, the title and description of the category, a list of pages, and an optional list of attachments.
+- We define a `CategoryEntry` class that represents a category in the paginator. It contains the value to be displayed: the title, the description of the category, a list of pages and an optional list of attachments.
 - We define a `CategoryBasedPaginator` class that extends `ButtonBasedPaginator` and adds a select menu for navigating between categories.
 - The `CategoryBasedPaginator` class takes a list of `CategoryEntry` objects as input and creates a select menu with options for each category.
 - The `CategoryPaginatorSelect` class is a custom select menu that handles user interactions and updates the current category based on the selected option and sends the first page of the new category to the user.
