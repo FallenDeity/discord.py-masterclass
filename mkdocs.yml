@@ -79,6 +79,8 @@ nav:
     - Tasks: tasks.md
     - ANSI and Markdown: markdown-and-ansi.md
     - Audio Playback: audio-playback.md
+  - Examples:
+    - Pagination: pagination.md
 
 markdown_extensions:
   - tables
