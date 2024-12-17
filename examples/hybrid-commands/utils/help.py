@@ -41,10 +41,6 @@ class Formatter:
     def __format_command_enabled(command: commands.Command) -> str:
         return f"Enabled: {command.enabled}" if command.enabled else "Command is disabled."
 
-    @staticmethod
-    def __format_command_description(command: commands.Command) -> str:
-        return command.description or "No description provided."
-
     def format_command(self, command: commands.Command) -> discord.Embed:
         signature = self.__format_command_signature(command)
         embed = discord.Embed(

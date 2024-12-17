@@ -8,7 +8,6 @@ import aiohttp
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-from utils.help import CustomHelpCommand
 
 
 class CustomBot(commands.Bot):
@@ -25,7 +24,6 @@ class CustomBot(commands.Bot):
             command_prefix=commands.when_mentioned_or(prefix),
             intents=intents,
             owner_ids={656838010532265994},
-            help_command=CustomHelpCommand(),
         )
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir

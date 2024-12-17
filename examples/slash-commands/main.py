@@ -10,6 +10,7 @@ from discord import app_commands
 from discord.app_commands import locale_str as _
 from discord.ext import commands
 from dotenv import load_dotenv
+from utils.help import CustomHelpCommand
 from utils.tree import SlashCommandTree
 
 
@@ -26,7 +27,7 @@ class CustomBot(commands.Bot):
             **kwargs,
             command_prefix=commands.when_mentioned_or(prefix),
             intents=intents,
-            help_command=commands.MinimalHelpCommand(),
+            help_command=None,
         )
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir
@@ -96,6 +97,12 @@ def main() -> None:
     @app_commands.describe(test=_("A test choice"))
     async def translations(interaction: discord.Interaction, test: app_commands.Choice[int]) -> None:
         await interaction.response.send_message(repr(test))
+
+    @bot.hybrid_command(name="help", description="Show help for a command")
+    async def help_(ctx: commands.Context, command: str = None) -> None:
+        help_command = CustomHelpCommand(include_app_commands=True)
+        help_command.context = ctx
+        await help_command.command_callback(ctx, command=command)
 
     bot.run()
 
