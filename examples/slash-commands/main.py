@@ -27,7 +27,8 @@ class CustomBot(commands.Bot):
             **kwargs,
             command_prefix=commands.when_mentioned_or(prefix),
             intents=intents,
-            help_command=None,
+            help_command=CustomHelpCommand(with_app_command=True, description="Show help for a command"),
+            owner_ids={656838010532265994},
         )
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir
@@ -55,6 +56,7 @@ class CustomBot(commands.Bot):
         # await self.tree.set_translator(Translator())
         self.client = aiohttp.ClientSession()
         await self._load_extensions()
+        await self.load_extension("jishaku")
         if not self.synced:
             await self.tree.sync()
             self.synced = not self.synced
@@ -96,13 +98,37 @@ def main() -> None:
     )
     @app_commands.describe(test=_("A test choice"))
     async def translations(interaction: discord.Interaction, test: app_commands.Choice[int]) -> None:
+        """
+        A test command
+
+        Parameters
+        ----------
+        interaction : discord.Interaction
+            The interaction
+        test : app_commands.Choice[int]
+            A test choice
+        """
         await interaction.response.send_message(repr(test))
 
-    @bot.hybrid_command(name="help", description="Show help for a command")
-    async def help_(ctx: commands.Context, command: str = None) -> None:
-        help_command = CustomHelpCommand(include_app_commands=True)
-        help_command.context = ctx
-        await help_command.command_callback(ctx, command=command)
+    @bot.command(name="idk")
+    async def idk(ctx: commands.Context, some_arg: str) -> None:
+        """
+        I don't know what to do
+
+        Parameters
+        ----------
+        ctx : commands.Context
+            The context
+        some_arg : str
+            Some argument
+        """
+        await ctx.send("I don't know what to do")
+
+    # @bot.hybrid_command(name="help", description="Show help for a command")
+    # async def help_(ctx: commands.Context, command: str = None) -> None:
+    #     help_command = CustomHelpCommand(include_app_commands=True)
+    #     help_command.context = ctx
+    #     await help_command.command_callback(ctx, command=command)
 
     bot.run()
 

@@ -1,12 +1,175 @@
-from typing import Any, Iterable, List, Mapping, Optional
+import copy
+import difflib
+import functools
+import inspect
+import re
+from typing import Any, Callable, Dict, Generator, Iterable, List, Mapping, Optional
 
 import discord
 import humanfriendly
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Cog, Command, CommandError, Context, Group
+from discord.ext.commands.core import get_signature_parameters
+from discord.ext.commands.parameters import Parameter, Signature
 from paginators.advanced_paginator import CategoryEntry, EmbedCategoryPaginator
 from paginators.button_paginator import EmbedButtonPaginator
+
+
+class _InjectorCallback:
+    # This class is to ensure that the help command instance gets passed properly
+    # The final level of invocation will always leads back to the _original instance
+    # hence bind needed to be modified before invoke is called.
+    def __init__(self, original_callback: Any, bind: "CustomHelpCommand") -> None:
+        self.callback = original_callback
+        self.bind = bind
+
+    async def invoke(self, *args: Any, **kwargs: Any) -> Any:
+        # don't put cog in command_callback
+        # it used to be that i could do this in parse_arguments, but appcommand extracts __self__ directly from callback
+        if self.bind.cog is not None:
+            cog, *args = args
+
+        return await self.callback.__func__(self.bind, *args, **kwargs)
+
+
+def _inject_callback(inject):
+    try:
+        inject.__original_callback__
+    except AttributeError:
+        inject.__original_callback__ = _InjectorCallback(inject.command_callback, inject)
+
+    caller = inject.__original_callback__
+    original_callback = caller.callback
+
+    async def wrapper(*args, **kwargs):
+        return await caller.invoke(*args, **kwargs)
+
+    callback = copy.copy(wrapper)
+    signature = list(Signature.from_callable(original_callback).parameters.values())
+    callback.__signature__ = Signature.from_callable(callback).replace(parameters=signature)
+    inject.command_callback = callback
+
+
+def _parse_params_docstring(func: Callable[..., Any]) -> dict[str, str]:
+    doc = inspect.getdoc(func)
+    if doc is None:
+        return {}
+
+    param_docs = {}
+    sphinx_pattern = re.compile(r"^\s*:param\s+(\S+).*?:\s*(.+)", re.MULTILINE)
+    google_pattern = re.compile(r"^\s*(\S+)\s*\(.*?\):\s*(.+)", re.MULTILINE)
+    numpy_pattern = re.compile(r"^\s*(\S+)\s*:\s*.*?\n\s*(.+?)(?=\n\S|\Z)", re.DOTALL | re.MULTILINE)
+
+    for pattern in (sphinx_pattern, google_pattern, numpy_pattern):
+        for match in pattern.finditer(doc):
+            param_name, desc = match.groups()
+            param_docs[param_name] = desc
+    return param_docs
+
+
+def _construct_full_name(command: commands.Command | app_commands.Command) -> str:
+    parent: Optional[app_commands.Group] = command.parent
+    entries = []
+    while parent is not None:
+        entries.append(parent.name)
+        parent = parent.parent
+    entries.reverse()
+    entries.append(command.name)
+    return " ".join(entries)
+
+
+class _HelpHybridCommandImpl(commands.HybridCommand):
+    def __init__(self, inject: "CustomHelpCommand", *args: Any, **kwargs: Any) -> None:
+        _inject_callback(inject)
+        super().__init__(inject.command_callback, *args, **kwargs)
+        self._original: "CustomHelpCommand" = inject
+        self._injected: "CustomHelpCommand" = inject
+        self.params: Dict[str, Parameter] = get_signature_parameters(
+            inject.__original_callback__.callback, globals(), skip_parameters=1
+        )
+
+        # get function params descriptions, from the original callback docstring
+        param_descs = _parse_params_docstring(inject.__original_callback__.callback)
+        if self.app_command:
+            app_params = [p for p in self.app_command.parameters if p.name in param_descs]
+            app_commands.describe(**{p.name: param_descs[p.name] for p in app_params})(self.app_command)
+
+        self.params.update(
+            (name, param.replace(description=desc))
+            for name, desc in param_descs.items()
+            if (param := self.params.get(name))
+        )
+
+        self.__inject_callback_metadata(inject)
+
+    def __inject_callback_metadata(self, inject: "CustomHelpCommand") -> None:
+        if not self.with_app_command:
+            return
+        autocomplete = inject.help_command_autocomplete
+        self.autocomplete(list(dict.fromkeys(self.params))[-1])(autocomplete)
+
+    async def prepare(self, ctx: Context[Any]) -> None:
+        self._injected = injected = self._original.copy()
+        injected.context = ctx
+        self._original.__original_callback__.bind = injected  # type: ignore
+        self.params = get_signature_parameters(injected.__original_callback__.callback, globals(), skip_parameters=1)
+
+        # get function params descriptions, from the original callback docstring
+        param_descs = _parse_params_docstring(injected.__original_callback__.callback)
+        self.params.update(
+            (name, param.replace(description=desc))
+            for name, desc in param_descs.items()
+            if (param := self.params.get(name))
+        )
+
+        on_error = injected.on_help_command_error
+        if not hasattr(on_error, "__help_command_not_overridden__"):
+            if self.cog is not None:
+                self.on_error = self._on_error_cog_implementation
+            else:
+                self.on_error = on_error
+
+        await super().prepare(ctx)
+
+    async def _on_error_cog_implementation(self, _, ctx: Context[commands.Bot], error: CommandError) -> None:
+        await self._injected.on_help_command_error(ctx, error)
+
+    def _inject_into_cog(self, cog: Cog) -> None:
+        # Warning: hacky
+
+        # Make the cog think that get_commands returns this command
+        # as well if we inject it without modifying __cog_commands__
+        # since that's used for the injection and ejection of cogs.
+        def wrapped_get_commands(
+            *, _original: Callable[[], List[Command[Any, ..., Any]]] = cog.get_commands
+        ) -> List[Command[Any, ..., Any]]:
+            ret = _original()
+            ret.append(self)
+            return ret
+
+        # Ditto here
+        def wrapped_walk_commands(
+            *, _original: Callable[[], Generator[Command[Any, ..., Any], None, None]] = cog.walk_commands
+        ):
+            yield from _original()
+            yield self
+
+        functools.update_wrapper(wrapped_get_commands, cog.get_commands)
+        functools.update_wrapper(wrapped_walk_commands, cog.walk_commands)
+        cog.get_commands = wrapped_get_commands
+        cog.walk_commands = wrapped_walk_commands
+        self.cog = cog
+
+    def _eject_cog(self) -> None:
+        if self.cog is None:
+            return
+
+        # revert back into their original methods
+        cog = self.cog
+        cog.get_commands = cog.get_commands.__wrapped__
+        cog.walk_commands = cog.walk_commands.__wrapped__
+        self.cog = None
 
 
 class Formatter:
@@ -15,12 +178,28 @@ class Formatter:
         self.help_command = help_command
 
     def __format_command_signature(self, command: commands.Command | app_commands.Command) -> tuple[str, str]:
-        params = self.__format_param(command)
+        params = self.help_command.get_command_signature(command)
         return f"{command.qualified_name}\n", f"```yaml\n{params}```"
 
-    def __format_param(self, param: commands.Command | app_commands.Command) -> str:
-        signature = self.help_command.get_command_signature(param)
-        return signature
+    @staticmethod
+    def __format_param(param: app_commands.Parameter | commands.Parameter) -> str:
+        result = (
+            f"{param.name}={param.default}"
+            if not param.required and param.default is not discord.utils.MISSING and param.default not in (None, "")
+            else f"{param.name}"
+        )
+        result = f"[{result}]" if not param.required else f"<{result}>"
+        if isinstance(param, commands.Parameter):
+            return f"```yaml\n{param.name} ({param.annotation.__name__}) - {result}:\n\t{param.description}```"
+        choices = (
+            ", ".join(f"'{choice.value}'" if isinstance(choice.value, str) else choice.name for choice in param.choices)
+            if param.choices
+            else ""
+        )
+        result = f"{param.name} ({param.type.name}) - {result}:"
+        result += f"\n\t{param.description}" if param.description else ""
+        result += f"\n\tChoices: {choices}" if choices else ""
+        return f"```yaml\n{result}```"
 
     @staticmethod
     def __format_command_help(command: commands.Command | app_commands.Command) -> str:
@@ -55,6 +234,15 @@ class Formatter:
             description=signature[1] + self.__format_command_help(command),
             color=discord.Color.blue(),
         )
+
+        params = command.parameters if isinstance(command, app_commands.Command) else command.params.values()
+        # format each parameter of the command
+        for param in params:
+            embed.add_field(
+                name=param.name,
+                value=self.__format_param(param),
+                inline=False,
+            )
         embed.add_field(name="Aliases", value=self.__format_command_aliases(command), inline=True)
         embed.add_field(name="Cooldown", value=self.__format_command_cooldown(command), inline=True)
         embed.add_field(name="Enabled", value=self.__format_command_enabled(command), inline=True)
@@ -105,9 +293,35 @@ class Formatter:
 
 
 class CustomHelpCommand(commands.HelpCommand):
-    def __init__(self, *, include_app_commands: bool = False, **kwargs: Any) -> None:
+    __original_callback__: _InjectorCallback
+
+    def __init__(
+        self,
+        *,
+        name: str = "help",
+        description: str = "Shows this message",
+        with_app_command: bool = False,
+        **kwargs: Any,
+    ) -> None:
         super().__init__(**kwargs)
-        self.include_app_commands = include_app_commands
+        self.with_app_command = with_app_command
+        self.command_attrs["with_app_command"] = with_app_command
+        self.command_attrs["name"] = name
+        self.command_attrs["description"] = description
+        self._command_impl = _HelpHybridCommandImpl(self, **self.command_attrs)
+
+    def _add_to_bot(self, bot: commands.bot.BotBase) -> None:
+        command = _HelpHybridCommandImpl(self, **self.command_attrs)
+        self._command_impl = command
+        bot.add_command(command)
+
+    def _remove_from_bot(self, bot: commands.bot.BotBase) -> None:
+        impl = self._command_impl
+        bot.remove_command(impl.name)
+        app = impl.app_command
+        for snowflake in getattr(app, "_guild_ids", None) or []:
+            bot.tree.remove_command(app.name, guild=discord.Object(snowflake))
+        impl._eject_cog()
 
     def get_command_signature(
         self, command: commands.Command[Any, ..., Any] | app_commands.Command[Any, ..., Any]
@@ -115,14 +329,7 @@ class CustomHelpCommand(commands.HelpCommand):
         if isinstance(command, commands.Command):
             return super().get_command_signature(command)
 
-        parent: Optional[app_commands.Group] = command.parent
-        entries = []
-        while parent is not None:
-            entries.append(parent.name)
-            parent = parent.parent
-        entries.reverse()
-        entries.append(command.name)
-        command_path = " ".join(entries)
+        command_path = _construct_full_name(command)
 
         def _format_param(data: str, *, required: bool = False) -> str:
             return f"<{data}>" if required else f"[{data}]"
@@ -143,7 +350,7 @@ class CustomHelpCommand(commands.HelpCommand):
             )
             default = (
                 f"={param.default}"
-                if param.required and param.default is not discord.utils.MISSING and param.default not in (None, "")
+                if not param.required and param.default is not discord.utils.MISSING and param.default not in (None, "")
                 else ""
             )
 
@@ -219,7 +426,7 @@ class CustomHelpCommand(commands.HelpCommand):
         await paginator.start_paginator(self.context)
 
     async def send_cog_help(self, cog: commands.GroupCog | commands.Cog, /) -> None:
-        cmds = cog.get_commands() + (cog.get_app_commands() if self.include_app_commands else [])
+        cmds = cog.get_commands() + (cog.get_app_commands() if self.with_app_command else [])
         if isinstance(cog, commands.GroupCog):
             cmds.extend(cog.app_command.commands)
         commands_ = self.flatten_commands(cmds)
@@ -248,7 +455,18 @@ class CustomHelpCommand(commands.HelpCommand):
         )
         await self.context.send(embed=embed)
 
-    async def command_callback(self, ctx: commands.Context[commands.Bot], /, *, command: Optional[str] = None) -> None:
+    async def command_callback(self, ctx: commands.Context[commands.Bot], /, *, query: Optional[str] = None) -> None:
+        """
+        This is the entry point of the help command.
+
+        Parameters
+        ----------
+        ctx: commands.Context
+            The context of the command invocation.
+        query: Optional[str]
+            The command, group, or cog to get help for.
+        """
+        command = query
         await self.prepare_help_command(ctx, command)
 
         bot = ctx.bot
@@ -266,7 +484,7 @@ class CustomHelpCommand(commands.HelpCommand):
         keys = command.split()
         cmd = bot.all_commands.get(keys[0])
 
-        if self.include_app_commands:
+        if self.with_app_command:
             guild_id = ctx.guild.id if ctx.guild else None
 
             if cmd is None:
@@ -300,8 +518,11 @@ class CustomHelpCommand(commands.HelpCommand):
         self,
     ) -> Mapping[Optional[Cog], List[Command[Any, ..., Any] | app_commands.Command[Any, ..., Any]]]:
         mapping = self.get_bot_mapping()
-        if self.include_app_commands:
-            mapping.update(self.get_app_command_mapping())
+        if self.with_app_command:
+            for cog, cmds in self.get_app_command_mapping().items():
+                for cmd in cmds:
+                    if cmd.name not in (c.name for c in mapping.get(cog, [])):
+                        mapping.setdefault(cog, []).append(cmd)
         return mapping
 
     def get_app_command_mapping(
@@ -332,3 +553,19 @@ class CustomHelpCommand(commands.HelpCommand):
     async def on_help_command_error(self, ctx: Context[commands.Bot], error: CommandError, /) -> None:
         await self.send_error_message(str(error))
         raise error
+
+    async def help_command_autocomplete(
+        self, inter: discord.Interaction[commands.Bot], current: str
+    ) -> list[app_commands.Choice[str]]:
+        help_command = self.copy()
+        help_command.context = await inter.client.get_context(inter)
+
+        all_cmds: dict[str, list[commands.Command | app_commands.Command]] = {
+            cog.qualified_name if cog else "No Category": help_command.flatten_commands(cmds)
+            for cog, cmds in help_command.get_all_commands().items()
+        }
+        choices = list(all_cmds.keys()) + [_construct_full_name(cmd) for cmd in sum(all_cmds.values(), [])]
+        matches = difflib.get_close_matches(current, choices, n=25, cutoff=0.4) or sorted(
+            choices, key=lambda x: x.lower()
+        )
+        return [app_commands.Choice(name=match, value=match) for match in matches][:25]
