@@ -393,7 +393,7 @@ class CustomHelpCommand(commands.HelpCommand):
         for i in range(0, len(mapping), 5):
             embed = home_embed.copy()
             for cog, cmds in mapping.items():
-                filtered_cmds = self.flatten_commands(cmds)
+                filtered_cmds = await self.filter_commands(self.flatten_commands(cmds), sort=True)
                 embed.add_field(
                     name=cog.qualified_name if cog else "No Category",
                     value=f"*{cog.description if cog and cog.description else 'No description provided.'}* `[Commands: {len(filtered_cmds)}]`",
@@ -409,7 +409,7 @@ class CustomHelpCommand(commands.HelpCommand):
             )
         ]
         for cog, cmds in mapping.items():
-            filtered_cmds = self.flatten_commands(cmds)
+            filtered_cmds = await self.filter_commands(self.flatten_commands(cmds), sort=True)
 
             cog_name = cog.qualified_name if cog else "No Category"
             cog_desc = cog.description if cog and cog.description else "No description provided."
@@ -429,13 +429,13 @@ class CustomHelpCommand(commands.HelpCommand):
         cmds = cog.get_commands() + (cog.get_app_commands() if self.with_app_command else [])
         if isinstance(cog, commands.GroupCog):
             cmds.extend(cog.app_command.commands)
-        commands_ = self.flatten_commands(cmds)
+        commands_ = await self.filter_commands(self.flatten_commands(cmds), sort=True)
         embeds = await Formatter(self).format_cog_or_group(cog, commands_)
         paginator = EmbedButtonPaginator(self.context.author, pages=embeds)
         await paginator.start_paginator(self.context)
 
     async def send_group_help(self, group: Group[Any, ..., Any] | app_commands.Group, /) -> None:
-        commands_ = self.flatten_commands(group.commands)
+        commands_ = await self.filter_commands(self.flatten_commands(group.commands), sort=True)
         embeds = await Formatter(self).format_cog_or_group(group, commands_)
         paginator = EmbedButtonPaginator(self.context.author, pages=embeds)
         await paginator.start_paginator(self.context)
@@ -569,3 +569,65 @@ class CustomHelpCommand(commands.HelpCommand):
             choices, key=lambda x: x.lower()
         )
         return [app_commands.Choice(name=match, value=match) for match in matches][:25]
+
+    async def filter_commands(
+        self,
+        commands: Iterable[Command[Any, ..., Any] | app_commands.Command[Any, ..., Any]],
+        /,
+        *,
+        sort: bool = False,
+        key: Optional[Callable[[Command[Any, ..., Any] | app_commands.Command[Any, ..., Any]], Any] | None] = None,
+    ) -> List[Command[Any, ..., Any] | app_commands.Command[Any, ..., Any]]:
+        if sort and key is None:
+            key = lambda c: c.name  # noqa: E731
+
+        iterator = commands if self.show_hidden else filter(lambda c: not getattr(c, "hidden", None), commands)
+
+        if self.verify_checks is False:
+            # if we do not need to verify the checks then we can just
+            # run it straight through normally without using await.
+            return sorted(iterator, key=key) if sort else list(iterator)  # type: ignore # the key shouldn't be None
+
+        if self.verify_checks is None and not self.context.guild:
+            # if verify_checks is None and we're in a DM, don't verify
+            return sorted(iterator, key=key) if sort else list(iterator)  # type: ignore
+
+        # if we're here then we need to check every command if it can run
+        async def predicate(cmd: Command[Any, ..., Any] | app_commands.Command) -> bool:
+            ctx = self.context
+            if isinstance(cmd, Command):
+                try:
+                    return await cmd.can_run(ctx)
+                except discord.ext.commands.CommandError:
+                    return False
+
+            no_interaction = ctx.interaction is None
+            if not cmd.checks and no_interaction:
+                binding = cmd.binding
+                if cmd.parent is not None and cmd.parent is not binding:
+                    return False  # it has group command interaction check
+
+                if binding is not None:
+                    check = getattr(binding, "interaction_check", None)
+                    if check:
+                        return False  # it has cog interaction check
+
+                return True
+
+            if no_interaction:
+                return False
+
+            try:
+                return await cmd._check_can_run(ctx.interaction)
+            except app_commands.AppCommandError:
+                return False
+
+        ret = []
+        for cmd in iterator:
+            valid = await predicate(cmd)
+            if valid:
+                ret.append(cmd)
+
+        if sort:
+            ret.sort(key=key)
+        return ret
