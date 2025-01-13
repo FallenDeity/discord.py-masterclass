@@ -27,12 +27,12 @@ class CustomBot(commands.Bot):
             **kwargs,
             command_prefix=commands.when_mentioned_or(prefix),
             intents=intents,
-            help_command=CustomHelpCommand(with_app_command=True, description="Show help for a command"),
+            help_command=CustomHelpCommand(with_app_command=True),
             owner_ids={656838010532265994},
         )
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir
-        self.synced = True
+        self.synced = False
 
     async def _load_extensions(self) -> None:
         if not os.path.isdir(self.ext_dir):
@@ -126,9 +126,9 @@ def main() -> None:
 
     # @bot.hybrid_command(name="help", description="Show help for a command")
     # async def help_(ctx: commands.Context, command: str = None) -> None:
-    #     help_command = CustomHelpCommand(include_app_commands=True)
+    #     help_command = CustomHelpCommand(with_app_command=True)
     #     help_command.context = ctx
-    #     await help_command.command_callback(ctx, command=command)
+    #     await help_command.command_callback(ctx, query=command)
 
     bot.run()
 

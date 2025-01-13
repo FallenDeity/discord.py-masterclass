@@ -17,16 +17,11 @@ from paginators.button_paginator import EmbedButtonPaginator
 
 
 class _InjectorCallback:
-    # This class is to ensure that the help command instance gets passed properly
-    # The final level of invocation will always leads back to the _original instance
-    # hence bind needed to be modified before invoke is called.
     def __init__(self, original_callback: Any, bind: "CustomHelpCommand") -> None:
         self.callback = original_callback
         self.bind = bind
 
     async def invoke(self, *args: Any, **kwargs: Any) -> Any:
-        # don't put cog in command_callback
-        # it used to be that i could do this in parse_arguments, but appcommand extracts __self__ directly from callback
         if self.bind.cog is not None:
             cog, *args = args
 
