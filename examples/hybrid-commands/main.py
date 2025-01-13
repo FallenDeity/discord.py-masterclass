@@ -110,10 +110,6 @@ def main() -> None:
             The context of the command.
         name: str
             The name of the factory.
-
-        Returns
-        -------
-        None
         """
         await ctx.send(f"Created factory {name}.")
 
@@ -128,10 +124,6 @@ def main() -> None:
             The context of the command.
         name: str
             The name of the factory.
-
-        Returns
-        -------
-        None
         """
         await ctx.send(f"Deleted factory {name}.")
 
@@ -144,10 +136,6 @@ def main() -> None:
         ----------
         ctx: commands.Context
             The context of the command.
-
-        Returns
-        -------
-        None
         """
         if ctx.invoked_subcommand is None:
             await ctx.send("Invalid subcommand.")
@@ -166,10 +154,6 @@ def main() -> None:
             The name of the factory.
         product: str
             The name of the product.
-
-        Returns
-        -------
-        None
         """
         await ctx.send(f"Manufactured {product} in factory {name}.")
 
@@ -186,10 +170,6 @@ def main() -> None:
             The name of the factory.
         product: str
             The name of the product.
-
-        Returns
-        -------
-        None
         """
         await ctx.send(f"Sold {product} from factory {name}.")
 

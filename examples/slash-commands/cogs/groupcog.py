@@ -30,10 +30,6 @@ class MathGroup(commands.GroupCog, name="math", description="Math commands"):
             The number.
         b : int
             The power.
-
-        Returns
-        -------
-        None
         """
         await inter.response.send_message(f"{a} ^ {b} = {a ** b}")
 
@@ -50,10 +46,6 @@ class MathGroup(commands.GroupCog, name="math", description="Math commands"):
             The first number.
         b : int
             The second number.
-
-        Returns
-        -------
-        None
         """
         await inter.response.send_message(f"{a} + {b} = {a + b}")
 
@@ -70,10 +62,6 @@ class MathGroup(commands.GroupCog, name="math", description="Math commands"):
             The first number.
         b : int
             The second number.
-
-        Returns
-        -------
-        None
         """
         await inter.response.send_message(f"{a} - {b} = {a - b}")
 
@@ -90,10 +78,6 @@ class MathGroup(commands.GroupCog, name="math", description="Math commands"):
             The first number.
         b : int
             The second number.
-
-        Returns
-        -------
-        None
         """
         await ctx.send(f"{a} * {b} = {a * b}")
 
@@ -110,10 +94,6 @@ class MathGroup(commands.GroupCog, name="math", description="Math commands"):
             The first number.
         b : int
             The second number.
-
-        Returns
-        -------
-        None
         """
         await ctx.send(f"{a} / {b} = {a / b}")
 
