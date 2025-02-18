@@ -43,7 +43,7 @@ repos:
         name: ruff
         pass_filenames: false
         entry: poetry
-        args: ["run", "ruff", "."]
+        args: ["run", "ruff", "check", ".", "--fix"]
         language: python
         stages:
           - commit
