@@ -25,7 +25,7 @@ pyright = "^1.1.324"
 mkdocs-material = "^9.2.5"
 pygments = "^2.16.1"
 mkdocs = "^1.5.2"
-mkdocstrings = {extras = ["python-legacy"], version = "^0.26.1"}
+mkdocstrings = {extras = ["python-legacy"], version = "^0.28.1"}
 Pillow = "^10.0.0"
 CairoSVG = "^2.7.1"
 pipwin = "^0.5.2"
