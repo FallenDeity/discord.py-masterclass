@@ -1108,5 +1108,5 @@ The complete source code for the above can be found [here](https://github.com/Fa
 
 Whew! That was a lot of information. We covered in detail each aspect of the help command provided by `discord.py` and how you can customize it to suit your needs. We also discussed how to integrate the custom help command with slash commands. We hope this guide helps you understand the help command better and how you can customize it to provide a better experience for your users.
 
-- [Custom Help Command Source Code]((https://github.com/FallenDeity/discord.py-masterclass/tree/master/examples/slash-commands/utils/help.py)
+- [Custom Help Command Source Code](https://github.com/FallenDeity/discord.py-masterclass/tree/master/examples/slash-commands/utils/help.py)
 - A Help Command extension [library](https://github.com/InterStella0/starlight-dpy) by [InterStella0](https://github.com/InterStella0).
