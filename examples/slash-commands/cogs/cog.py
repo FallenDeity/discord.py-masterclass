@@ -56,6 +56,16 @@ class General(commands.Cog):
 
     @app_commands.command(name="echo", description="Echo a message")
     async def echo(self, inter: discord.Interaction, message: str) -> None:
+        """
+        Echo a message back to the user.
+
+        Parameters
+        ----------
+        inter : discord.Interaction
+            The interaction
+        message : str
+            The message to echo
+        """
         await inter.response.send_message(message)
 
 
