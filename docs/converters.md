@@ -245,11 +245,11 @@ Default syntax for flag converters:
 !command argument1: value1 argument2: value2 ...
 ```
 
-If you wish to learn more about this feature please refer to the documentation [here](https://discordpy.readthedocs.io/en/stable/ext/commands/commands.html#flagconverter)
+If you wish to learn more about this feature please refer to the documentation [here][discord.ext.commands.FlagConverter].
 
 ## Parameter metadata
 
-The parameter feature enables the addition of metadata to command parameters, including details like converters, default values, descriptions, and displayed names. For a list of all available parameters, please refer to the documentation [here](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#discord.ext.commands.parameter).
+The parameter feature enables the addition of metadata to command parameters, including details like converters, default values, descriptions, and displayed names. For a list of all available parameters, please refer to the documentation [here][discord.ext.commands.parameter].
 
 We can update the definition of the previously defined command [timeout](#advanced), allowing us to type hint it as `datetime.timedelta` and utilize the converter argument of the parameter.
 

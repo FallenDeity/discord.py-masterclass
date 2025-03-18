@@ -90,7 +90,7 @@ If you need to set path to `ffmpeg` executable directly, use
 ctx.voice_client.play(discord.FFmpegPCMAudio("my-cool-music.mp3", executable="path/to/ffmpeg.exe"))
 ```
 
-You can see other `FFmpegPCMAudio` possible arguments in the [docs](https://discordpy.readthedocs.io/en/stable/api.html#ffmpegpcmaudio). Instead of `FFmpegPCMAudio` also `FFmpegOpusAudio` can be used.
+You can see other `FFmpegPCMAudio` possible arguments in the [docs][discord.FFmpegPCMAudio]. Instead of `FFmpegPCMAudio` also `FFmpegOpusAudio` can be used.
 
 #### What is PCM and Opus
 
@@ -358,10 +358,13 @@ def create_bar(position, duration):
     return "█" * n + "▒" * (15 - n)
 
 
-@bot.event
-async def setup_hook():
-    nodes = [wavelink.Node(uri="...", password="...")]
-    await wavelink.Pool.connect(nodes=nodes, client=bot)
+class MyBot(commands.Bot):
+    async def setup_hook(self):
+        nodes = [wavelink.Node(uri="...", password="...")]
+        await wavelink.Pool.connect(nodes=nodes, client=self)
+
+
+bot = MyBot(command_prefix=".", intents=intents)
 
 
 @bot.event

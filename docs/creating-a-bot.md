@@ -369,7 +369,7 @@ Now that we have our bot ready, we can start adding commands and events. Here is
 
 !!! note "Note"
     If you want to use `discord.Client` for slash commands, the process is the same as the one for `discord.ext.commands.Bot`. The only difference is that you need to create a tree attribute for your client instance manually.
-    Documentation for `discord.app_commands.CommandTree` can be found [here](https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.app_commands.CommandTree).
+    Documentation for `discord.app_commands.CommandTree` can be found [here][discord.app_commands.CommandTree].
 
     ```python
     client = discord.Client(intents=discord.Intents.all())

@@ -28,6 +28,8 @@ theme:
     - toc.follow
     - toc.integrate
     - navigation.footer
+    - search.suggest
+    - search.share
   palette:
     - scheme: light
       primary: indigo
@@ -43,8 +45,10 @@ theme:
         name: Dark Mode
 
 plugins:
-  - glightbox
+  - glightbox:
+      auto_caption: true
   - mkdocstrings:
+      default_handler: python
       handlers:
         python:
           options:
@@ -53,8 +57,9 @@ plugins:
             docstring_style: numpy
             merge_init_into_class: true
             inherited_members: true
-          import:
+          inventories:
             - https://docs.python.org/3.9/objects.inv
+            - http://discordpy.readthedocs.io/en/stable/objects.inv
   - search
   - social:
       cards_layout_options:

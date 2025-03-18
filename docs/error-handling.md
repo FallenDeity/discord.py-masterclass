@@ -84,7 +84,7 @@ The [discord.py documentation](https://discordpy.readthedocs.io/en/stable/ext/co
 
 ## Command Handler
 
-To create a handler for a single command, use [Command.error](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Command.error) decorator.  This handler will only operate with this command, not any others.
+To create a handler for a single command, use [Command.error][discord.ext.commands.Command.error] decorator.  This handler will only operate with this command, not any others.
 
 ```py
 @bot.command()
@@ -116,7 +116,7 @@ async def foo_error(ctx: commands.Context, error: commands.CommandError):
 ![Showcase](assets/error-handling/3.png){ align=left }
 
 !!! info "Note"
-    If there is an actual error in your code, then it will be a [CommandInvokeError](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.CommandInvokeError). We can use its `original` or `__cause__` attribute to retrieve the original error.
+    If there is an actual error in your code, then it will be a [CommandInvokeError][discord.ext.commands.CommandInvokeError]. We can use its `original` or `__cause__` attribute to retrieve the original error.
     ```py
     error = error.__cause__
     ```
@@ -125,7 +125,7 @@ async def foo_error(ctx: commands.Context, error: commands.CommandError):
 
 You can set up a cog handler if there are several commands with the same exceptions in the same cog.
 
-For that you need create a cog and override [Cog.cog_command_error](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Cog.cog_command_error) method.
+For that you need create a cog and override [Cog.cog_command_error][discord.ext.commands.Cog.cog_command_error] method.
 
 ```py
 import traceback
@@ -157,7 +157,7 @@ async def setup(bot: commands.Bot):
 ![Showcase](assets/error-handling/3.png){ align=left }
 
 !!! warning "Warning"
-    Make sure to load your cogs otherwise commands will not be registered to bot and there will be no response. To load cogs, use the [Bot.load_extension](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.load_extension) method.
+    Make sure to load your cogs otherwise commands will not be registered to bot and there will be no response. To load cogs, use the [Bot.load_extension][discord.ext.commands.Bot.load_extension] method.
 
     ```py
     await bot.load_extension("cogs.example")
@@ -169,9 +169,9 @@ It can get very boring to handle errors for each command or cog separately. Espe
 
 Let's make a global error handler, that will be used by all commands.
 
-For that you need to override bot's [on_command_error method](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.on_command_error).
+For that you need to override bot's [on_command_error method][discord.ext.commands.Bot.on_command_error].
 
-In order to accomplish this, you can either subclass the bot and modify its method, or use [Bot.event](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.event) or [Bot.listen](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.listen) decorator.
+In order to accomplish this, you can either subclass the bot and modify its method, or use [Bot.event][discord.ext.commands.Bot.event] or [Bot.listen][discord.ext.commands.Bot.listen] decorator.
 
 ```py
 import traceback
@@ -243,10 +243,12 @@ class Example(commands.Cog):
             await ctx.send("Got KeyError inside the command handler")
 
 
-@bot.event
-async def setup_hook():
-    await bot.add_cog(Example())
+class MyBot(commands.Bot):
+    async def setup_hook(self):
+        await self.add_cog(Example())
 
+
+bot = MyBot(command_prefix=".", intents=intents)
 
 @bot.event
 async def on_command_error(ctx: commands.Context, error: commands.CommandError):

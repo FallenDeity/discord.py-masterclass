@@ -15,7 +15,7 @@ In this guide, we will cover how to customize the help command to display inform
 
 `discord.py` has a set of [base classes](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=helpcommand#help-commands) that can be used to create a custom help command.
 
-- [`commands.DefaultHelpCommand`](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=helpcommand#defaulthelpcommand): The default help command that comes with `discord.py`. It is a subclass of `commands.HelpCommand` and acts as a basic help command for prefix and hybrid commands.
+- [`discord.ext.commands.DefaultHelpCommand`][]: The default help command that comes with `discord.py`. It is a subclass of `commands.HelpCommand` and acts as a basic help command for prefix and hybrid commands.
 
 === "Default Help Command"
     ![Default Help Command](./assets/examples/help-command/default-help-command.png)
@@ -29,7 +29,7 @@ In this guide, we will cover how to customize the help command to display inform
 === "Cog Help"
     ![Cog Help](./assets/examples/help-command/default-cog-help.png)
 
-- [`commands.MinimalHelpCommand`](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=helpcommand#minimalhelpcommand): Similar to `DefaultHelpCommand` but with a minimalistic design, using plain text instead of code blocks and simplified formatting.
+- [`discord.ext.commands.MinimalHelpCommand`][]: Similar to `discord.ext.commands.DefaultHelpCommand` but with a minimalistic design, using plain text instead of code blocks and simplified formatting.
 
 === "Minimal Help Command"
     ![Minimal Help Command](./assets/examples/help-command/minimal-help-command.png)
@@ -43,11 +43,11 @@ In this guide, we will cover how to customize the help command to display inform
 === "Cog Help"
     ![Cog Help](./assets/examples/help-command/minimal-cog-help.png)
 
-- [`commands.HelpCommand`](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=helpcommand#helpcommand): The base class for creating custom help commands. It provides methods that can be overridden to customize the help command's behavior. By default, it does nothing and is meant to be subclassed.
+- [`discord.ext.commands.HelpCommand`][]: The base class for creating custom help commands. It provides methods that can be overridden to customize the help command's behavior. By default, it does nothing and is meant to be subclassed.
 
 ### Methods of HelpCommand
 
-The `commands.HelpCommand` class provides the following methods that can be overridden to customize the help command's behavior and utility methods to construct the help message.
+The `discord.ext.commands.HelpCommand` class provides the following methods that can be overridden to customize the help command's behavior and utility methods to construct the help message.
 
 | Method                                               | Description                                                                                                                                                        |
 |------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|

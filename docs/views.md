@@ -8,21 +8,21 @@ All tools for creating components are located in the `discord.ui` module.
 
 Here are all the components you can create:
 
-- [Button](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#button)
-- [Select Menu](https://discordpy.readthedocs.io/en/latest/interactions/api.html?highlight=dynamic#select-menus)  
-    - [Select Option](https://discordpy.readthedocs.io/en/latest/interactions/api.html?highlight=dynamic#select)
-    - [Channel Select Menu](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#channelselect)
-    - [Role Select Menu](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#roleselect)
-    - [User Select Menu](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#userselect)
-    - [Mentionable Select Menu](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#mentionableselect)
-- [Modal](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#modal)  
-    - [Text Input](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#id3)
+- [Button][discord.ui.Button]
+- [Select Menu](https://discordpy.readthedocs.io/en/latest/interactions/api.html?highlight=dynamic#select-menus)
+    - [Select Menu][discord.ui.Select]
+    - [Channel Select Menu][discord.ui.ChannelSelect]
+    - [Role Select Menu][discord.ui.RoleSelect]
+    - [User Select Menu][discord.ui.UserSelect]
+    - [Mentionable Select Menu][discord.ui.MentionableSelect]
+- [Modal][discord.ui.Modal]  
+    - [Text Input][discord.ui.TextInput]
 
 ## Creating a View
 
 To create a view, you must instantiate a subclass of `discord.ui.View` or `discord.ui.View` itself.
 
-Before creating a [View](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#view) it's necessary to take a look at few of its methods:
+Before creating a [View][discord.ui.View] it's necessary to take a look at few of its methods:
 
 - `discord.ui.View.add_item(item)` - Adds a component to the view.
 - `discord.ui.View.interaction_check(interaction)` - A check that is called when an interaction is received. If the check returns `True`, the interaction is processed. If the check returns `False`, the interaction is ignored.
@@ -505,7 +505,7 @@ Why did we not use our `BaseView` class? Well, the `BaseView` class has attribut
 
 Ok so now that we know that memory is not persistent, how do we make it persistent? Well, one way to do it is to use a database to store the state of the view and it's related attributes such as `guild_id`, `channel_id`, `message_id` and `view_state`. Then when the bot restarts, we can fetch the view state from the database and recreate the view in the `interaction_check` method. But this is a lot of work and requires a database.
 
-So is there a simpler way to do this? Well, yes there is. Is it recommended? Well, depends the amount of data you want to store. So in order to deal with such cases `discord.py` provides a [`discord.ui.DynamicItem`](https://discordpy.readthedocs.io/en/latest/interactions/api.html?highlight=dynamic#dynamicitem) class which uses the `custom_id` of the component to store data. It takes a parameter `template` which receives a [regex](https://docs.python.org/3/library/re.html) pattern and uses it to extract data from the `custom_id` of the component.
+So is there a simpler way to do this? Well, yes there is. Is it recommended? Well, depends the amount of data you want to store. So in order to deal with such cases `discord.py` provides a [`discord.ui.DynamicItem`][] class which uses the `custom_id` of the component to store data. It takes a parameter `template` which receives a [regex](https://docs.python.org/3/library/re.html) pattern and uses it to extract data from the `custom_id` of the component.
 
 Here's an example:
 
@@ -836,7 +836,7 @@ async def persistent_dynamic_select_menu(ctx: commands.Context):
 
 ## Modals
 
-Modals are how you can prompt users for further detailed input. They act as form popups, and work in tandem with interactive components called Text Inputs. These inputs can have various formats to accept information from the user on prompt, and use the callback to process that information. A modal can only have [`Text Input`](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#id3) components.
+Modals are how you can prompt users for further detailed input. They act as form popups, and work in tandem with interactive components called Text Inputs. These inputs can have various formats to accept information from the user on prompt, and use the callback to process that information. A modal can only have [`Text Input`][discord.ui.TextInput] components.
 
 Like views, we need to take a look at a few of the methods of the `discord.ui.Modal` class to understand how to create a modal:
 
@@ -882,7 +882,7 @@ class BaseModal(discord.ui.Modal):
         return self._interaction
 ```
 
-Modals can only have text inputs, so let's take a look at the [`discord.ui.TextInput`](https://discordpy.readthedocs.io/en/stable/interactions/api.html?highlight=view#textinput) class:
+Modals can only have text inputs, so let's take a look at the [`discord.ui.TextInput`][] class:
 
 - `label` - The text that appears above the text input.
 - `placeholder` - The text that appears in the text input when no text is entered.

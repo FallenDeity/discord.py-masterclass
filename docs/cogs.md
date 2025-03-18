@@ -9,9 +9,88 @@ Cogs allow you to structure your bot's code into modules. They keep your code ti
 | A class that inherits from `commands.Cog`    | A Python module (file) that contains a Cog or a bunch of standalone callbacks (commands, events, listeners, etc.) |
 | Used to organize commands, events, and tasks | Used to load cogs, commands, events, listeners, etc. into the bot, using the `setup` function as an entry point   |
 
+!!! note "Note"
+    A cog doesn't have to be an extension. You can define a cog in the same file as your bot and use it without loading it as an extension. However, it is a good practice to separate your cogs into different files and load them as extensions, as it prevents you from having a cluttered codebase.
+
+    === "Cog in the same file"
+        ```python title="bot.py"
+        from discord.ext import commands
+
+        class SuperCog(commands.Cog):
+            def __init__(self, bot):
+                self.bot = bot
+            @commands.command()
+            async def super_command(self, ctx):
+                await ctx.send("Hello from SuperCog!")
+
+        class MyBot(commands.Bot):
+            async def setup_hook(self):
+                await self.add_cog(SuperCog(self))
+
+        bot = MyBot(command_prefix="!", intents=discord.Intents.default())
+        bot.run("TOKEN")
+        ```
+    === "Cog in a separate file"
+        ```
+        .
+        ├── bot.py
+        └── cogs
+            └── super_cog.py
+        ```
+        ```python title="cogs/super_cog.py"
+        from discord.ext import commands
+
+        class SuperCog(commands.Cog):
+            def __init__(self, bot):
+                self.bot = bot
+            @commands.command()
+            async def super_command(self, ctx):
+                await ctx.send("Hello from SuperCog!")
+
+        async def setup(bot):
+            await bot.add_cog(SuperCog(bot))
+        ```
+        ```python title="bot.py"
+        from discord.ext import commands
+
+        class MyBot(commands.Bot):
+            async def setup_hook(self):
+                await self.load_extension("cogs.super_cog")
+
+        bot = MyBot(command_prefix="!", intents=discord.Intents.default())
+        bot.run("TOKEN")
+        ```
+
 ## Extensions
 
 An extension is a Python module that contains a Cog or a bunch of standalone callbacks (commands, events, listeners, etc.). To load an extension, you need to define a `setup` function in the extension that takes the bot as an argument using which you can add commands, cogs, and tasks to the bot.
+
+!!! note "Note"
+    The concept of extensions is not limited to cogs or discord.py. It is a general concept in programming. Extensions are used to extend the functionality of a program by adding new features or modifying existing ones.
+
+    In context of python the term `extension` more often entails utilizing C/C++ to extend the functionality of python. You can read more about it [here](https://docs.python.org/3/extending/extending.html).
+
+    A more day to day example of an "extension" in python would be packages or modules you use in your code via `import` statement. Here is an example utilizing python modules:
+
+    ```
+    |
+    ├── src
+    │   └── my_module
+    │       └── cool_module.py
+    └── main.py
+    ```
+
+    ```python title="main.py"
+    import my_module.cool_module
+
+    my_module.cool_module.cool_function()
+    ```
+
+    ```python title="my_module/cool_module.py"
+    def cool_function():
+        print("I'm cool!")
+    ```
+    In this example `cool_module.py` is a python module that is being loaded into `main.py` using the `import` statement.
 
 ### Loading extensions
 
@@ -206,22 +285,22 @@ Lets say you have a folder called `cogs` and you want to load all extensions fro
     ```python
     import os
 
-    @bot.event
-    async def setup_hook():
-        for file in os.listdir("cogs"):
-            if file.endswith(".py") and not file.startswith("_"):
-                await bot.load_extension(f"cogs.{file[:-3]}")
+    class MyBot(commands.Bot):
+        async def setup_hook(self):
+            for file in os.listdir("cogs"):
+                if file.endswith(".py") and not file.startswith("_"):
+                    await self.load_extension(f"cogs.{file[:-3]}")
     ```
 === "Using pathlib"
     ```python
     import pathlib
 
-    @bot.event
-    async def setup_hook():
-        for file in pathlib.Path("cogs").rglob("*.py"):
-            if file.stem.startswith("_"):
-                continue
-            await bot.load_extension(".".join(file.with_suffix("").parts))
+    class MyBot(commands.Bot):
+        async def setup_hook(self):
+            for file in pathlib.Path("cogs").rglob("*.py"):
+                if file.stem.startswith("_"):
+                    continue
+                await self.load_extension(".".join(file.with_suffix("").parts))
     ```
 
 !!! note "Note"

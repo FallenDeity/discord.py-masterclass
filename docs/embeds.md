@@ -55,7 +55,7 @@ embed = discord.Embed(
 
 - `title` - The title of the embed
 - `description` - The description of the embed
-- `color` - The color of the embed, you can use [`discord.Color`](https://discordpy.readthedocs.io/en/stable/api.html#colour) to set the color or construct colors using the following methods:
+- `color` - The color of the embed, you can use [`discord.Colour`][] to set the color or construct colors using the following methods:
     - `discord.Color.from_rgb(r, g, b)`
     - `discord.Color.from_hsv(h, s, v)`
     - `discord.Color.from_str("0x<HEX> | #<HEX> | 0x#<HEX> | rgb(r, g, b)")`
@@ -67,7 +67,7 @@ embed = discord.Embed(
 
 ### Getting a list of fields
 
-**property** [Embed.fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.fields)
+**property** [discord.Embed.fields][]
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -90,7 +90,7 @@ embed = discord.Embed(
 
 ### Appending a field
 
-**method** [Embed.add_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.add_field)
+**method** [discord.Embed.add_field][]
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -104,7 +104,7 @@ embed = discord.Embed(
 
 ### Inserting field at index
 
-**method** [Embed.insert_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.insert_field_at)
+**method** [discord.Embed.insert_field_at][]
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -119,7 +119,7 @@ embed = discord.Embed(
 
 ### Changing field at index
 
-**method** [Embed.set_field_at](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.set_field_at)
+**method** [discord.Embed.set_field_at][]
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -134,7 +134,7 @@ embed = discord.Embed(
 
 ### Removing one field
 
-**method** [Embed.remove_field](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.remove_field)
+**method** [discord.Embed.remove_field][]
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -149,7 +149,7 @@ embed = discord.Embed(
 
 ### Removing all fields
 
-**method** [Embed.clear_fields](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.clear_fields)
+**method** [discord.Embed.clear_fields][]
 
 ```pycon title="Python Console Session"
 >>> import discord
@@ -183,7 +183,7 @@ async def foo(ctx: commands.Context):
 
 Converting embed objects to the Python dictionary and vice versa is very simple.
 
-For that we can use [from_dict](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.from_dict) and [to_dict](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Embed.to_dict) methods
+For that we can use [from_dict][discord.Embed.from_dict] and [to_dict][discord.Embed.to_dict] methods
 
 ```pycon title="Python Console Session"
 >>> import discord

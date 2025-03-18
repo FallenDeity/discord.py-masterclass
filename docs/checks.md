@@ -67,7 +67,7 @@ Adding check to *any* single command
 
 Adding check to all existing ***prefix*** commands
 
-To add a kind of global check for slash commands you can override [CommandTree.interaction_check](https://discordpy.readthedocs.io/en/stable/interactions/api.html?#discord.app_commands.CommandTree.interaction_check)
+To add a kind of global check for slash commands you can override [CommandTree.interaction_check][discord.app_commands.CommandTree.interaction_check] method.
 
 #### bot.check
 
@@ -83,9 +83,9 @@ def check(ctx: commands.Context):
 
 #### bot.check_once
 
-Same as [bot.check](#botcheck) except it is called only once per [invoke()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=check#discord.ext.commands.Bot.invoke) call
+Same as [bot.check](#botcheck) except it is called only once per [invoke()][discord.ext.commands.Bot.invoke] call
 
-Regular global checks are called whenever a command is called or [Command.can_run()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=check#discord.ext.commands.Command.can_run) is called. This type of check bypasses that and ensures that it’s called only once, even inside the default help command.
+Regular global checks are called whenever a command is called or [Command.can_run()][discord.ext.commands.Command.can_run] is called. This type of check bypasses that and ensures that it’s called only once, even inside the default help command.
 
 ```py
 @bot.check_once
@@ -153,7 +153,7 @@ Adding a check on each command inside the cog
 
 When an error inside check happens, the error is propagated to the error handlers.
 
-If you don't raise an exception but return false-like value, then it will get wrapped up into a [CheckFailure](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#discord.ext.commands.CheckFailure) exception.
+If you don't raise an exception but return false-like value, then it will get wrapped up into a [CheckFailure][discord.ext.commands.CheckFailure] exception.
 
 !!! tip "Tip"
     Check out [Error Handling page](error-handling.md) for more examples and explanations about error handling
@@ -272,7 +272,7 @@ Similar to [has_any_role](#has_any_role) except checks if the bot itself has the
 ### Permissions
 
 !!! abstract "List of existing permissions"
-    They are attributes of [discord.Permissions](https://discordpy.readthedocs.io/en/stable/api.html?#discord.Permissions)
+    They are attributes of [discord.Permissions][]
 
     `add_reactions`, `administrator`, `attach_files`, `ban_members`, `change_nickname`, `connect`, `create_instant_invite`, `create_private_threads`, `create_public_threads`, `deafen_members`, `embed_links`, `external_emojis`, `external_stickers`, `kick_members`, `manage_channels`, `manage_emojis`, `manage_emojis_and_stickers`, `manage_events`, `manage_guild`, `manage_messages`, `manage_nicknames`, `manage_permissions`, `manage_roles`, `manage_threads`, `manage_webhooks`, `mention_everyone`, `moderate_members`, `move_members`, `mute_members`, `priority_speaker`, `read_message_history`, `read_messages`, `request_to_speak`, `send_messages`, `send_messages_in_threads`, `send_tts_messages`, `speak`, `stream`, `use_application_commands`, `use_embedded_activities`, `use_external_emojis`, `use_external_stickers`, `use_voice_activation`, `view_audit_log`, `view_channel`, `view_guild_insights`
 
@@ -385,7 +385,7 @@ Checks if command is invoked inside a guild
     ```
 
     !!! tip "Tip"
-        You can use [app_commands.guild_only()](https://discordpy.readthedocs.io/en/stable/interactions/api.html?#discord.app_commands.guild_only) instead of check
+        You can use [app_commands.guild_only()][discord.app_commands.guild_only] instead of check
 
         ```py
         @bot.tree.command()
@@ -457,7 +457,7 @@ Checks if the channel is a NSFW channel.
 
 Checks if the person invoking this command is the owner of the bot.
 
-This is powered by [Bot.is_owner()](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.is_owner).
+This is powered by [Bot.is_owner()][discord.ext.commands.Bot.is_owner].
 
 === "Prefix Commands"
 
@@ -580,7 +580,7 @@ Registers a coroutine as a post-invoke hook.
 
 A cooldown allows a command to only be used a specific amount of times in a specific time frame. These cooldowns can be based either on a per-guild,
 per-channel, per-user, per-role or global basis. Denoted by the third argument of `type` which must be of enum
-type [BucketType](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=cooldown#discord.ext.commands.BucketType).
+type [BucketType][discord.ext.commands.BucketType].
 
 #### cooldown
 
@@ -617,9 +617,7 @@ Adds a cooldown to a Command
 
 Adds a dynamic cooldown to a Command
 
-This differs from [cooldown](#cooldown) in that it takes a function that accepts a single parameter of
-type [Context](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?highlight=cooldown#discord.ext.commands.Context) ([Interaction](https://discordpy.readthedocs.io/en/stable/interactions/api.html#discord.Interaction) for slash) and must return
-a [Cooldown](https://discordpy.readthedocs.io/en/stable/interactions/api.html#discord.app_commands.Cooldown) or `None`. If `None` is returned then that cooldown
+This differs from [cooldown](#cooldown) in that it takes a function that accepts a single parameter of type [Context][discord.ext.commands.Context] for prefix commands or [Interaction][discord.Interaction] for slash commands and must return a [Cooldown][discord.app_commands.Cooldown] or `None`. If `None` is returned then that cooldown
 is effectively bypassed.
 
 === "Prefix Commands"
@@ -746,7 +744,7 @@ async def check_content(ctx):
 ### Extending existing checks
 
 A special attribute named `predicate` is bound to the value returned
-by [commands.check](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.check) decorator to retrieve the predicate passed to
+by [commands.check][discord.ext.commands.check] decorator to retrieve the predicate passed to
 the decorator.
 
 ```py

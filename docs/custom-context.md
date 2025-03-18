@@ -1,6 +1,6 @@
 # Custom Context Class
 
-There are many uses for [context](https://discordpy.readthedocs.io/en/latest/ext/commands/api.html?#discord.ext.commands.Context) and its properties, however occasionally we wish to add some additional methods or attributes.
+There are many uses for [context][discord.ext.commands.Context] and its properties, however occasionally we wish to add some additional methods or attributes.
 
 Here is how you do it in discord.py:
 
@@ -27,7 +27,7 @@ class MyContext(commands.Context):
 
 ### Overriding get_context
 
-* Make discord.py use your context class by overriding the [get_context](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html?#discord.ext.commands.Bot.get_context) method in the bot subclass.
+* Make discord.py use your context class by overriding the [get_context][discord.ext.commands.Bot.get_context] method in the bot subclass.
 
 ```py
 import discord

@@ -52,9 +52,11 @@ Then you can start it by using it's `start` method. This will schedule the task 
     async def my_task():
         print("Hello!")
 
-    @bot.event
-    async def setup_hook():  # setup_hook is called before the bot is started
-        my_task.start()
+    class MyBot(commands.Bot):
+        async def setup_hook(self):  # setup_hook is called before the bot starts
+            my_task.start()
+
+    bot = MyBot(command_prefix="!", intents=intents)
 
     @my_task.before_loop
     async def before_my_task():
