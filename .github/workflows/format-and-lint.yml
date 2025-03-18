@@ -2,15 +2,10 @@ name: Code formatter and linter
 
 on:
   push:
-    branches: [ master ]
-
-permissions:
-  contents: write
+  pull_request:
 
 jobs:
-
   build:
-
     runs-on: Ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,4 +29,4 @@ jobs:
           poetry run ruff check .
       - name: Build docs
         run: |
-          poetry run mkdocs gh-deploy --force
+          poetry run mkdocs build
