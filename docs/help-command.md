@@ -1,5 +1,3 @@
-from examples.views.main import CustomBot
-
 # Help Command
 
 The help command is used to display information about the bot and its commands, cogs/extensions, and groups. There are two types of commands:
