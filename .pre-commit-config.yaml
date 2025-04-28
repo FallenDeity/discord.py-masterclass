@@ -24,7 +24,7 @@ repos:
         args: ["run", "isort", "."]
         language: python
         stages:
-          - commit
+          - pre-commit
 
   - repo: local
     hooks:
@@ -35,7 +35,7 @@ repos:
         args: ["run", "black", "."]
         language: python
         stages:
-          - commit
+          - pre-commit
 
   - repo: local
     hooks:
@@ -46,4 +46,4 @@ repos:
         args: ["run", "ruff", "check", ".", "--fix"]
         language: python
         stages:
-          - commit
+          - pre-commit
