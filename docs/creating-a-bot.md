@@ -28,12 +28,46 @@ TOKEN=your_token_here
 
 Replace `your_token_here` with your bot token. After adding the token, we need to install the discord.py library. To do this, open a new terminal in your code editor and run the following command:
 
-=== "Without Voice Support"
+=== "Without Voice Support (Python 3.13+)"
+    ```bash
+    pip install discord.py audioop-lts
+    ```
+
+=== "With Voice Support (Pre Python 3.13+)"
+    ```bash
+    pip install discord.py[voice] audioop-lts
+    ```
+
+    Linux users might need to install the following packages to enable voice support:
+
+    === "Debian/Ubuntu"
+        ```bash
+        sudo apt install libffi-dev libsodium-dev python3-dev
+        ```
+
+    === "Fedora/RHEL/CentOS"
+        ```bash
+        sudo dnf install libffi-devel libsodium-devel python3-devel
+        ```
+
+    === "Arch"
+        ```bash
+        sudo pacman -Syu libffi libsodium
+        ```
+
+    !!! warning "Warning"
+        If you are on any other distribution, you will need to install the required packages using your package manager.
+
+        - `libffi-dev` or `libffi-devel`
+        - `libsodium-dev` or `libsodium-devel`
+
+
+=== "Without Voice Support (Pre Python 3.13)"
     ```bash
     pip install discord.py
     ```
 
-=== "With Voice Support"
+=== "With Voice Support (Pre Python 3.13)"
     ```bash
     pip install discord.py[voice]
     ```
@@ -78,6 +112,8 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
             venv/Scripts/activate
             # Install discord.py
             pip install discord.py
+            # If running on Python 3.13 and above
+            pip install audioop-lts
             ```
         === "Mac & Linux"
             ```bash
@@ -87,6 +123,8 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
             source venv/bin/activate
             # Install discord.py
             pip install discord.py
+            # If running on Python 3.13 and above
+            pip install audioop-lts
             ```
         ![Virtual Environment Files](assets/creating-a-bot/venv-files.png){ align=left }
         ![Virtual Environment](assets/creating-a-bot/virtual-environment.png){ align=right }
@@ -104,6 +142,8 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
         ```bash
         poetry init
         poetry add discord.py
+        # If on Python 3.13 and above
+        poetry add audioop-lts
         ```
         ![Poetry Files](assets/creating-a-bot/poetry-files.png){ align=left }
         ![Poetry](assets/creating-a-bot/poetry.png){ align=right }
