@@ -1,0 +1,88 @@
+{
+  "projectName": "discord.py-masterclass",
+  "projectOwner": "FallenDeity",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "FallenDeity",
+      "name": "Triyan Mukherjee",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61227305?v=4",
+      "profile": "https://triyan.dev/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "aVitness",
+      "name": "Vitness",
+      "avatar_url": "https://avatars.githubusercontent.com/u/64283289?v=4",
+      "profile": "https://github.com/aVitness",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "DownDev",
+      "name": "Mikołaj Kruczek",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52790953?v=4",
+      "profile": "https://github.com/DownDev",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "thegamecracks",
+      "name": "thegamecracks",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61257169?v=4",
+      "profile": "https://blog.thegamecracks.xyz/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "enriquebos",
+      "name": "Enrique Bos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54767698?v=4",
+      "profile": "https://github.com/enriquebos",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Snipy7374",
+      "name": "Snipy7374",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100313469?v=4",
+      "profile": "https://github.com/Snipy7374",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "externref",
+      "name": "sarthak",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70657005?v=4",
+      "profile": "https://externref.duckdns.org/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kkrypt0nn",
+      "name": "Krypton",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43011723?v=4",
+      "profile": "https://krypton.ninja/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "linkToUsage": false
+}
