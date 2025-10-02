@@ -18,5 +18,10 @@ A clear and concise description of what you expected to happen.
 - Python version:
 - discord.py version:
 
+**Checklist**
+- [ ] I have searched for existing issues describing this bug.
+- [ ] I am using the latest released version of discord.py.
+- [ ] I have provided all required information above.
+
 **Additional context**
 Add any other context about the problem here.

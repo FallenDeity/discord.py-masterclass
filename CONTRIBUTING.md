@@ -107,6 +107,7 @@ poetry run ruff check .
 ```
 
 Or use pre-commit hooks:
+
 ```bash
 poetry run pre-commit run --all-files
 ```
@@ -152,9 +153,7 @@ poetry run pre-commit run --all-files
 
 3. Make your changes and run quality checks:
    ```bash
-   poetry run black .
-   poetry run isort .
-   poetry run ruff check .
+   poetry run pre-commit run --all-files
    ```
 
 4. Test documentation build (if applicable):
