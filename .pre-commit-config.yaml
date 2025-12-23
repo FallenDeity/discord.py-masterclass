@@ -20,7 +20,7 @@ repos:
       - id: isort
         name: isort
         pass_filenames: false
-        entry: poetry
+        entry: uv
         args: ["run", "isort", "."]
         language: python
         stages:
@@ -31,7 +31,7 @@ repos:
       - id: black
         name: black
         pass_filenames: false
-        entry: poetry
+        entry: uv
         args: ["run", "black", "."]
         language: python
         stages:
@@ -42,7 +42,7 @@ repos:
       - id: ruff
         name: ruff
         pass_filenames: false
-        entry: poetry
+        entry: uv
         args: ["run", "ruff", "check", ".", "--fix"]
         language: python
         stages:

@@ -38,20 +38,17 @@ Visit our [comprehensive documentation](https://fallendeity.github.io/discord.py
    cd discord.py-masterclass
    ```
 
-2. **Install Poetry** (if you don't have it)
-   ```bash
-   pip install poetry
-   ```
+2. **Install uv** (if you don't have it)
+   - [Installation Guide](https://docs.astral.sh/uv/getting-started/installation/)  
 
 3. **Install dependencies**
    ```bash
-   poetry install
+   uv sync --locked --all-extras --dev
    ```
 
 4. **Windows users only**: Extra step for Cairo (required for documentation), use if cairo is giving you issues
-   ```bash
-   pipwin install cairocffi
-   ```
+   - [Troubleshooting Guide](https://squidfunk.github.io/mkdocs-material/plugins/requirements/image-processing/#cairo-library-was-not-found-windows)
+   - [Msys2 Cairo Installation](https://packages.msys2.org/packages/mingw-w64-x86_64-cairo)
 
 5. **Set up your bot token**
 
@@ -62,7 +59,7 @@ Visit our [comprehensive documentation](https://fallendeity.github.io/discord.py
 
 6. **Run an example**
    ```bash
-   poetry run python examples/creating-a-bot/main.py
+   uv run python examples/creating-a-bot/main.py
    ```
 
 ## Contributing
@@ -81,7 +78,7 @@ Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started. We we
 ### Running the Documentation Locally
 
 ```bash
-poetry run mkdocs serve
+uv run mkdocs serve
 ```
 
 Visit `http://127.0.0.1:8000/discord.py-masterclass/` to view the documentation.
@@ -96,14 +93,14 @@ We use several tools to maintain code quality:
 
 Run all checks:
 ```bash
-poetry run black .
-poetry run isort .
-poetry run ruff check .
+uv run black .
+uv run isort .
+uv run ruff check .
 ```
 
 or use the pre-commit hooks:
 ```bash
-poetry run pre-commit run --all-files
+uv run pre-commit run --all-files
 ```
 
 ## Contributors

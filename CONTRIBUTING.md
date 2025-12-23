@@ -61,7 +61,7 @@ Code contributions are welcome in these areas:
 
 - Python 3.9 or higher
 - Git
-- Poetry (package manager)
+- uv (package manager)
 
 ### Setup Steps
 
@@ -78,12 +78,12 @@ Code contributions are welcome in these areas:
 
 3. Install dependencies:
    ```bash
-   poetry install
+   uv sync --locked --all-extras --dev
    ```
 
 4. Set up pre-commit hooks (recommended):
    ```bash
-   poetry run pre-commit install
+   uv run pre-commit install
    ```
 
 ## Coding Guidelines
@@ -101,15 +101,15 @@ Code contributions are welcome in these areas:
 Run these commands before submitting:
 
 ```bash
-poetry run black .
-poetry run isort .
-poetry run ruff check .
+uv run black .
+uv run isort .
+uv run ruff check .
 ```
 
 Or use pre-commit hooks:
 
 ```bash
-poetry run pre-commit run --all-files
+uv run pre-commit run --all-files
 ```
 
 ### Best Practices
@@ -153,12 +153,12 @@ poetry run pre-commit run --all-files
 
 3. Make your changes and run quality checks:
    ```bash
-   poetry run pre-commit run --all-files
+   uv run pre-commit run --all-files
    ```
 
 4. Test documentation build (if applicable):
    ```bash
-   poetry run mkdocs build
+   uv run mkdocs build
    ```
 
 5. Commit and push:
