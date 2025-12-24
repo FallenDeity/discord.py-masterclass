@@ -34,39 +34,43 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
     ```
 
 === "With Voice Support"
-    ```bash
-    pip install discord.py[voice]
-    ```
 
-    Linux users might need to install the following packages to enable voice support:
-
-    === "Debian/Ubuntu"
+    === "Python 3.8 - 3.12"
         ```bash
-        sudo apt install libffi-dev libsodium-dev python3-dev
+        pip install discord.py[voice]
         ```
 
-    === "Fedora/RHEL/CentOS"
+        Linux users might need to install the following packages to enable voice support:
+
+        === "Debian/Ubuntu"
+            ```bash
+            sudo apt install libffi-dev libsodium-dev python3-dev
+            ```
+
+        === "Fedora/RHEL/CentOS"
+            ```bash
+            sudo dnf install libffi-devel libsodium-devel python3-devel
+            ```
+
+        === "Arch"
+            ```bash
+            sudo pacman -Syu libffi libsodium
+            ```
+
+        !!! warning "Warning"
+            If you are on any other distribution, you will need to install the required packages using your package manager.
+
+            - `libffi-dev` or `libffi-devel`
+            - `libsodium-dev` or `libsodium-devel`
+
+    === "With Voice Support (Python 3.13+)"
         ```bash
-        sudo dnf install libffi-devel libsodium-devel python3-devel
+        pip install discord.py audioop-lts
         ```
 
-    === "Arch"
-        ```bash
-        sudo pacman -Syu libffi libsodium
-        ```
+        !!! info "Note"
+            The `audioop-lts` package is a community maintained package that provides support for the `audioop` module in Python 3.13 and above due to its deprecation in the standard library as of Python 3.11 and removal in Python 3.13. Refer to the official Python documentation [here](https://docs.python.org/3/library/audioop.html) for more information.
 
-    !!! warning "Warning"
-        If you are on any other distribution, you will need to install the required packages using your package manager.
-
-        - `libffi-dev` or `libffi-devel`
-        - `libsodium-dev` or `libsodium-devel`
-=== "With Voice Support (Python 3.13+)"
-    ```bash
-    pip install discord.py audioop-lts
-    ```
-
-    !!! info "Note"
-        The `audioop-lts` package is a community maintained package that provides support for the `audioop` module in Python 3.13 and above due to its deprecation in the standard library as of Python 3.11 and removal in Python 3.13. Refer for more information [here](https://docs.python.org/3/library/audioop.html).
 
 !!! note "Note"
     You can use ++ctrl+"`"++ to open a new terminal in Visual Studio Code.  
