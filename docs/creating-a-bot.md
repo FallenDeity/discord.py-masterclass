@@ -62,7 +62,7 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
         - `libsodium-dev` or `libsodium-devel`
 
     !!! info "Note"
-        The `audioop-lts` package is a community maintained package that provides support for the `audioop` module in Python 3.13 and above due to its deprecation in the standard library in Python 3.11 and removal in Python 3.13. Refer to the official Python documentation [here](https://docs.python.org/3/library/audioop.html) for more information. In latest versions of `discord.py`, if you are using Python 3.13 or above, the `audioop-lts` package will be installed automatically when you install `discord.py[voice]` as it is defined in the requirements for the [package](https://github.com/Rapptz/discord.py/blob/master/requirements.txt).
+        The `audioop-lts` package is a community maintained package that provides support for the `audioop` module in Python 3.13 and above due to its deprecation in the standard library in Python 3.11 and removal in Python 3.13. Refer to the official Python documentation [here](https://docs.python.org/3/library/audioop.html) for more information. In the latest versions of `discord.py`, if you are using Python 3.13 or above, the `audioop-lts` package will be installed automatically when you install `discord.py[voice]` as it is defined in the requirements for the [package](https://github.com/Rapptz/discord.py/blob/master/requirements.txt).
 
 
 !!! note "Note"
