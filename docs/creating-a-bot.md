@@ -60,7 +60,13 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
 
         - `libffi-dev` or `libffi-devel`
         - `libsodium-dev` or `libsodium-devel`
+=== "With Voice Support (Python 3.13+)"
+    ```bash
+    pip install discord.py audioop-lts
+    ```
 
+    !!! info "Note"
+        The `audioop-lts` package is a community maintained package that provides support for the `audioop` module in Python 3.13 and above due to its deprecation in the standard library as of Python 3.11 and removal in Python 3.13. Refer for more information [here](https://docs.python.org/3/library/audioop.html).
 
 !!! note "Note"
     You can use ++ctrl+"`"++ to open a new terminal in Visual Studio Code.  
@@ -108,7 +114,16 @@ Replace `your_token_here` with your bot token. After adding the token, we need t
         ![Poetry Files](assets/creating-a-bot/poetry-files.png){ align=left }
         ![Poetry](assets/creating-a-bot/poetry.png){ align=right }
         !!! note "Note"
-            You will need to run `poetry shell` every time you open a new terminal. As an indicator, you will see `(<project-name>)` in your terminal.
+            You will need to run `poetry shell` if you have the [shell plugin](https://github.com/python-poetry/poetry-plugin-shell) installed or `eval $(poetry env activate)` to activate the virtual environment every time you open a new terminal. As an indicator, you will see `(<project-name>)` in your terminal. This is only required if you don't want to preface your commands with `poetry run`.
+    === "uv"
+        ```bash
+        uv init
+        uv add discord.py
+        ```
+        ![uv Files](assets/creating-a-bot/uv-files.png){ align=left }
+        ![uv](assets/creating-a-bot/uv.png){ align=right }
+        !!! note "Note"
+            `uv` creates a virtual environment (`.venv` folder) for your project automatically. You can activate it by running `source .venv/bin/activate` on Mac & Linux or `.venv\Scripts\activate` on Windows. As an indicator, you will see `(.venv)` in your terminal. This is only required if you don't want to preface your commands with `uv run`.
 
 ## Writing the Code
 
