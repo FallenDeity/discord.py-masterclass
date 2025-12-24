@@ -255,11 +255,11 @@ Now that we have created our view, let's use it to make a few simple commands:
             button.label = str(int(button.label) + 1)
             # edit the message with the new view
             if button.label == "10":
-                self._disable_all()
-                await self._edit(view=self)
-                self.stop()
+                view._disable_all()
+                await view._edit(view=view)
+                view.stop()
             else:
-                await self._edit(view=self)
+                await view._edit(view=view)
         # add the callback to the button
         button.callback = callback
         view.add_item(button)
