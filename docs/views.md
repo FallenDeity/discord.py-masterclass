@@ -73,7 +73,7 @@ class MyView(discord.ui.View):
             await self.message.edit(view=self)
 
     # adding a component using it's decorator
-    @discord.ui.button(label="0", style=discord.ButtonStyle.green, )
+    @discord.ui.button(label="0", style=discord.ButtonStyle.green)
     async def counter(self, inter: discord.Interaction, button: discord.ui.Button[MyView]) -> None:
         self.count+=1
         button.label = str(self.count)
@@ -140,8 +140,6 @@ class BaseView(discord.ui.View):
         self.interaction = interaction
         return True
 
-    # to handle errors we first notify the user that an error has occurred and then disable all components
-
     def _disable_all(self) -> None:
         # disable all components
         # so components that can be disabled are buttons and select menus
@@ -165,6 +163,7 @@ class BaseView(discord.ui.View):
                 # if already responded to, edit the response
                 await self.interaction.edit_original_response(**kwargs)
 
+    # to handle errors we first notify the user that an error has occurred and then disable all components
     async def on_error(self, interaction: discord.Interaction, error: Exception, item: discord.ui.Item[BaseView]) -> None:
         tb = "".join(traceback.format_exception(type(error), error, error.__traceback__))
         message = f"An error occurred while processing the interaction for {str(item)}:\n```py\n{tb}\n```"

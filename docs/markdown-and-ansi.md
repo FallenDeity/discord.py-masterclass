@@ -30,7 +30,7 @@ class Style(enum.IntEnum):
 ### Foreground Colors
 
 | Color   | Code         |
-|---------|--------------|
+| ------- | ------------ |
 | Gray    | `\u001b[30m` |
 | Red     | `\u001b[31m` |
 | Green   | `\u001b[32m` |
@@ -59,7 +59,7 @@ class Colors(Style):
 
 
 | Color             | Code         |
-|-------------------|--------------|
+| ----------------- | ------------ |
 | Firefly Dark Blue | `\u001b[40m` |
 | Orange            | `\u001b[41m` |
 | Marble Blue       | `\u001b[42m` |
@@ -86,11 +86,11 @@ class Backgrounds(Style):
 
 ### Text Formats
 
-| Format | Code         |
-|--------|--------------|
-| Normal | `\u001b[0m`  |
-| Bold   | `\u001b[1m`  |
-| Underline | `\u001b[4m`  |
+| Format    | Code        |
+| --------- | ----------- |
+| Normal    | `\u001b[0m` |
+| Bold      | `\u001b[1m` |
+| Underline | `\u001b[4m` |
 
 ```python
 class Formats(Style):
@@ -246,7 +246,7 @@ bot.run(str(os.getenv("TOKEN")))
 ### Text Formatting
 
 | Format        | Code                                            |
-|---------------|-------------------------------------------------|
+| ------------- | ----------------------------------------------- |
 | Bold          | `**bold**` like this **bold**                   |
 | Italic        | `*italic*` like this *italic*                   |
 | Underline     | `__underline__` like this ^^underline^^         |
@@ -259,19 +259,20 @@ bot.run(str(os.getenv("TOKEN")))
 
 #### Headers
 
-| Format | Code              |
-|--------|-------------------|
-| H1     | `# Header 1`      |
-| H2     | `## Header 2`     |
-| H3     | `### Header 3`    |
+| Format  | Code           |
+| ------- | -------------- |
+| H1      | `# Header 1`   |
+| H2      | `## Header 2`  |
+| H3      | `### Header 3` |
+| Subtext | `-# Subtext`   |
 
 ![Headers](assets/markdown-and-ansi/headers.png)
 
 #### Links
 
-| Format | Code              |
-|--------|-------------------|
-| Link   | `[text](url)`     |
+| Format | Code          |
+| ------ | ------------- |
+| Link   | `[text](url)` |
 
 ```markdown
 [Here](https://google.com)
@@ -281,8 +282,8 @@ bot.run(str(os.getenv("TOKEN")))
 #### Spoilers
 
 | Format  | Code |
-|---------|------|
-| Spoiler | `    ||spoiler||`     |
+| ------- | ---- |
+| Spoiler | `    |  | spoiler |  | ` |
 
 ```markdown
 ||spoiler||
@@ -405,7 +406,7 @@ To have syntax highlighting in code blocks, you can specify the language after t
 Discord supports mentioning users, roles, and channels in messages and a few other special mentions such as `@everyone` and `@here`.
 
 | Mention Type | Code                          | Remarks                                                                                                                                                                                              |
-|--------------|-------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------ | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | User         | `<@user_id>` or `<@!user_id>` | Replace `user_id` with the user's id, this will ping the user. If the user is not found it will display `@unknown-user`.                                                                             |
 | Role         | `<@&role_id>`                 | Replace `role_id` with the role's id, this will ping all the users with the role. If the role is not found it will display `@unknown-role`.                                                          |
 | Channel      | `<#channel_id>`               | Replace `channel_id` with the channel's id, this will display the channel's name as a hyperlink making it easier to navigate to the channel. If the channel is not found it will display `#unknown`. |
@@ -417,7 +418,7 @@ Discord supports mentioning users, roles, and channels in messages and a few oth
 You can use timestamps in messages and embeds to display the time in a user's local timezone, in a relative format, or in a specific format.
 
 | Style       | Format            | Example Input      | Example Output                    | Description                                                     |
-|-------------|-------------------|--------------------|-----------------------------------|-----------------------------------------------------------------|
+| ----------- | ----------------- | ------------------ | --------------------------------- | --------------------------------------------------------------- |
 | t           | `<t:timestamp:t>` | `<t:1633660800:t>` | `8:10 AM`                         | Short time format (HH:MM AM/PM) in the user's local timezone.   |
 | T           | `<t:timestamp:T>` | `<t:1633660800:T>` | `8:10:00 AM`                      | Long time format (HH:MM:SS AM/PM) in the user's local timezone. |
 | d           | `<t:timestamp:d>` | `<t:1633660800:d>` | `10/8/2021`                       | Short date format (MM/DD/YYYY) in the user's local timezone.    |
