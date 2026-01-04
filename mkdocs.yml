@@ -5,6 +5,9 @@ site_author: FallenDeity
 copyright: Copyright FallenDeity ( 2023 - present )
 site_url: https://fallendeity.github.io/discord.py-masterclass
 
+extra_css:
+  - stylesheets/extra.css
+
 theme:
   name: "material"
   language: en
@@ -76,6 +79,7 @@ nav:
     - Hybrid Commands: hybrid-commands.md
     - Slash Commands: slash-commands.md
     - Views: views.md
+    - Components V2: components-v2.md
     - Custom Context: custom-context.md
     - Error Handling: error-handling.md
     - Converters: converters.md

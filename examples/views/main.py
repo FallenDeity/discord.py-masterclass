@@ -9,6 +9,7 @@ import typing
 
 import aiohttp
 import discord
+from components_v2.action_row import FileUploadModal, ImageFilterView
 from discord.ext import commands
 from discord.ui.item import Item
 from dotenv import load_dotenv
@@ -229,7 +230,7 @@ class CustomBot(commands.Bot):
         super().__init__(*args, **kwargs, command_prefix=commands.when_mentioned_or(prefix), intents=intents)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.ext_dir = ext_dir
-        self.synced = False
+        self.synced = True
 
     async def _load_extensions(self) -> None:
         if not os.path.isdir(self.ext_dir):
@@ -324,6 +325,17 @@ def main() -> None:
         view = discord.ui.View(timeout=None)
         view.add_item(DynamicSelect(ctx.author.id))
         await ctx.send("Dynamic Select", view=view)
+
+    @bot.tree.command()
+    async def test(inter: discord.Interaction):
+        modal = FileUploadModal(timeout=60.0)
+        await inter.response.send_modal(modal)
+        await modal.wait()
+        if not modal.is_finished() or not modal.file_upload.values:
+            await inter.followup.send("Modal timed out or no file uploaded.", ephemeral=True)
+            return
+        image = await modal.file_upload.values[0].to_file(filename="image.png")
+        await inter.followup.send(view=ImageFilterView(bot, image, inter.user), file=image)
 
     @bot.tree.command()
     async def modal(inter: discord.Interaction):
